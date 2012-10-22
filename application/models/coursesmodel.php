@@ -6,20 +6,37 @@ class Coursesmodel extends CI_Model {
 
 	function __construct() {
 		parent::__construct();
+		
 	}
 
-	function getXMLFile() {
-		return simplexml_load_file( $_SERVER['DOCUMENT_ROOT'] . $this->config->item('xml_path') . $this->file );
-	}
+	function getCourseByCourseId( $course_id ) {
+		$courses = new DOMDocument();
 
-	function getAllCourses() {
 
-		$xml = $this->getXMLFile();
-		$courses = $xml->courses;
+		//load the XML file into the DOM, loading statically
+		$courses->load( dirname(__FILE__) . '/../' . $this->config->item('xml_path') . $this->file );
 
-		return $courses;
+		$courses->getElementsByTagName('course');
+		foreach ($courses as $course){
+			$course->setIdAttribute( 'id', true);
+		}
 
-	}
+
+		//validate the document
+		$courses->validateOnParse = true;
+
+		var_dump($courses->getElementById($course_id));exit;
+
+		$course = $courses->getElementsByTagName("course");
+		
+
+
+
+
+			return $course;
+
+		}
+
 
 }
 

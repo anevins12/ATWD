@@ -365,7 +365,7 @@ $config['proxy_ips'] = '';
 | Defining the path to XML directory
 |
 */
-$config['xml_path'] = '/application/a/xml/';
+$config['xml_path'] = 'a/xml/';
 
 
 
