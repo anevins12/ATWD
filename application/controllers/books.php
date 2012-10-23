@@ -18,10 +18,9 @@ class Books extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 	public function index(){
-		$this->load->model('Coursesmodel');
-		$allBooks = $this->Coursesmodel->getCourseByCourseId( "CC100" );
-
-
+		$this->load->model('Booksmodel');
+		$books = $this->Booksmodel->getBooksByCourseId("CC100");
+		
 		$this->load->view('welcome_message');
 	}
 }
