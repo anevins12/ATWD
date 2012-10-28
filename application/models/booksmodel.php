@@ -8,7 +8,7 @@ class Booksmodel extends CI_Model {
 		parent::__construct();
 	}
 
-	function getBooksByCourseId( $course_id, $sort = null ) {
+	function getBooksByCourseId ( $course_id, $sort = null ) {
 
 		$file = new DOMDocument();
 
@@ -18,7 +18,9 @@ class Booksmodel extends CI_Model {
 		//get all item nodes
 		$books = $file->getElementsByTagName( 'item' );
 
-		foreach ( $books as $book ){
+		$saveBooksXML = "";
+
+		foreach ( $books as $book ) {
 
 			//get all course nodes
 			$courses = $book->getElementsByTagName( 'course' );
@@ -29,15 +31,49 @@ class Booksmodel extends CI_Model {
 				if ( $course->nodeValue == $course_id ) {
 
 					//save each book that has the matching book id 
-					$file->saveXML($book);
-
+					$saveBooksXML .= $file->saveXML($book) . "\n";
+					
 				}
 
 			}
 			
 		}
 		
-		return $file;
+		return $saveBooksXML;
+
+	}
+
+	function getBookDetails( $book_id ) {
+
+		$file = new DOMDocument();
+
+		//load the XML file into the DOM, loading statically
+		$file->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file );
+
+		//get all item nodes
+		$books = $file->getElementsByTagName( 'item' );
+
+		//set the book attribute of id to type of ID
+		foreach ( $books as $book ){
+
+			if ( $book->nodeName == 'item' ) {
+
+				$book->setIdAttribute( 'id', true);
+
+			}
+			
+		}
+
+		//validate the document
+		$file->validateOnParse = true;
+
+		//get the book's detials through the book id
+		$book_details = $file->getElementById( '3683' );
+
+		//save that book's details
+		$saveBookDetails = $file->saveXML($book_details);
+
+		return $saveBookDetails;
 
 	}
 

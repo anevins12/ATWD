@@ -20,6 +20,7 @@ class Books extends CI_Controller {
 	public function index(){
 		$this->load->model('Booksmodel');
 		$books = $this->Booksmodel->getBooksByCourseId("CC100");
+		$books = $this->Booksmodel->getBookDetails("438");
 		
 		$this->load->view('welcome_message');
 	}
