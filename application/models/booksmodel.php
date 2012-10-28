@@ -8,7 +8,9 @@ class Booksmodel extends CI_Model {
 		parent::__construct();
 	}
 
-	function getBooksByCourseId ( $course_id, $sort = null ) {
+	function getBooksByCourseId ( $course_id ) {
+
+		$stylesheet = 'getBooksByCourseId.xsl';
 
 		$file = new DOMDocument();
 
@@ -19,6 +21,18 @@ class Booksmodel extends CI_Model {
 		$books = $file->getElementsByTagName( 'item' );
 
 		$saveBooksXML = "";
+		$newFile = new DOMDocument();
+		$newFile->loadXML("<results><course>$course_id</course></results>");
+		$newFile->saveXML();
+
+		$xsl = new DOMDocument();
+		$xsl->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . '/xsl/' . $stylesheet );
+
+		$proc = new XSLTProcessor();
+		$proc->importStylesheet($xsl);
+		$proc->setParameter('', 'course', $course_id);
+
+
 
 		foreach ( $books as $book ) {
 
@@ -30,16 +44,23 @@ class Booksmodel extends CI_Model {
 				//check whether the course id of the node matches the course id of user input
 				if ( $course->nodeValue == $course_id ) {
 
-					//save each book that has the matching book id 
-					$saveBooksXML .= $file->saveXML($book) . "\n";
+					$node = $newFile->importNode($book, true);
+					$newFile->documentElement->appendChild($node);
+
 					
 				}
 
 			}
 			
 		}
+
+	//save each book that has the matching book id
+	$newFile->saveXML();
+
 		
-		return $saveBooksXML;
+		$newXML = $proc->transformToXml($newFile);
+
+		var_dump($newXML);exit;
 
 	}
 
