@@ -23,6 +23,7 @@ class Books extends CI_Controller {
 		$books = $this->Booksmodel->getBooksByCourseId("CC100");
 		$books = $this->Booksmodel->getBookDetails("1715");
 		$books = $this->Suggestionsmodel->getBookSuggestions("483");
+		$books = $this->Booksmodel->updateBorrowedData("51390", "CC140");
 		$this->load->view('welcome_message');
 	}
 }
