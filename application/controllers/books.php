@@ -19,9 +19,10 @@ class Books extends CI_Controller {
 	 */
 	public function index(){
 		$this->load->model('Booksmodel');
+		$this->load->model('Suggestionsmodel');
 		$books = $this->Booksmodel->getBooksByCourseId("CC100");
-		$books = $this->Booksmodel->getBookDetails("438");
-		
+		$books = $this->Booksmodel->getBookDetails("1715");
+		$books = $this->Suggestionsmodel->getBookSuggestions("483");
 		$this->load->view('welcome_message');
 	}
 }
