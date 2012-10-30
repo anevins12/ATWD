@@ -8,7 +8,7 @@ class Suggestionsmodel extends CI_Model {
 		parent::__construct();
 	}
 
-	function getBookSuggestions( $book_id ) {
+	function getBookSuggestionsReturnXML( $book_id ) {
 
 		$stylesheet = 'getBookSuggestions.xsl';
 		$file = new DOMDocument();

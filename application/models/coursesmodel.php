@@ -9,7 +9,7 @@ class Coursesmodel extends CI_Model {
 		
 	}
 
-	function getCourseByCourseId( $course_id ) {
+	function getCourseByCourseIdReturnXML( $course_id ) {
 		
 		$file = new DOMDocument();
 
