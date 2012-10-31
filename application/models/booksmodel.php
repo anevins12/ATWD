@@ -82,14 +82,10 @@ class Booksmodel extends CI_Model {
 
 				//check whether the course id of the node matches the course id of user input
 				if ( $course->nodeValue == $course_id ) {
-
 					$flag = true;
-
 				}
 				else {
-					
 					$flag = false;
-
 				}
 				
 			}
@@ -97,7 +93,7 @@ class Booksmodel extends CI_Model {
 			if ( $flag ) {
 
 				//variable assigning implemeneted here to avoid duplicating fields if more than one course (above foreach)
-				
+			
 				$id = $book->getAttribute( 'id' );
 				$title = $book->getElementsByTagName( 'title' )->item( 0 )->nodeValue;
 				$isbn = $book->getElementsByTagName( 'isbn' )->item( 0 )->nodeValue;
@@ -106,8 +102,8 @@ class Booksmodel extends CI_Model {
 				$booksArray[] = array( 'book' => array( 'id' => $id, 'title' => $title, 'isbn' => $isbn, 'borrowedcount' => $borrowedcount ) );
 	
 				unset( $flag );
-			}
 
+			}
 
 		}
 
@@ -122,11 +118,6 @@ class Booksmodel extends CI_Model {
 		return $JSONobject;
 
 	}
-
-	/* NOTE:
-	 * Does not work with IDs of 3 values
-	 *
-	 */
 
 	function getBookDetailsReturnXML( $book_id ) {
 
