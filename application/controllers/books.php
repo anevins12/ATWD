@@ -20,11 +20,12 @@ class Books extends CI_Controller {
 	public function index(){
 		$this->load->model('Booksmodel');
 		$this->load->model('Suggestionsmodel');
-		$books = $this->Booksmodel->getBooksByCourseIdReturnXML("CC100");
-		$books = $this->Booksmodel->getBooksByCourseIdReturnJSON("CC100");
-		$books = $this->Booksmodel->getBookDetailsReturnXML("483");
-		$books = $this->Suggestionsmodel->getBookSuggestionsReturnXML("483");
-		$books = $this->Booksmodel->updateBorrowedData("51390", "CC140");
+		$this->Booksmodel->getBooksByCourseIdReturnXML("CC100");
+		$this->Booksmodel->getBooksByCourseIdReturnJSON("CC100");
+		$this->Booksmodel->getBookDetailsReturnXML("483");
+		$this->Booksmodel->getBookDetailsReturnJSON("483");
+		$this->Suggestionsmodel->getBookSuggestionsReturnXML("483");
+		$this->Booksmodel->updateBorrowedData("51390", "CC140");
 		$this->load->view('welcome_message');
 	}
 }

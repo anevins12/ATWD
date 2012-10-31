@@ -141,6 +141,50 @@ class Booksmodel extends CI_Model {
 		return $newXML;
 
 	}
+	
+	function getBookDetailsReturnJSON ( $book_id ) {
+
+		$file = new DOMDocument();
+
+		//load the XML file into the DOM, loading statically
+		$file->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file );
+
+		//get all item nodes
+		$books = $file->getElementsByTagName( 'item' );
+		$bookArray = array();
+
+		foreach ( $books as $book ) {
+
+			$book->setIdAttribute( 'id', true);
+
+		}
+
+		//validate the document
+        $file->validateOnParse = true;
+
+		//now get the book by its id value
+		$book = $file->getElementById($book_id);
+
+		if ( $book ) {
+
+			$id = $book->getAttribute( 'id' );
+			$title = $book->getElementsByTagName( 'title' )->item( 0 )->nodeValue;
+			$isbn = $book->getElementsByTagName( 'isbn' )->item( 0 )->nodeValue;
+			$borrowedcount = $book->getElementsByTagName( 'borrowedcount' )->item( 0 )->nodeValue;
+
+			$bookArray = array( 'book' => array( 'id' => $id, 'title' => $title, 'isbn' => $isbn, 'borrowedcount' => $borrowedcount ) );
+		}
+
+
+		//construct the array that is to be converted to JSON
+		$JSONarray = array( 'results' => $bookArray );
+
+		//convert the JSON array to a JSON object
+		$JSONobject = json_encode($JSONarray);
+
+		return $JSONobject;
+
+	}
 
 	function updateBorrowedData( $item_id, $course_id ) {
 		/* Not sure why I need $course_id */
