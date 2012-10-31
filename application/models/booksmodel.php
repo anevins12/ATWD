@@ -117,12 +117,9 @@ class Booksmodel extends CI_Model {
 		}
 		array_multisort($borrowedcountSort, SORT_DESC, $JSONarray[0]['books']);
 
-
-		print_r($JSONarray);exit;
 		//convert the JSON array to a JSON object
 		$JSONobject = json_encode($JSONarray);
 
-		
 		return $JSONobject;
 
 	}
