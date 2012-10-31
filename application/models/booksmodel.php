@@ -110,11 +110,19 @@ class Booksmodel extends CI_Model {
 		//construct the array that is to be converted to JSON
 		$JSONarray = array( 'results' => array( 'course' => $course_id, 'books' => $booksArray ) );
 
-		// still need to sort the JSONarray to borrowedcount descending
+		//sort the array by borrowedcount descending
+		//inspired by a comment on http://php.net/manual/en/function.array-multisort.php
+		foreach ($JSONarray[0]['books'] as $key => $row) {
+			$borrowedcountSort[$key]  = $row['book']['borrowedcount'];
+		}
+		array_multisort($borrowedcountSort, SORT_DESC, $JSONarray[0]['books']);
 
+
+		print_r($JSONarray);exit;
 		//convert the JSON array to a JSON object
 		$JSONobject = json_encode($JSONarray);
 
+		
 		return $JSONobject;
 
 	}
@@ -153,6 +161,7 @@ class Booksmodel extends CI_Model {
 		$books = $file->getElementsByTagName( 'item' );
 		$bookArray = array();
 
+		//set the id attribute as a type of ID, for future getElementsById methods
 		foreach ( $books as $book ) {
 
 			$book->setIdAttribute( 'id', true);
