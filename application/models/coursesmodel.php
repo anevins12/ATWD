@@ -14,8 +14,14 @@ class Coursesmodel extends CI_Model {
 		$file = new DOMDocument();
 
 		//load the XML file into the DOM, loading statically
-		$file->load( dirname(__FILE__) . '/../' . $this->config->item('xml_path') . $this->file );
-
+		
+		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
+			$file->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) .  $this->file );
+		}
+		else {
+			$file->load( dirname(__FILE__) . '/../' . $this->config->item('xml_path') . $this->file );
+		}
+		
 		//get all course nodes
 		$courses = $file->getElementsByTagName('course');
 

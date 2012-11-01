@@ -16,10 +16,14 @@ class Booksmodel extends CI_Model {
 
 		$stylesheet = 'getBooksByCourseId.xsl';
 		$file = new DOMDocument();
-
+		
 		//load the XML file into the DOM, loading statically
-		$file->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file );
-
+		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
+			$file->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) . $this->file );
+		}
+		else {
+			$file->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file );
+		}
 		//get all item nodes
 		$books = $file->getElementsByTagName( 'item' );
 
@@ -29,8 +33,14 @@ class Booksmodel extends CI_Model {
 		$newFile->saveXML();
 
 		$xsl = new DOMDocument();
-		$xsl->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . '/xsl/' . $stylesheet );
-
+		
+		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
+			$xsl->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) . '/xsl/' . $stylesheet);
+		}
+		else {
+			$xsl->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . '/xsl/' . $stylesheet );
+		}
+		
 		$proc = new XSLTProcessor();
 		$proc->importStylesheet( $xsl );
 		$proc->setParameter( '', 'course', $course_id );
@@ -67,8 +77,13 @@ class Booksmodel extends CI_Model {
 		$file = new DOMDocument();
 
 		//load the XML file into the DOM, loading statically
-		$file->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file );
-
+		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
+			$file->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) . $this->file );
+		}
+		else {
+			$file->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file );
+		}
+		
 		//get all item nodes
 		$books = $file->getElementsByTagName( 'item' );
 		$booksArray = array();
@@ -112,11 +127,12 @@ class Booksmodel extends CI_Model {
 
 		//sort the array by borrowedcount descending
 		//inspired by a comment on http://php.net/manual/en/function.array-multisort.php
-		foreach ($JSONarray[0]['books'] as $key => $row) {
+		
+		foreach ($JSONarray['results']['books'] as $key => $row) {
 			$borrowedcountSort[$key]  = $row['book']['borrowedcount'];
 		}
-		array_multisort($borrowedcountSort, SORT_DESC, $JSONarray[0]['books']);
-
+		array_multisort($borrowedcountSort, SORT_DESC, $JSONarray['results']['books']);
+		
 		//convert the JSON array to a JSON object
 		$JSONobject = json_encode($JSONarray);
 
@@ -128,13 +144,23 @@ class Booksmodel extends CI_Model {
 
 		$stylesheet = 'getBookDetails.xsl';
 		$file = new DOMDocument();
-
-		$file->load(  dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file  );
+		
+		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
+			$file->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) . $this->file );
+		}
+		else {
+			$file->load(  dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file  );
+		}
 		$file->saveXML();
 
 		$xsl = new DOMDocument();
+		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
+			$xsl->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) . '/xsl/' . $stylesheet );
+		}
+		else {
 		$xsl->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . '/xsl/' . $stylesheet );
-
+		}
+		
 		$proc = new XSLTProcessor();
 		$proc->importStylesheet( $xsl );
 		$proc->setParameter( '', 'book_id', $book_id );
@@ -152,8 +178,13 @@ class Booksmodel extends CI_Model {
 		$file = new DOMDocument();
 
 		//load the XML file into the DOM, loading statically
+		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
+			$file->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) . $this->file );
+		}
+		else {
 		$file->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file );
-
+		}
+		
 		//get all item nodes
 		$books = $file->getElementsByTagName( 'item' );
 		$bookArray = array();
@@ -198,12 +229,22 @@ class Booksmodel extends CI_Model {
 		$stylesheet = 'updateBorrowedData.xsl';
 		$file = new DOMDocument();
 
-		$file->load(  dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file  );
+		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
+			$file->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) .  $this->file );
+		}
+		else {
+			$file->load(  dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file  );
+		}
 		$file->saveXML();
 
 		$xsl = new DOMDocument();
-		$xsl->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . '/xsl/' . $stylesheet );
-
+		
+		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
+			$xsl->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) . '/xsl/' . $stylesheet );
+		}
+		else {
+			$xsl->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . '/xsl/' . $stylesheet );
+		}
 		$proc = new XSLTProcessor();
 		$proc->importStylesheet( $xsl );
 		$proc->setParameter( '', 'book_id', $item_id );

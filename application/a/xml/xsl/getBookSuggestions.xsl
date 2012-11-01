@@ -24,7 +24,7 @@
 			<xsl:text>&#xa;</xsl:text>
 
 			<suggestionsfor>
-				<xsl:value-of select="$book_id" />
+				<xsl:value-of select="$suggestion_id" />
 			</suggestionsfor>
 
 			<xsl:text>&#xa;</xsl:text>
@@ -40,7 +40,7 @@
 				<!-- display the course value -->
 					<xsl:for-each select="//suggestions">
 
-						<xsl:if test="(.)/@for-id = $book_id">
+						<xsl:if test="(.)/@for-id = $suggestion_id">
 
 							<xsl:for-each select="item">
 
