@@ -65,7 +65,7 @@
 	</style>
 </head>
 <body>
-
+<a href="index.php/books/">test</a>
 <div id="container">
 	<h1>Welcome to CodeIgniter!</h1>
 

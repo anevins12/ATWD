@@ -89,8 +89,6 @@ class Suggestionsmodel extends CI_Model {
 			
 		}
 
-		
-
 		//construct the array that is to be converted to JSON
 		$JSONarray = array( 'results' => array ( 'suggestionsfor' => $suggestion_id, 'books' => array( 'suggestions' => $suggestionArray ) ) );
 

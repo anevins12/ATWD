@@ -228,7 +228,7 @@ class Booksmodel extends CI_Model {
 		
 		$stylesheet = 'updateBorrowedData.xsl';
 		$file = new DOMDocument();
-
+		
 		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
 			$file->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) .  $this->file );
 		}
