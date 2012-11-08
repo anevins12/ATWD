@@ -24,7 +24,7 @@ class Books extends CI_Controller {
 		$this->Booksmodel->getBooksByCourseIdReturnJSON("CC100");
 		$this->Booksmodel->getBookDetailsReturnXML("483");
 		$this->Booksmodel->getBookDetailsReturnJSON("483");
-		$this->Suggestionsmodel->getBookSuggestionsReturnXML("483");
+		$this->Suggestionsmodel->getBookSuggestionsReturnXML("51390");
 		$this->Suggestionsmodel->getBookSuggestionsReturnJSON("51390");
 		$this->Booksmodel->updateBorrowedData("51390", "CC140");
 

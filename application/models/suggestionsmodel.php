@@ -2,6 +2,13 @@
 
 class Suggestionsmodel extends CI_Model {
 
+	private $id;
+	private $common;
+	private $same;
+	private $after;
+	private $total;
+	private $isbn;
+
 	protected $file = "suggestions.xml";
 
 	function __construct() {
@@ -10,7 +17,6 @@ class Suggestionsmodel extends CI_Model {
 
 	function getBookSuggestionsReturnXML( $suggestion_id ) {
 
-		$stylesheet = 'getBookSuggestions.xsl';
 		$file = new DOMDocument();
 		
 		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
@@ -19,26 +25,46 @@ class Suggestionsmodel extends CI_Model {
 		else {
 			$file->load(  dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file  );
 		}
-		$file->saveXML();
-
-		$xsl = new DOMDocument();
 		
-		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
-			$xsl->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) . '/xsl/' . $stylesheet );
+		$xml = "\n <results> \n <suggestionsfor>$suggestion_id</suggestionsfor> \n  <books> \n   <suggestions>";
+
+		//get all item nodes
+		$suggestions = $file->getElementsByTagName( 'suggestions' );
+
+		//set the for-id as type id
+		foreach ( $suggestions as $suggestion ) {
+
+			$suggestion->setIdAttribute( 'for-id', true);
+
 		}
-		else {
-			$xsl->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . '/xsl/' . $stylesheet );
+
+		//validate the document
+		$file->validateOnParse = true;
+
+		//now get the suggestion by its id value
+		$suggestion = $file->getElementById( $suggestion_id );
+
+		//get all of the items within the matched suggestion element
+		$items = $suggestion->getElementsByTagName( 'item' );
+
+		foreach ( $items as $item ) {
+
+			$this->id = $item->nodeValue;
+			$this->common = $item->getAttribute('common');
+			$this->before = $item->getAttribute('before');
+			$this->same = $item->getAttribute('same');
+			$this->after = $item->getAttribute('after');
+			$this->total = $item->getAttribute('total');
+			$this->isbn = $item->getAttribute('isbn');
+
+			//constructing xml for each item
+			$xml .= "\n   <isbn id='$this->id' common='$this->common' before='$this->before' same='$this->same' after='$this->after' total='$this->total'> $this->isbn </isbn>";
+
 		}
 		
-		$proc = new XSLTProcessor();
-		$proc->importStylesheet( $xsl );
-		$proc->setParameter( '', 'suggestion_id', $suggestion_id );
+		$xml .= "\n </suggestions> \n</results>";
 
-		//save the matched suggestion
-		$file->saveXML();
-		$newXML = $proc->transformToXml( $file );
-
-		return $newXML;
+		return $xml;
 
 	}
 

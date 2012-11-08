@@ -4,6 +4,11 @@ class Booksmodel extends CI_Model {
 
 	protected $file = "books.xml";
 
+	private $id;
+	private $title;
+	private $isbn;
+	private $borrowedcount;
+
 	function __construct() {
 		parent::__construct();
 	}
@@ -14,7 +19,7 @@ class Booksmodel extends CI_Model {
 	 */
 	function getBooksByCourseIdReturnXML ( $course_id ) {
 
-		$stylesheet = 'getBooksByCourseId.xsl';
+		$flag = false;
 		$file = new DOMDocument();
 		
 		//load the XML file into the DOM, loading statically
@@ -27,24 +32,8 @@ class Booksmodel extends CI_Model {
 		//get all item nodes
 		$books = $file->getElementsByTagName( 'item' );
 
-		$saveBooksXML = "";
-		$newFile = new DOMDocument();
-		$newFile->loadXML( "<results></results>" );
-		$newFile->saveXML();
-
-		$xsl = new DOMDocument();
-		
-		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
-			$xsl->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) . '/xsl/' . $stylesheet);
-		}
-		else {
-			$xsl->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . '/xsl/' . $stylesheet );
-		}
-		
-		$proc = new XSLTProcessor();
-		$proc->importStylesheet( $xsl );
-		$proc->setParameter( '', 'course', $course_id );
-
+		//start constructing returned xml
+		$xml = "\n<results>\n <course>$course_id</course> \n <books> \n";
 		foreach ( $books as $book ) {
 
 			//get all course nodes
@@ -54,21 +43,27 @@ class Booksmodel extends CI_Model {
 
 				//check whether the course id of the node matches the course id of user input
 				if ( $course->nodeValue == $course_id ) {
-
-					$node = $newFile->importNode( $book, true );
-					$newFile->documentElement->appendChild( $node );
-					
+					$flag = true;
 				}
 
 			}
-			
+
+			//get out of the course loop and just use flag to identify whether matched course id
+			if ( $flag ) {
+				$this->id = $book->getAttribute('id');
+				$this->title = $book->getElementsByTagName('title')->item(0)->nodeValue;
+				$this->isbn = $book->getElementsByTagName('isbn')->item(0)->nodeValue;
+				$this->borrowedcount = $book->getElementsByTagName('borrowedcount')->item(0)->nodeValue;
+
+				$xml .= "  <book id='$this->id' title='$this->title' isbn='$this->isbn' borrowedcount='$this->borrowedcount' /> \n";
+			}
+
+			$flag=false;
 		}
-
+		$xml .= "\n </books>\n</results>";
+		
 		//save each book that has the matching book id
-		$newFile->saveXML();
-		$newXML = $proc->transformToXml( $newFile );
-
-		return $newXML;
+		return $xml;
 
 	}
 
@@ -142,34 +137,41 @@ class Booksmodel extends CI_Model {
 
 	function getBookDetailsReturnXML( $book_id ) {
 
-		$stylesheet = 'getBookDetails.xsl';
 		$file = new DOMDocument();
-		
+
+		//load XML file
+		//if uwe server, get the full URI path
 		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
-			$file->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) . $this->file );
+			$file->load( dirname($_SERVER['SCRIPT_FILENAME']). '/application/' . $this->config->item( 'xml_path' ) . $this->file );
 		}
+		//otherwise use the normal path
 		else {
 			$file->load(  dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file  );
 		}
-		$file->saveXML();
 
-		$xsl = new DOMDocument();
-		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
-			$xsl->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) . '/xsl/' . $stylesheet );
-		}
-		else {
-		$xsl->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . '/xsl/' . $stylesheet );
-		}
+		$books = $file->getElementsByTagName('item');
 		
-		$proc = new XSLTProcessor();
-		$proc->importStylesheet( $xsl );
-		$proc->setParameter( '', 'book_id', $book_id );
+		foreach ( $books as $book ) {
+			$book->setIdAttribute( 'id', true);
+		}
 
-		//save the matched book
-		$file->saveXML();
-		$newXML = $proc->transformToXml( $file );
+		//validate the document
+		$file->validateOnParse = true;
 
-		return $newXML;
+		//get the book by book id, using the id
+		if ( $book = $file->getElementById( $book_id ) ) {
+
+			$this->id = $book->getAttribute('id');
+			$this->title = $book->getElementsByTagName('title')->item(0)->nodeValue;
+			$this->isbn = $book->getElementsByTagName('isbn')->item(0)->nodeValue;
+			$this->borrowedcount = $book->getElementsByTagName('borrowedcount')->item(0)->nodeValue;
+			
+		}
+
+		//construct the xml
+		$xml = "\n <results>\n <book id='$this->id' title='$this->title' isbn='$this->isbn' borrowedcount='$this->borrowedcount' /> \n </results>";
+
+		return $xml;
 
 	}
 	
@@ -226,7 +228,6 @@ class Booksmodel extends CI_Model {
 	function updateBorrowedData( $item_id, $course_id ) {
 		/* Not sure why I need $course_id */
 		
-		$stylesheet = 'updateBorrowedData.xsl';
 		$file = new DOMDocument();
 		
 		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
@@ -235,23 +236,28 @@ class Booksmodel extends CI_Model {
 		else {
 			$file->load(  dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file  );
 		}
-		$file->saveXML();
 
-		$xsl = new DOMDocument();
-		
-		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
-			$xsl->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) . '/xsl/' . $stylesheet );
-		}
-		else {
-			$xsl->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . '/xsl/' . $stylesheet );
-		}
-		$proc = new XSLTProcessor();
-		$proc->importStylesheet( $xsl );
-		$proc->setParameter( '', 'book_id', $item_id );
+		$books = $file->getElementsByTagName('item');
 
-		//save the matched book
-		$file->saveXML();
-		$newXML = $proc->transformToXml( $file );
+		foreach ( $books as $book ) {
+			$book->setIdAttribute( 'id', true);
+		}
+
+		//validate the document
+		$file->validateOnParse = true;
+
+		//get the book by book id, using the id
+		if ( $book = $file->getElementById( $item_id ) ) {
+
+			$this->id = $book->getAttribute('id');
+			$this->title = $book->getElementsByTagName('title')->item(0)->nodeValue;
+			$this->isbn = $book->getElementsByTagName('isbn')->item(0)->nodeValue;
+			$this->borrowedcount = $book->getElementsByTagName('borrowedcount')->item(0)->nodeValue + 1;
+
+		}
+
+		//construct the xml
+		$xml = "\n <results>\n <book id='$this->id' title='$this->title' isbn='$this->isbn' borrowedcount='$this->borrowedcount' /> \n </results>";
 
 		return $newXML;
 		
