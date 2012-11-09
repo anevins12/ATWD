@@ -14,7 +14,7 @@ class Booksmodel extends CI_Model {
 	 * I hadn't known you could use PHP variables in XSL, until after I had wrote PHP to retrieve Books by Course Id.
 	 * I then used XSLT to position and create the correct XML structure.
 	 */
-	function getBooksByCourseIdReturnXML ( $course_id ) {
+	function getBooksByCourseId ( $course_id ) {
 
 		$flag = false;
 		$file = new DOMDocument();
@@ -66,7 +66,7 @@ class Booksmodel extends CI_Model {
 
 	}
 
-	function getBookDetailsReturnXML( $book_id ) {
+	function getBookDetails( $book_id ) {
 
 		$file = new DOMDocument();
 
@@ -92,67 +92,16 @@ class Booksmodel extends CI_Model {
 		//get the book by book id, using the id
 		if ( $book = $file->getElementById( $book_id ) ) {
 
-			$this->id = $book->getAttribute('id');
-			$this->title = $book->getElementsByTagName('title')->item(0)->nodeValue;
-			$this->isbn = $book->getElementsByTagName('isbn')->item(0)->nodeValue;
-			$this->borrowedcount = $book->getElementsByTagName('borrowedcount')->item(0)->nodeValue;
+			//populate array with node name as key, and node value as value
+			$this->books[] = array( $book->getAttributeNode('id')->nodeName => $book->getAttribute('id'),
+									$book->getElementsByTagName('title')->item(0)->nodeName => $book->getElementsByTagName('title')->item(0)->nodeValue,
+									$book->getElementsByTagName('isbn')->item(0)->nodeName =>	$book->getElementsByTagName('isbn')->item(0)->nodeValue,
+									$book->getElementsByTagName('borrowedcount')->item(0)->nodeName => $book->getElementsByTagName('borrowedcount')->item(0)->nodeValue
+								   );
 			
 		}
 
-		//construct the xml
-		$xml = "\n <results>\n <book id='$this->id' title='$this->title' isbn='$this->isbn' borrowedcount='$this->borrowedcount' /> \n </results>";
-
-		return $xml;
-
-	}
-	
-	function getBookDetailsReturnJSON ( $book_id ) {
-
-		$file = new DOMDocument();
-
-		//load the XML file into the DOM, loading statically
-		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
-			$file->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) . $this->file );
-		}
-		else {
-		$file->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file );
-		}
-		
-		//get all item nodes
-		$books = $file->getElementsByTagName( 'item' );
-		$bookArray = array();
-
-		//set the id attribute as a type of ID, for future getElementsById methods
-		foreach ( $books as $book ) {
-
-			$book->setIdAttribute( 'id', true);
-
-		}
-
-		//validate the document
-        $file->validateOnParse = true;
-
-		//now get the book by its id value
-		$book = $file->getElementById($book_id);
-
-		if ( $book ) {
-
-			$id = $book->getAttribute( 'id' );
-			$title = $book->getElementsByTagName( 'title' )->item( 0 )->nodeValue;
-			$isbn = $book->getElementsByTagName( 'isbn' )->item( 0 )->nodeValue;
-			$borrowedcount = $book->getElementsByTagName( 'borrowedcount' )->item( 0 )->nodeValue;
-
-			$bookArray = array( 'book' => array( 'id' => $id, 'title' => $title, 'isbn' => $isbn, 'borrowedcount' => $borrowedcount ) );
-		}
-
-
-		//construct the array that is to be converted to JSON
-		$JSONarray = array( 'results' => $bookArray );
-
-		//convert the JSON array to a JSON object
-		$JSONobject = json_encode($JSONarray);
-
-		return $JSONobject;
+		return $this->books;
 
 	}
 

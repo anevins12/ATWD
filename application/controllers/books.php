@@ -2,6 +2,10 @@
 
 class Books extends CI_Controller {
 
+	function __constuct() {
+		parent::__construct();
+	}
+
 	/**
 	 * Index Page for this controller.
 	 *
@@ -18,29 +22,26 @@ class Books extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 	public function index(){
-		$this->load->model('Booksmodel');
-		$this->load->model('Suggestionsmodel');
 		
-		$this->Booksmodel->getBookDetailsReturnXML("483");
-		$this->Booksmodel->getBookDetailsReturnJSON("483");
-		$this->Suggestionsmodel->getBookSuggestionsReturnXML("51390");
-		$this->Suggestionsmodel->getBookSuggestionsReturnJSON("51390");
-		$this->Booksmodel->updateBorrowedData("51390", "CC140");
+//		$this->Booksmodel->getBookDetailsReturnJSON("483");
+//		$this->Suggestionsmodel->getBookSuggestionsReturnXML("51390");
+//		$this->Suggestionsmodel->getBookSuggestionsReturnJSON("51390");
+//		$this->Booksmodel->updateBorrowedData("51390", "CC140");
 
 		$this->load->view('welcome_message');
 	}
 
 	public function getBooksByCourseId() {
 		
-		$this->load->model('Booksmodel');
-		extract($_GET);
+		$this->load->model( 'Booksmodel' );
+		
+		//I know; using the extract twice now, the other time on the view
+		extract( $_GET );
 		
 		$booksmodel = new Booksmodel();
-		$books = $booksmodel->getBooksByCourseIdReturnXML( $course_id );
+		$books = $booksmodel->getBooksByCourseId( $course_id );
 
-		//I know; using the extract twice now, the other time on the view
 		
-
 		//if the selected form format is XML
 		if ( $format == 'XML' ) {
 
@@ -51,8 +52,12 @@ class Books extends CI_Controller {
 				//construct the XML format for each book
 				$xml .="  <book";
 
+				//use the array's keys and values
 				foreach ( $book as $k => $v ){
+
+					//as attributes and values
 					$xml .= " $k='$v'";
+					
 				}
 
 				$xml .="/> \n";
@@ -60,9 +65,6 @@ class Books extends CI_Controller {
 			}
 
 			$xml .= "\n </books>\n</results>";
-			$data['books'] = $xml;
-
-			$this->load->view('welcome_message', $data);
 
 		}
 		
@@ -73,22 +75,61 @@ class Books extends CI_Controller {
 
 			//sort the array by borrowedcount descending
 			//inspired by a comment on http://php.net/manual/en/function.array-multisort.php
-			foreach ($JSONarray['results']['books'] as $key => $row) {
+			foreach ( $JSONarray[ 'results' ][ 'books' ] as $key => $row ) {
 				$borrowedcountSort[$key]  = $row['borrowedcount'];
 			}
 
-			array_multisort($borrowedcountSort, SORT_DESC, $JSONarray['results']['books']);
+			array_multisort($borrowedcountSort, SORT_DESC, $JSONarray[ 'results' ][ 'books' ]);
 
 			//convert the JSON array to a JSON object
-			$JSONobject = json_encode($JSONarray);
+			$JSONobject = json_encode( $JSONarray );
 
-			$data['books'] = $JSONobject;
-			$this->load->view('welcome_message', $data);
 		}
 
+		$data['output'] = $JSONobject;
+		$this->load->view( 'welcome_message', $data );
+
+	}
+
+	public function getBookDetails() {
+		
+		$this->load->model( 'Booksmodel' );
+
+		//I know; using the extract twice now, the other time on the view
+		extract( $_GET );
+
+		$booksmodel = new Booksmodel();
+		$books = $booksmodel->getBookDetails( $book_id );
+
+		if ( $format == 'XML' ) {
+
+			$xml = "<results> \n <book ";
+			//should only be one book anyway
+			foreach ( $books as $book ) {
+
+				foreach ( $book as $k => $v ) {
+
+					$xml .= " $k='$v'";
+
+				}
+
+			}
+
+			$xml .= " /> \n</results>";
+			$data[ 'output' ] = $xml;
+			
+		}
+		
+		else {
+
+			$JSONarray = array( 'results' => array('book' => $books[0] ) );
+			$data[ 'output' ] = $JSONarray;
+		}
+
+		$this->load->view( 'welcome_message', $data );
 	}
 	
 }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+/* End of file books.php */
+/* Location: ./application/controllers/books.php */
