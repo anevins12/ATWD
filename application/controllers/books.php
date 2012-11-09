@@ -164,26 +164,37 @@ class Books extends CI_Controller {
 		$suggestionsmodel = new Suggestionsmodel();
 		$suggestions = $suggestionsmodel->getBookSuggestions( $suggestion_id );
 
-		$xml = "<results> \n <suggestionsfor>$suggestion_id</suggestionsfor> \n  <books> \n   <suggestions>";
+		if ( $format == 'XML' ) {
 
-		foreach ( $suggestions as $suggestion ) {
+			$xml = "<results> \n <suggestionsfor>$suggestion_id</suggestionsfor> \n  <books> \n   <suggestions>";
 
-			$xml .= "\n <isbn";
-			foreach ( $suggestion as $k => $v ) {
+			foreach ( $suggestions as $suggestion ) {
 
-				//dont use isbn as the XML node attribute, it's to be used further on in the node value
-				if( $k != 'isbn' ) {
-					$xml .= " $k='$v'";
+				$xml .= "\n <isbn";
+				foreach ( $suggestion as $k => $v ) {
+
+					//dont use isbn as the XML node attribute, it's to be used further on in the node value
+					if( $k != 'isbn' ) {
+						$xml .= " $k='$v'";
+					}
+
 				}
 
+				$xml .= ">".$suggestion['isbn']."</isbn>";
 			}
-			
-			$xml .= ">".$suggestion['isbn']."</isbn>";
+
+			$xml .= "</suggestions> \n</results>";
+
+			$data[ 'output' ] = $xml;
+		}
+		
+		
+		else {
+			$JSONarray = array( 'results' => array ( 'suggestionsfor' => $suggestion_id, 'books' => array( 'suggestions' => $suggestions[0] ) ) );
+			$JSONobject = json_encode($JSONarray);
+			$data[ 'output' ] = $JSONobject;
 		}
 
-		$xml .= "</suggestions> \n</results>";
-		
-		$data[ 'output' ] = $xml;
 		$this->load->view( 'welcome_message', $data );
 
 	}
