@@ -22,13 +22,9 @@ class Books extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 	public function index(){
-		
-//		$this->Booksmodel->getBookDetailsReturnJSON("483");
-//		$this->Suggestionsmodel->getBookSuggestionsReturnXML("51390");
-//		$this->Suggestionsmodel->getBookSuggestionsReturnJSON("51390");
-//		$this->Booksmodel->updateBorrowedData("51390", "CC140");
 
 		$this->load->view('welcome_message');
+		
 	}
 
 	public function course() {
