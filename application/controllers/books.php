@@ -20,7 +20,7 @@ class Books extends CI_Controller {
 	public function index(){
 		$this->load->model('Booksmodel');
 		$this->load->model('Suggestionsmodel');
-		$this->Booksmodel->getBooksByCourseIdReturnXML("CC100");
+		$this->getBooksByCourseIdReturnXML('CC100');
 		$this->Booksmodel->getBooksByCourseIdReturnJSON("CC100");
 		$this->Booksmodel->getBookDetailsReturnXML("483");
 		$this->Booksmodel->getBookDetailsReturnJSON("483");
@@ -30,6 +30,27 @@ class Books extends CI_Controller {
 
 		$this->load->view('welcome_message');
 	}
+
+	public function getBooksByCourseIdReturnXML( $course_id ) {
+
+		$booksmodel = new Booksmodel();
+		$books = $booksmodel->getBooksByCourseIdReturnXML( $course_id );
+	
+		$xml = "\n<results>\n <course>$course_id</course> \n <books> \n";
+
+		foreach ( $books as $book ) {
+
+			//construct the XML for each book
+			$xml .= "  <book id='".$book['id']."' title='".$book['title']."' isbn='".$book['isbn']."' borrowedcount='".$book['borrowedcount']."' /> \n";
+
+		}
+
+		$xml .= "\n </books>\n</results>";
+
+		return $xml;
+
+	}
+	
 }
 
 /* End of file welcome.php */

@@ -4,10 +4,7 @@ class Booksmodel extends CI_Model {
 
 	protected $file = "books.xml";
 
-	private $id;
-	private $title;
-	private $isbn;
-	private $borrowedcount;
+	private $books = array();
 
 	function __construct() {
 		parent::__construct();
@@ -33,7 +30,7 @@ class Booksmodel extends CI_Model {
 		$books = $file->getElementsByTagName( 'item' );
 
 		//start constructing returned xml
-		$xml = "\n<results>\n <course>$course_id</course> \n <books> \n";
+		//$xml = "\n<results>\n <course>$course_id</course> \n <books> \n";
 		foreach ( $books as $book ) {
 
 			//get all course nodes
@@ -50,20 +47,22 @@ class Booksmodel extends CI_Model {
 
 			//get out of the course loop and just use flag to identify whether matched course id
 			if ( $flag ) {
-				$this->id = $book->getAttribute('id');
-				$this->title = $book->getElementsByTagName('title')->item(0)->nodeValue;
-				$this->isbn = $book->getElementsByTagName('isbn')->item(0)->nodeValue;
-				$this->borrowedcount = $book->getElementsByTagName('borrowedcount')->item(0)->nodeValue;
 
-				$xml .= "  <book id='$this->id' title='$this->title' isbn='$this->isbn' borrowedcount='$this->borrowedcount' /> \n";
+				//populate array with node name as key, and node value as value
+				$this->books[] = array( $book->getAttributeNode('id')->nodeName => $book->getAttribute('id'),
+									    $book->getElementsByTagName('title')->item(0)->nodeName => $book->getElementsByTagName('title')->item(0)->nodeValue,
+									    $book->getElementsByTagName('isbn')->item(0)->nodeName =>	$book->getElementsByTagName('isbn')->item(0)->nodeValue,
+									    $book->getElementsByTagName('borrowedcount')->item(0)->nodeName => $book->getElementsByTagName('borrowedcount')->item(0)->nodeValue
+									   );
+
+				//$xml .= "  <book id='$this->id' title='$this->title' isbn='$this->isbn' borrowedcount='$this->borrowedcount' /> \n";
 			}
 
 			$flag=false;
 		}
-		$xml .= "\n </books>\n</results>";
+		//$xml .= "\n </books>\n</results>";
 		
-		//save each book that has the matching book id
-		return $xml;
+		return $this->books;
 
 	}
 
@@ -259,7 +258,7 @@ class Booksmodel extends CI_Model {
 		//construct the xml
 		$xml = "\n <results>\n <book id='$this->id' title='$this->title' isbn='$this->isbn' borrowedcount='$this->borrowedcount' /> \n </results>";
 
-		return $newXML;
+		return $xml;
 		
 	}
 
