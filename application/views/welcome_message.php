@@ -72,7 +72,7 @@
 		extract( $_GET );
 
 		if ( isset ( $submit ) ) {
-			var_dump( $xml );
+			var_dump( $books );
 		}
 	?>
 

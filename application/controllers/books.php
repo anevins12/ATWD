@@ -20,8 +20,7 @@ class Books extends CI_Controller {
 	public function index(){
 		$this->load->model('Booksmodel');
 		$this->load->model('Suggestionsmodel');
-		$this->getBooksByCourseId('CC100');
-		$this->Booksmodel->getBooksByCourseIdReturnJSON("CC100");
+		
 		$this->Booksmodel->getBookDetailsReturnXML("483");
 		$this->Booksmodel->getBookDetailsReturnJSON("483");
 		$this->Suggestionsmodel->getBookSuggestionsReturnXML("51390");
@@ -34,14 +33,16 @@ class Books extends CI_Controller {
 	public function getBooksByCourseId() {
 		
 		$this->load->model('Booksmodel');
-		
-		//I know; using the extract twice now, the other time on the view
 		extract($_GET);
+		
+		$booksmodel = new Booksmodel();
+		$books = $booksmodel->getBooksByCourseIdReturnXML( $course_id );
 
+		//I know; using the extract twice now, the other time on the view
+		
+
+		//if the selected form format is XML
 		if ( $format == 'XML' ) {
-
-			$booksmodel = new Booksmodel();
-			$books = $booksmodel->getBooksByCourseIdReturnXML( $course_id );
 
 			$xml = "\n<results>\n <course>$course_id</course> \n <books> \n";
 
@@ -59,10 +60,30 @@ class Books extends CI_Controller {
 			}
 
 			$xml .= "\n </books>\n</results>";
-			$data['xml'] = $xml;
+			$data['books'] = $xml;
 
 			$this->load->view('welcome_message', $data);
 
+		}
+		
+		//if the formatted form option is JSON
+		else {
+			//construct the array that is to be converted to JSON
+			$JSONarray = array( 'results' => array( 'course' => $course_id, 'books' => $books ) );
+
+			//sort the array by borrowedcount descending
+			//inspired by a comment on http://php.net/manual/en/function.array-multisort.php
+			foreach ($JSONarray['results']['books'] as $key => $row) {
+				$borrowedcountSort[$key]  = $row['borrowedcount'];
+			}
+
+			array_multisort($borrowedcountSort, SORT_DESC, $JSONarray['results']['books']);
+
+			//convert the JSON array to a JSON object
+			$JSONobject = json_encode($JSONarray);
+
+			$data['books'] = $JSONobject;
+			$this->load->view('welcome_message', $data);
 		}
 
 	}
