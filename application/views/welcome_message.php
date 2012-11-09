@@ -82,7 +82,7 @@
 		<p>You'll need to clear the URI to get rid of index.php/etcetera, otherwise you can't switch between form submissions</p>
 		<div>
 			<h2>Get Books By Course ID</h2>
-			<form action="index.php/books/getBooksByCourseId/" method="GET">
+			<form action="index.php/books/course/" method="GET">
 				<label for="course_id">Course ID:</label>
 				<input type="text" name="course_id" id="course_id" value="CC100"/>
 				<select name="format">
@@ -94,7 +94,7 @@
 		</div>
 		<div>
 			<h2>Get Book Details</h2>
-			<form action="index.php/books/getBookDetails/" method="GET">
+			<form action="index.php/books/detail/" method="GET">
 				<label for="book_id">Book ID:</label>
 				<input type="text" name="book_id" id="book_id" value="483"/>
 				<select name="format">
@@ -106,9 +106,22 @@
 		</div>
 		<div>
 			<h2>Update Borrowing Data</h2>
-			<form action="index.php/books/updateBorrowedData/" method="POST">
+			<form action="index.php/books/borrow/" method="POST">
 				<label for="book_id">Book ID:</label>
 				<input type="text" name="book_id" id="book_id" value="51390"/>
+				<input type="hidden" name="course_id" id="course_id" value="CC100"/>
+				<select name="format">
+					<option>XML</option>
+					<option>JSON</option>
+				</select>
+				<input type="submit" name="submit" id="submit"/>
+			</form>
+		</div>
+		<div>
+			<h2>Book Suggestions</h2>
+			<form action="index.php/books/suggestions/" method="GET">
+				<label for="book_id">Book ID:</label>
+				<input type="text" name="suggestion_id" id="suggestion_id" value="51390"/>
 				<input type="hidden" name="course_id" id="course_id" value="CC100"/>
 				<select name="format">
 					<option>XML</option>

@@ -31,7 +31,7 @@ class Books extends CI_Controller {
 		$this->load->view('welcome_message');
 	}
 
-	public function getBooksByCourseId() {
+	public function course() {
 		
 		$this->load->model( 'Booksmodel' );
 		
@@ -65,6 +65,7 @@ class Books extends CI_Controller {
 			}
 
 			$xml .= "\n </books>\n</results>";
+			$data['output'] = $xml;
 
 		}
 		
@@ -83,15 +84,14 @@ class Books extends CI_Controller {
 
 			//convert the JSON array to a JSON object
 			$JSONobject = json_encode( $JSONarray );
-
+			$data['output'] = $JSONobject;
 		}
 
-		$data['output'] = $JSONobject;
 		$this->load->view( 'welcome_message', $data );
 
 	}
 
-	public function getBookDetails() {
+	public function detail() {
 		
 		$this->load->model( 'Booksmodel' );
 
@@ -129,14 +129,11 @@ class Books extends CI_Controller {
 		$this->load->view( 'welcome_message', $data );
 	}
 
-	public function updateBorrowedData() {
+	public function borrow() {
 
 		extract( $_POST );
 		
 		$this->load->model( 'Booksmodel' );
-
-		//I know; using the extract twice now, the other time on the view
-		extract( $_GET );
 
 		$booksmodel = new Booksmodel();
 		$books = $booksmodel->updateBorrowedData( $book_id, $course_id);
@@ -154,6 +151,38 @@ class Books extends CI_Controller {
 
 		}
 
+		$data[ 'output' ] = $xml;
+		$this->load->view( 'welcome_message', $data );
+
+	}
+
+	public function suggestions() {
+
+		extract( $_GET );
+		$this->load->model( 'Suggestionsmodel' );
+
+		$suggestionsmodel = new Suggestionsmodel();
+		$suggestions = $suggestionsmodel->getBookSuggestions( $suggestion_id );
+
+		$xml = "<results> \n <suggestionsfor>$suggestion_id</suggestionsfor> \n  <books> \n   <suggestions>";
+
+		foreach ( $suggestions as $suggestion ) {
+
+			$xml .= "\n <isbn";
+			foreach ( $suggestion as $k => $v ) {
+
+				//dont use isbn as the XML node attribute, it's to be used further on in the node value
+				if( $k != 'isbn' ) {
+					$xml .= " $k='$v'";
+				}
+
+			}
+			
+			$xml .= ">".$suggestion['isbn']."</isbn>";
+		}
+
+		$xml .= "</suggestions> \n</results>";
+		
 		$data[ 'output' ] = $xml;
 		$this->load->view( 'welcome_message', $data );
 

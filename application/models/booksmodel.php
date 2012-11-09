@@ -30,7 +30,6 @@ class Booksmodel extends CI_Model {
 		$books = $file->getElementsByTagName( 'item' );
 
 		//start constructing returned xml
-		//$xml = "\n<results>\n <course>$course_id</course> \n <books> \n";
 		foreach ( $books as $book ) {
 
 			//get all course nodes
@@ -132,7 +131,6 @@ class Booksmodel extends CI_Model {
 									$book->getElementsByTagName('isbn')->item(0)->nodeName =>	$book->getElementsByTagName('isbn')->item(0)->nodeValue,
 									$book->getElementsByTagName('borrowedcount')->item(0)->nodeName => $book->getElementsByTagName('borrowedcount')->item(0)->nodeValue + 1
 								   );
-
 
 		}
 		

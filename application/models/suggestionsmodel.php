@@ -2,12 +2,7 @@
 
 class Suggestionsmodel extends CI_Model {
 
-	private $id;
-	private $common;
-	private $same;
-	private $after;
-	private $total;
-	private $isbn;
+	private $suggestions = array();
 
 	protected $file = "suggestions.xml";
 
@@ -15,7 +10,7 @@ class Suggestionsmodel extends CI_Model {
 		parent::__construct();
 	}
 
-	function getBookSuggestionsReturnXML( $suggestion_id ) {
+	function getBookSuggestions( $suggestion_id ) {
 
 		$file = new DOMDocument();
 		
@@ -26,8 +21,6 @@ class Suggestionsmodel extends CI_Model {
 			$file->load(  dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file  );
 		}
 		
-		$xml = "\n <results> \n <suggestionsfor>$suggestion_id</suggestionsfor> \n  <books> \n   <suggestions>";
-
 		//get all item nodes
 		$suggestions = $file->getElementsByTagName( 'suggestions' );
 
@@ -49,22 +42,18 @@ class Suggestionsmodel extends CI_Model {
 
 		foreach ( $items as $item ) {
 
-			$this->id = $item->nodeValue;
-			$this->common = $item->getAttribute('common');
-			$this->before = $item->getAttribute('before');
-			$this->same = $item->getAttribute('same');
-			$this->after = $item->getAttribute('after');
-			$this->total = $item->getAttribute('total');
-			$this->isbn = $item->getAttribute('isbn');
-
-			//constructing xml for each item
-			$xml .= "\n   <isbn id='$this->id' common='$this->common' before='$this->before' same='$this->same' after='$this->after' total='$this->total'> $this->isbn </isbn>";
+			$this->suggestions[] = array( $item->nodeName => $item->nodeValue ,
+								  $item->getAttributeNode('common')->nodeName => $this->common = $item->getAttribute('common'),
+								  $item->getAttributeNode('before')->nodeName => $this->common = $item->getAttribute('before'),
+								  $item->getAttributeNode('same')->nodeName => $this->common = $item->getAttribute('same'),
+								  $item->getAttributeNode('after')->nodeName => $this->common = $item->getAttribute('after'),
+								  $item->getAttributeNode('total')->nodeName => $this->common = $item->getAttribute('total'),
+								  $item->getAttributeNode('isbn')->nodeName => $this->common = $item->getAttribute('isbn')
+								);
 
 		}
-		
-		$xml .= "\n </suggestions> \n</results>";
 
-		return $xml;
+		return $this->suggestions;
 
 	}
 
