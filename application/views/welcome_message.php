@@ -85,10 +85,10 @@
 			<form action="index.php/books/course/" method="GET">
 				<label for="course_id">Course ID:</label>
 				<input type="text" name="course_id" id="course_id" value="CC100"/>
-				<select name="format">
+				<label for="format">Format: <select name="format" id="format">
 					<option>XML</option>
 					<option>JSON</option>
-				</select>
+				</select></label>
 				<input type="submit" name="submit" id="submit"/>
 			</form>
 		</div>
@@ -97,10 +97,10 @@
 			<form action="index.php/books/detail/" method="GET">
 				<label for="book_id">Book ID:</label>
 				<input type="text" name="book_id" id="book_id" value="483"/>
-				<select name="format">
+				<label for="format">Format: <select name="format" id="format">
 					<option>XML</option>
 					<option>JSON</option>
-				</select>
+				</select></label>
 				<input type="submit" name="submit" id="submit"/>
 			</form>
 		</div>
@@ -110,10 +110,9 @@
 				<label for="book_id">Book ID:</label>
 				<input type="text" name="book_id" id="book_id" value="51390"/>
 				<input type="hidden" name="course_id" id="course_id" value="CC100"/>
-				<select name="format">
+				<label for="format">Format: <select name="format" id="format">
 					<option>XML</option>
-					<option>JSON</option>
-				</select>
+				</select></label>
 				<input type="submit" name="submit" id="submit"/>
 			</form>
 		</div>
@@ -123,10 +122,10 @@
 				<label for="book_id">Book ID:</label>
 				<input type="text" name="suggestion_id" id="suggestion_id" value="51390"/>
 				<input type="hidden" name="course_id" id="course_id" value="CC100"/>
-				<select name="format">
+				<label for="format">Format: <select name="format" id="format">
 					<option>XML</option>
 					<option>JSON</option>
-				</select>
+				</select></label>
 				<input type="submit" name="submit" id="submit"/>
 			</form>
 		</div>
