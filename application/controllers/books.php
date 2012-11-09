@@ -37,7 +37,14 @@ class Books extends CI_Controller {
 		$booksmodel = new Booksmodel();
 		$books = $booksmodel->getBooksByCourseId( $course_id );
 
-		
+		//sort the array by borrowedcount descending
+		//inspired by a comment on http://php.net/manual/en/function.array-multisort.php
+		foreach ( $books as $k => $row ) {
+				$borrowedcountSort[ $k ]  = $row[ 'borrowedcount' ];
+		}
+
+		array_multisort( $borrowedcountSort, SORT_DESC, $books );
+
 		//if the selected form format is XML
 		if ( $format == 'XML' ) {
 
@@ -61,7 +68,7 @@ class Books extends CI_Controller {
 			}
 
 			$xml .= "\n </books>\n</results>";
-			$data['output'] = $xml;
+			$data[ 'output' ] = $xml;
 
 		}
 		
@@ -70,17 +77,9 @@ class Books extends CI_Controller {
 			//construct the array that is to be converted to JSON
 			$JSONarray = array( 'results' => array( 'course' => $course_id, 'books' => $books ) );
 
-			//sort the array by borrowedcount descending
-			//inspired by a comment on http://php.net/manual/en/function.array-multisort.php
-			foreach ( $JSONarray[ 'results' ][ 'books' ] as $key => $row ) {
-				$borrowedcountSort[$key]  = $row['borrowedcount'];
-			}
-
-			array_multisort($borrowedcountSort, SORT_DESC, $JSONarray[ 'results' ][ 'books' ]);
-
 			//convert the JSON array to a JSON object
 			$JSONobject = json_encode( $JSONarray );
-			$data['output'] = $JSONobject;
+			$data[ 'output' ] = $JSONobject;
 		}
 
 		$this->load->view( 'welcome_message', $data );
