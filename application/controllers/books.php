@@ -128,6 +128,36 @@ class Books extends CI_Controller {
 
 		$this->load->view( 'welcome_message', $data );
 	}
+
+	public function updateBorrowedData() {
+
+		extract( $_POST );
+		
+		$this->load->model( 'Booksmodel' );
+
+		//I know; using the extract twice now, the other time on the view
+		extract( $_GET );
+
+		$booksmodel = new Booksmodel();
+		$books = $booksmodel->updateBorrowedData( $book_id, $course_id);
+
+		$xml = "<results> \n <book ";
+
+		foreach ( $books as $book ) {
+			
+			foreach ( $book as $k => $v ) {
+
+				$xml .= " $k='$v'";
+
+			}
+			$xml .= " /> \n</results>";
+
+		}
+
+		$data[ 'output' ] = $xml;
+		$this->load->view( 'welcome_message', $data );
+
+	}
 	
 }
 

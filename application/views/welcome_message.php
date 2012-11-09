@@ -70,7 +70,8 @@
 
 	<?php
 		extract( $_GET );
-
+		extract( $_POST );
+		
 		if ( isset ( $submit ) ) {
 			var_dump( $output );
 		}
@@ -78,30 +79,44 @@
 	?>
 
 	<div id="body">
-	<div>
-		<h2>Get Books By Course ID</h2>
-		<form action="index.php/books/getBooksByCourseId/" method="GET">
-			<label for="course_id">Course ID:</label>
-			<input type="text" name="course_id" id="course_id" value="CC100"/>
-			<select name="format">
-				<option>XML</option>
-				<option>JSON</option>
-			</select>
-			<input type="submit" name="submit" id="submit"/>
-		</form>
-	</div>
-	<div>
-		<h2>Get Book Details</h2>
-		<form action="index.php/books/getBookDetails/" method="GET">
-			<label for="book_id">Book ID:</label>
-			<input type="text" name="book_id" id="book_id" value="483"/>
-			<select name="format">
-				<option>XML</option>
-				<option>JSON</option>
-			</select>
-			<input type="submit" name="submit" id="submit"/>
-		</form>
-	</div>
+		<p>You'll need to clear the URI to get rid of index.php/etcetera, otherwise you can't switch between form submissions</p>
+		<div>
+			<h2>Get Books By Course ID</h2>
+			<form action="index.php/books/getBooksByCourseId/" method="GET">
+				<label for="course_id">Course ID:</label>
+				<input type="text" name="course_id" id="course_id" value="CC100"/>
+				<select name="format">
+					<option>XML</option>
+					<option>JSON</option>
+				</select>
+				<input type="submit" name="submit" id="submit"/>
+			</form>
+		</div>
+		<div>
+			<h2>Get Book Details</h2>
+			<form action="index.php/books/getBookDetails/" method="GET">
+				<label for="book_id">Book ID:</label>
+				<input type="text" name="book_id" id="book_id" value="483"/>
+				<select name="format">
+					<option>XML</option>
+					<option>JSON</option>
+				</select>
+				<input type="submit" name="submit" id="submit"/>
+			</form>
+		</div>
+		<div>
+			<h2>Update Borrowing Data</h2>
+			<form action="index.php/books/updateBorrowedData/" method="POST">
+				<label for="book_id">Book ID:</label>
+				<input type="text" name="book_id" id="book_id" value="51390"/>
+				<input type="hidden" name="course_id" id="course_id" value="CC100"/>
+				<select name="format">
+					<option>XML</option>
+					<option>JSON</option>
+				</select>
+				<input type="submit" name="submit" id="submit"/>
+			</form>
+		</div>
 
 
 

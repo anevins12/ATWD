@@ -55,13 +55,11 @@ class Booksmodel extends CI_Model {
 									    $book->getElementsByTagName('borrowedcount')->item(0)->nodeName => $book->getElementsByTagName('borrowedcount')->item(0)->nodeValue
 									   );
 
-				//$xml .= "  <book id='$this->id' title='$this->title' isbn='$this->isbn' borrowedcount='$this->borrowedcount' /> \n";
 			}
 
 			$flag=false;
 		}
-		//$xml .= "\n </books>\n</results>";
-		
+
 		return $this->books;
 
 	}
@@ -129,17 +127,16 @@ class Booksmodel extends CI_Model {
 		//get the book by book id, using the id
 		if ( $book = $file->getElementById( $item_id ) ) {
 
-			$this->id = $book->getAttribute('id');
-			$this->title = $book->getElementsByTagName('title')->item(0)->nodeValue;
-			$this->isbn = $book->getElementsByTagName('isbn')->item(0)->nodeValue;
-			$this->borrowedcount = $book->getElementsByTagName('borrowedcount')->item(0)->nodeValue + 1;
+			$this->books[] = array( $book->getAttributeNode('id')->nodeName => $book->getAttribute('id'),
+									$book->getElementsByTagName('title')->item(0)->nodeName => $book->getElementsByTagName('title')->item(0)->nodeValue,
+									$book->getElementsByTagName('isbn')->item(0)->nodeName =>	$book->getElementsByTagName('isbn')->item(0)->nodeValue,
+									$book->getElementsByTagName('borrowedcount')->item(0)->nodeName => $book->getElementsByTagName('borrowedcount')->item(0)->nodeValue + 1
+								   );
+
 
 		}
-
-		//construct the xml
-		$xml = "\n <results>\n <book id='$this->id' title='$this->title' isbn='$this->isbn' borrowedcount='$this->borrowedcount' /> \n </results>";
-
-		return $xml;
+		
+		return $this->books;
 		
 	}
 
