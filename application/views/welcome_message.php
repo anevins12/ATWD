@@ -67,6 +67,29 @@
 <body>
 <a href="index.php/books/">test</a>
 <div id="container">
+
+	<?php
+		extract( $_GET );
+
+		if ( isset ( $submit ) ) {
+			var_dump( $xml );
+		}
+	?>
+
+	<form action="index.php/books/getBooksByCourseId/" method="GET">
+		<label for="course_id">Course ID:</label> 
+		<input type="text" name="course_id" id="course_id"/>
+		<select name="format">
+			<option>XML</option>
+			<option>JSON</option>
+		</select>
+		<input type="submit" name="submit" id="submit"/>
+	</form>
+
+
+
+
+
 	<h1>Welcome to CodeIgniter!</h1>
 
 	<div id="body">
