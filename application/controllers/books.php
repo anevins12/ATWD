@@ -165,7 +165,7 @@ class Books extends CI_Controller {
 
 			foreach ( $suggestions as $suggestion ) {
 
-				$xml .= "\n <isbn";
+				$xml .= "\n    <isbn";
 				foreach ( $suggestion as $k => $v ) {
 
 					//dont use isbn as the XML node attribute, it's to be used further on in the node value
