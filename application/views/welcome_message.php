@@ -79,10 +79,12 @@
 	?>
 
 	<div id="body">
-		<p>You'll need to clear the URI to get rid of index.php/etcetera, otherwise you can't switch between form submissions</p>
 		<div>
 			<h2>Get Books By Course ID</h2>
-			<form action="index.php/books/course/" method="GET">
+			<?php
+				$this->load->helper('form');
+				echo form_open('books/course', array('method' => 'get'));
+			?>
 				<label for="course_id">Course ID:</label>
 				<input type="text" name="course_id" id="course_id" value="CC100"/>
 				<label for="format">Format: <select name="format" id="format">
@@ -90,11 +92,17 @@
 					<option>JSON</option>
 				</select></label>
 				<input type="submit" name="submit" id="submit"/>
-			</form>
+			<?php
+				echo form_close();
+			?>
+			
 		</div>
 		<div>
 			<h2>Get Book Details</h2>
-			<form action="index.php/books/detail/" method="GET">
+			<?php
+				$this->load->helper('form');
+				echo form_open('books/detail', array('method' => 'get'));
+			?>
 				<label for="book_id">Book ID:</label>
 				<input type="text" name="book_id" id="book_id" value="483"/>
 				<label for="format">Format: <select name="format" id="format">
@@ -102,11 +110,16 @@
 					<option>JSON</option>
 				</select></label>
 				<input type="submit" name="submit" id="submit"/>
-			</form>
+			<?php
+			echo form_close();
+			?>
 		</div>
 		<div>
 			<h2>Update Borrowing Data</h2>
-			<form action="index.php/books/borrow/" method="POST">
+			<?php
+				$this->load->helper('form');
+				echo form_open('books/borrow');
+			?>
 				<label for="book_id">Book ID:</label>
 				<input type="text" name="book_id" id="book_id" value="51390"/>
 				<input type="hidden" name="course_id" id="course_id" value="CC100"/>
@@ -114,11 +127,16 @@
 					<option>XML</option>
 				</select></label>
 				<input type="submit" name="submit" id="submit"/>
-			</form>
+			<?php
+				echo form_close();
+			?>
 		</div>
 		<div>
 			<h2>Book Suggestions</h2>
-			<form action="index.php/books/suggestions/" method="GET">
+			<?php
+				$this->load->helper('form');
+				echo form_open('books/suggestions', array('method' => 'get'));
+			?>
 				<label for="book_id">Book ID:</label>
 				<input type="text" name="suggestion_id" id="suggestion_id" value="51390"/>
 				<input type="hidden" name="course_id" id="course_id" value="CC100"/>
@@ -127,7 +145,9 @@
 					<option>JSON</option>
 				</select></label>
 				<input type="submit" name="submit" id="submit"/>
-			</form>
+			<?php
+				echo form_close();
+			?>
 		</div>
 
 		<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds</p>
