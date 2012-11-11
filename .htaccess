@@ -1,0 +1,6 @@
+<IfModule mod_rewrite.c>
+#Source: http://codeigniter.com/user_guide/general/urls.html
+RewriteEngine on
+RewriteCond $1 !^(index\.php|images|robots\.txt)
+RewriteRule ^(.*)$ /index.php/$1 [L]
+</IfModule>
