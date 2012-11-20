@@ -16,7 +16,7 @@ class Booksmodel extends CI_Model {
 		$file = new DOMDocument();
 
 		//load the XML file into the DOM, loading statically
-		$this->applicationpath->getApplicationPath() . $this->config->item( 'xml_path' ) . $this->file;
+		$file->load($this->applicationpath->getApplicationPath() . $this->config->item( 'xml_path' ) . $this->file);
 		
 		//get all item nodes
 		$books = $file->getElementsByTagName( 'item' );
