@@ -367,6 +367,16 @@ $config['proxy_ips'] = '';
 */
 $config['xml_path'] = 'a/xml/';
 
+/*
+|--------------------------------------------------------------------------
+| Application Directory Path using UWE's directories
+|--------------------------------------------------------------------------
+|
+| Defining the path to XML directory
+|
+*/
+$config['uwe_application_path'] = dirname($_SERVER['SCRIPT_FILENAME']).'/application/';
+
 
 
 /* End of file config.php */

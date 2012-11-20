@@ -1,6 +1,10 @@
 <IfModule mod_rewrite.c>
-#Source: http://codeigniter.com/user_guide/general/urls.html
 RewriteEngine on
+
+#Source: http://codeigniter.com/user_guide/general/urls.html
+#Removal of index.php
 RewriteCond $1 !^(index\.php|images|robots\.txt)
-RewriteRule ^(.*)$ /index.php/$1 [L]
+RewriteRule ^(.*)$ /index.php?route/$1 [L]
+
 </IfModule>
+

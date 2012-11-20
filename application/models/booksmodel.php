@@ -3,29 +3,21 @@
 class Booksmodel extends CI_Model {
 
 	protected $file = "books.xml";
-
 	private $books = array();
 
 	function __construct() {
 		parent::__construct();
+		$this->load->library('applicationpath');
 	}
 
-	/* First attempt at using PHP and XSLT to bring in the correct XML.
-	 * I hadn't known you could use PHP variables in XSL, until after I had wrote PHP to retrieve Books by Course Id.
-	 * I then used XSLT to position and create the correct XML structure.
-	 */
 	function getBooksByCourseId ( $course_id ) {
 
 		$flag = false;
 		$file = new DOMDocument();
-		
+
 		//load the XML file into the DOM, loading statically
-		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
-			$file->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) . $this->file );
-		}
-		else {
-			$file->load( dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file );
-		}
+		$this->applicationpath->getApplicationPath() . $this->config->item( 'xml_path' ) . $this->file;
+		
 		//get all item nodes
 		$books = $file->getElementsByTagName( 'item' );
 
