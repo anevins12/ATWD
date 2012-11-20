@@ -16,7 +16,7 @@ class ApplicationPath {
 		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
 			return $this->config->item('uwe_application_path');
 		}
-
+		
 		return dirname( __FILE__ ) . '/../';
 
 	}
