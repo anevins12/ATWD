@@ -33,57 +33,63 @@ class Books extends CI_Controller {
 		
 		//I know; using the extract twice now, the other time on the view
 		extract( $_GET );
-		
-		$booksmodel = new Booksmodel();
-		$books = $booksmodel->getBooksByCourseId( $course_id );
 
-		//sort the array by borrowedcount descending
-		//inspired by a comment on http://php.net/manual/en/function.array-multisort.php
-		foreach ( $books as $k => $row ) {
-				$borrowedcountSort[ $k ]  = $row[ 'borrowedcount' ];
-		}
+		if ( !is_string( $this->checkCourseID() ) ) {
+			
+			$booksmodel = new Booksmodel();
+			$books = $booksmodel->getBooksByCourseId( $course_id );
 
-		array_multisort( $borrowedcountSort, SORT_DESC, $books );
+			//sort the array by borrowedcount descending
+			//inspired by a comment on http://php.net/manual/en/function.array-multisort.php
+			foreach ( $books as $k => $row ) {
+					$borrowedcountSort[ $k ]  = $row[ 'borrowedcount' ];
+			}
 
-		//if the selected form format is XML
-		if ( $format == 'XML' ) {
+			array_multisort( $borrowedcountSort, SORT_DESC, $books );
 
-			$xml = "\n<results>\n <course>$course_id</course> \n <books> \n";
+			//if the selected form format is XML
+			if ( $format == 'XML' ) {
 
-			foreach ( $books as $book ) {
+				$xml = "\n<results>\n <course>$course_id</course> \n <books> \n";
 
-				//construct the XML format for each book
-				$xml .="  <book";
+				foreach ( $books as $book ) {
 
-				//use the array's keys and values
-				foreach ( $book as $k => $v ){
+					//construct the XML format for each book
+					$xml .="  <book";
 
-					//as attributes and values
-					$xml .= " $k='$v'";
-					
+					//use the array's keys and values
+					foreach ( $book as $k => $v ){
+
+						//as attributes and values
+						$xml .= " $k='$v'";
+
+					}
+
+					$xml .="/> \n";
+
 				}
 
-				$xml .="/> \n";
+				$xml .= "\n </books>\n</results>";
+				$data[ 'output' ] = $xml;
 
 			}
 
-			$xml .= "\n </books>\n</results>";
-			$data[ 'output' ] = $xml;
+			//if the formatted form option is JSON
+			else {
+				//construct the array that is to be converted to JSON
+				$JSONarray = array( 'results' => array( 'course' => $course_id, 'books' => $books ) );
 
+				//convert the JSON array to a JSON object
+				$JSONobject = json_encode( $JSONarray );
+				$data[ 'output' ] = $JSONobject;
+			}
+		}
+		//if the inputted course id has not matched with the XML 'database', return the error message from the exception
+		else {
+			$data[ 'output' ] = $this->checkCourseID();
 		}
 		
-		//if the formatted form option is JSON
-		else {
-			//construct the array that is to be converted to JSON
-			$JSONarray = array( 'results' => array( 'course' => $course_id, 'books' => $books ) );
-
-			//convert the JSON array to a JSON object
-			$JSONobject = json_encode( $JSONarray );
-			$data[ 'output' ] = $JSONobject;
-		}
-
 		$this->load->view( 'welcome_message', $data );
-
 	}
 
 	public function detail() {
@@ -193,8 +199,30 @@ class Books extends CI_Controller {
 		$this->load->view( 'welcome_message', $data );
 
 	}
+
+	public function checkCourseID() {
+		$error = "";
+
+		$this->load->model( 'Coursesmodel' );
+		$coursesmodel = new Coursesmodel();
+
+		//handle exceptions if there are any
+		try {
+			 $coursesmodel->checkCourseId();
+		}
+		catch ( Exception $e ) {
+			$error =  'Caught exception: ' . $e->getMessage() . "\n";
+		}
+
+		if ( empty( $error ) ) {
+			$courses = $coursesmodel->checkCourseId();
+			return $courses;
+		}
+
+		return $error;
+
+	}
 	
 }
-
 /* End of file books.php */
 /* Location: ./application/controllers/books.php */
