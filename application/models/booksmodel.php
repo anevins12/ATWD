@@ -120,9 +120,11 @@ class Booksmodel extends CI_Model {
 		
 		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
 			$file->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) .  $this->file );
+			$filepath = dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) .  $this->file ;
 		}
 		else {
 			$file->load(  dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file  );
+			$filepath = dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file ;
 		}
 
 		$books = $file->getElementsByTagName('item');
@@ -137,7 +139,14 @@ class Booksmodel extends CI_Model {
 		//get the book by book id, using the id
 		if ( $book = $file->getElementById( $item_id ) ) {
 
-			$this->books[] = array( $book->getAttributeNode('id')->nodeName => $book->getAttribute('id'),
+		//using SimpleXML to update the XML file of its borrowed count
+		$xml = simplexml_load_file($filepath);
+		$simplexml_book = $xml->xpath("//*[@id='$item_id']");
+		$simplexml_book[0]->borrowedcount++;
+		$xml->asXml($filepath);
+
+		//I'm still using the DOMDocument for setting the array, because I found getting the @attribute value really difficult with SimpleXML
+		$this->books[] = array( $book->getAttributeNode('id')->nodeName => $book->getAttribute('id'),
 									$book->getElementsByTagName('title')->item(0)->nodeName => $book->getElementsByTagName('title')->item(0)->nodeValue,
 									$book->getElementsByTagName('isbn')->item(0)->nodeName =>	$book->getElementsByTagName('isbn')->item(0)->nodeValue,
 									$book->getElementsByTagName('borrowedcount')->item(0)->nodeName => $book->getElementsByTagName('borrowedcount')->item(0)->nodeValue + 1
