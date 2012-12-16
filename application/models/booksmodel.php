@@ -141,10 +141,8 @@ class Booksmodel extends CI_Model {
 			
 		}
 		else {
-			show_error( "The XML file contains no books of the id $book_id" );
-			log_message( 'error', "Can't find $book_id in books.xml" );
+			throw new Exception( "No books found of the id $book_id" );
 		}
-
 		return $this->books;
 
 	}

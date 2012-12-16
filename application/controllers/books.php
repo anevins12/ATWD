@@ -95,36 +95,50 @@ class Books extends CI_Controller {
 	public function detail() {
 		
 		$this->load->model( 'Booksmodel' );
+		$error = "";
 
-		//I know; using the extract twice now, the other time on the view
 		extract( $_GET );
-
 		$booksmodel = new Booksmodel();
-		$books = $booksmodel->getBookDetails( $book_id );
 
-		if ( $format == 'XML' ) {
+		try {
+			 $booksmodel->getBookDetails( $book_id );
+		}
+		catch ( Exception $e ) {
+			$error =  'Caught exception: ' . $e->getMessage() . "\n";
+		}
 
-			$xml = "<results> \n <book ";
-			//should only be one book anyway
-			foreach ( $books as $book ) {
+		if ( empty( $error ) ) {
 
-				foreach ( $book as $k => $v ) {
+			$books = $booksmodel->getBookDetails( $book_id );
+			
+			if ( $format == 'XML' ) {
 
-					$xml .= " $k='$v'";
+				$xml = "<results> \n <book ";
+				//should only be one book anyway
+				foreach ( $books as $book ) {
+
+					foreach ( $book as $k => $v ) {
+
+						$xml .= " $k='$v'";
+
+					}
 
 				}
 
+				$xml .= " /> \n</results>";
+				$data[ 'output' ] = $xml;
+
 			}
 
-			$xml .= " /> \n</results>";
-			$data[ 'output' ] = $xml;
-			
-		}
-		
-		else {
+			else {
 
-			$JSONarray = array( 'results' => array('book' => $books[0] ) );
-			$data[ 'output' ] = $JSONarray;
+				$JSONarray = array( 'results' => array('book' => $books[0] ) );
+				$data[ 'output' ] = $JSONarray;
+			}
+		}
+		//if the inputted book id has not matched with the any node in books.xml, return the error
+		else {
+			$data[ 'output' ] = $error;
 		}
 
 		$this->load->view( 'welcome_message', $data );
