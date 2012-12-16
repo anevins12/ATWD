@@ -150,20 +150,6 @@
 			?>
 		</div>
 
-		<div>
-			<h2>Check Course ID</h2>
-			<?php
-				$this->load->helper('form');
-				echo form_open('books/checkCourseID', array('method' => 'get'));
-			?>
-				<label for="book_id">Course ID:</label>
-				<input type="text" name="course_id" id="course_id" value="CC100"/>
-				<input type="submit" name="submit" id="submit"/>
-			<?php
-				echo form_close();
-			?>
-		</div>
-
 		<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds</p>
 
 	</div>
