@@ -37,7 +37,7 @@ class Booksmodel extends CI_Model {
 			log_message('error', 'No XML file was loaded');
 		}
 
-		if ( !empty( $file->getElementsByTagName( 'item' ) ) ) {
+		if ( $file->getElementsByTagName( 'item' ) ) {
 			//get all item nodes
 			$books = $file->getElementsByTagName( 'item' );
 		}
@@ -50,7 +50,7 @@ class Booksmodel extends CI_Model {
 		foreach ( $books as $book ) {
 
 			//get all course nodes
-			if ( !empty( $book->getElementsByTagName( 'course' ) ) ) {
+			if ( $book->getElementsByTagName( 'course' ) )  {
 				$courses = $book->getElementsByTagName( 'course' );
 			}
 			else {
@@ -90,18 +90,37 @@ class Booksmodel extends CI_Model {
 	function getBookDetails( $book_id ) {
 
 		$file = new DOMDocument();
+		$xmlPath = $this->applicationpath->getApplicationPath() . $this->config->item( 'xml_path' );
 
-		//load XML file
-		//if uwe server, get the full URI path
-		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
-			$file->load( dirname($_SERVER['SCRIPT_FILENAME']). '/application/' . $this->config->item( 'xml_path' ) . $this->file );
+		//check if directory path exists
+		if ( !is_dir( $xmlPath ) ) {
+			show_error( 'Directory Path to XML file does not exist' );
+			log_message( 'error', 'Directory Path to XML file does not exist' );
 		}
-		//otherwise use the normal path
+
+		//check if file has an XML extension
+		if ( !pathinfo( $xmlPath . $this->file, PATHINFO_EXTENSION ) ) {
+			show_error( 'Input file must be an XML file' );
+			log_message( 'error', 'Input file must be an XML file' );
+		}
+
+		//load the XML file into the DOM, loading statically
+		$file->load($xmlPath . $this->file);
+
+		//check if file has loaded
+		if ( !$file ) {
+			show_error('There was no XML file loaded');
+			log_message('error', 'No XML file was loaded');
+		}
+
+		if ( $file->getElementsByTagName( 'item' ) ) {
+			//get all item nodes
+			$books = $file->getElementsByTagName( 'item' );
+		}
 		else {
-			$file->load(  dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file  );
+			show_error( "The XML file contains no nodes named 'item'" );
+			log_message( 'error', "XML file has no 'item' nodes" );
 		}
-
-		$books = $file->getElementsByTagName('item');
 		
 		foreach ( $books as $book ) {
 			$book->setIdAttribute( 'id', true);
@@ -120,6 +139,10 @@ class Booksmodel extends CI_Model {
 									$book->getElementsByTagName('borrowedcount')->item(0)->nodeName => $book->getElementsByTagName('borrowedcount')->item(0)->nodeValue
 								   );
 			
+		}
+		else {
+			show_error( "The XML file contains no books of the id $book_id" );
+			log_message( 'error', "Can't find $book_id in books.xml" );
 		}
 
 		return $this->books;
