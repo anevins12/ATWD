@@ -36,16 +36,29 @@ class Booksmodel extends CI_Model {
 			show_error('There was no XML file loaded');
 			log_message('error', 'No XML file was loaded');
 		}
-		
-		//get all item nodes
-		$books = $file->getElementsByTagName( 'item' );
+
+		if ( !empty( $file->getElementsByTagName( 'item' ) ) ) {
+			//get all item nodes
+			$books = $file->getElementsByTagName( 'item' );
+		}
+		else {
+			show_error( "The XML file contains no nodes named 'item'" );
+			log_message( 'error', "XML file has no 'item' nodes" );
+		}
 
 		//start constructing returned xml
 		foreach ( $books as $book ) {
 
 			//get all course nodes
-			$courses = $book->getElementsByTagName( 'course' );
-			
+			if ( !empty( $book->getElementsByTagName( 'course' ) ) ) {
+				$courses = $book->getElementsByTagName( 'course' );
+			}
+			else {
+				show_error( "The XML file contains no nodes named 'course'" );
+				log_message( 'error', "XML file has no 'course' nodes" );
+			}
+
+			//no need to check whether $courses exists, as if it isn't, the error message will show
 			foreach ( $courses as $course ) {
 
 				//check whether the course id of the node matches the course id of user input
