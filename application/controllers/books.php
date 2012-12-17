@@ -153,7 +153,7 @@ class Books extends CI_Controller {
 		$booksmodel = new Booksmodel();
 		
 		try {
-			$booksmodel->updateBorrowedData( $book_id, $course_id );
+			$books = $booksmodel->updateBorrowedData( $book_id, $course_id );
 		}
 		
 		catch ( Exception $e ) {
