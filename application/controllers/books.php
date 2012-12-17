@@ -151,22 +151,35 @@ class Books extends CI_Controller {
 		$this->load->model( 'Booksmodel' );
 
 		$booksmodel = new Booksmodel();
-		$books = $booksmodel->updateBorrowedData( $book_id, $course_id);
-
+		
+		try {
+			$booksmodel->updateBorrowedData( $book_id, $course_id );
+		}
+		
+		catch ( Exception $e ) {
+			$error = 'Caught exception: ' . $e->getMessage() . "\n";
+		}
+		
 		$xml = "<results> \n <book ";
 
-		foreach ( $books as $book ) {
-			
-			foreach ( $book as $k => $v ) {
+		if ( empty( $error ) ) {
+			foreach ( $books as $book ) {
 
-				$xml .= " $k='$v'";
+				foreach ( $book as $k => $v ) {
+
+					$xml .= " $k='$v'";
+
+				}
+				$xml .= " /> \n</results>";
 
 			}
-			$xml .= " /> \n</results>";
 
+			$data[ 'output' ] = $xml;
 		}
-
-		$data[ 'output' ] = $xml;
+		//if the inputted book id has not matched with the any node in books.xml, return the error
+		else {
+			$data[ 'output' ] = $error;
+		}
 		$this->load->view( 'welcome_message', $data );
 
 	}

@@ -49,8 +49,9 @@ class Booksmodel extends CI_Model {
 		//start constructing returned xml
 		foreach ( $books as $book ) {
 
-			//get all course nodes
+			//if there is a node named 'course'
 			if ( $book->getElementsByTagName( 'course' ) )  {
+				//get all course nodes
 				$courses = $book->getElementsByTagName( 'course' );
 			}
 			else {
@@ -113,6 +114,7 @@ class Booksmodel extends CI_Model {
 			log_message('error', 'No XML file was loaded');
 		}
 
+		//if there is a node named 'item'
 		if ( $file->getElementsByTagName( 'item' ) ) {
 			//get all item nodes
 			$books = $file->getElementsByTagName( 'item' );
@@ -149,19 +151,39 @@ class Booksmodel extends CI_Model {
 
 	function updateBorrowedData( $item_id, $course_id ) {
 		/* Not sure why I need $course_id */
-		
+
 		$file = new DOMDocument();
-		
-		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
-			$file->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) .  $this->file );
-			$filepath = dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) .  $this->file ;
-		}
-		else {
-			$file->load(  dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file  );
-			$filepath = dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file ;
+		$xmlPath = $this->applicationpath->getApplicationPath() . $this->config->item( 'xml_path' );
+
+		//check if directory path exists
+		if ( !is_dir( $xmlPath ) ) {
+			show_error( 'Directory Path to XML file does not exist' );
+			log_message( 'error', 'Directory Path to XML file does not exist' );
 		}
 
-		$books = $file->getElementsByTagName('item');
+		//check if file has an XML extension
+		if ( !pathinfo( $xmlPath . $this->file, PATHINFO_EXTENSION ) ) {
+			show_error( 'Input file must be an XML file' );
+			log_message( 'error', 'Input file must be an XML file' );
+		}
+
+		//load the XML file into the DOM, loading statically
+		$file->load($xmlPath . $this->file);
+
+		//check if file has loaded
+		if ( !$file ) {
+			show_error('There was no XML file loaded');
+			log_message('error', 'No XML file was loaded');
+		}
+
+		//if there is a node named 'item'
+		if ( $file->getElementsByTagName('item') ) {
+			$books = $file->getElementsByTagName('item');
+		}
+		else {
+			show_error( "The XML file contains no nodes named 'item'" );
+			log_message( 'error', "XML file has no 'item' nodes" );
+		}
 
 		foreach ( $books as $book ) {
 			$book->setIdAttribute( 'id', true);
@@ -174,10 +196,10 @@ class Booksmodel extends CI_Model {
 		if ( $book = $file->getElementById( $item_id ) ) {
 
 		//using SimpleXML to update the XML file of its borrowed count
-		$xml = simplexml_load_file($filepath);
+		$xml = simplexml_load_file($xmlPath . $this->file);
 		$simplexml_book = $xml->xpath("//*[@id='$item_id']");
 		$simplexml_book[0]->borrowedcount++;
-		$xml->asXml($filepath);
+		$xml->asXml($xmlPath . $this->file);
 
 		//I'm still using the DOMDocument for setting the array, because I found getting the @attribute value really difficult with SimpleXML
 		$this->books[] = array( $book->getAttributeNode('id')->nodeName => $book->getAttribute('id'),
@@ -186,6 +208,10 @@ class Booksmodel extends CI_Model {
 									$book->getElementsByTagName('borrowedcount')->item(0)->nodeName => $book->getElementsByTagName('borrowedcount')->item(0)->nodeValue + 1
 								   );
 
+		}
+		//item id not found in books.xml
+		else {
+			throw new Exception( "No books found of the id $item_id" );
 		}
 		
 		return $this->books;
