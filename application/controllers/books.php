@@ -104,7 +104,7 @@ class Books extends CI_Controller {
 			 $booksmodel->getBookDetails( $book_id );
 		}
 		catch ( Exception $e ) {
-			$error =  'Caught exception: ' . $e->getMessage() . "\n";
+			$error =  "\n<results>\n  <error id='502' message='" . $e->getMessage() ."' /> \n</results>";
 		}
 
 		if ( empty( $error ) ) {
@@ -157,7 +157,7 @@ class Books extends CI_Controller {
 		}
 		
 		catch ( Exception $e ) {
-			$error = 'Caught exception: ' . $e->getMessage() . "\n";
+			$error = "\n<results>\n  <error id='502' message='" . $e->getMessage() ."' /> \n</results>";
 		}
 		
 		$xml = "<results> \n <book ";
