@@ -83,7 +83,7 @@ class Coursesmodel extends CI_Model {
 			return true;
 		}
 
-		throw new Exception('Course does not exist. Please enter a correct Course ID.');
+		throw new Exception("Invalid Course ID $course_id.");
 
 	}
 

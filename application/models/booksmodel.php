@@ -143,7 +143,7 @@ class Booksmodel extends CI_Model {
 			
 		}
 		else {
-			throw new Exception( "No books found of the id $book_id" );
+			throw new Exception( "Invalid Book ID $book_id" );
 		}
 		return $this->books;
 
@@ -211,7 +211,7 @@ class Booksmodel extends CI_Model {
 		}
 		//item id not found in books.xml
 		else {
-			throw new Exception( "No books found of the id $item_id" );
+			throw new Exception( "Invalid Book ID $item_id" );
 		}
 		
 		return $this->books;

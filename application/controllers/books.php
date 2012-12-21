@@ -238,7 +238,7 @@ class Books extends CI_Controller {
 			 $coursesmodel->checkCourseId();
 		}
 		catch ( Exception $e ) {
-			$error =  'Caught exception: ' . $e->getMessage() . "\n";
+			$error =  "\n<results>\n  <error id='501' message='" . $e->getMessage() ."' /> \n</results>";
 		}
 
 		if ( empty( $error ) ) {
