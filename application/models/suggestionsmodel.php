@@ -37,8 +37,11 @@ class Suggestionsmodel extends CI_Model {
 		//now get the suggestion by its id value
 		$suggestion = $file->getElementById( $suggestion_id );
 
+		if ( !$suggestion ) throw new Exception("Invalid Book ID $suggestion_id");
+
 		//get all of the items within the matched suggestion element
 		$items = $suggestion->getElementsByTagName( 'item' );
+
 
 		foreach ( $items as $item ) {
 

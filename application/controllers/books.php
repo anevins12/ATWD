@@ -190,37 +190,50 @@ class Books extends CI_Controller {
 		$this->load->model( 'Suggestionsmodel' );
 
 		$suggestionsmodel = new Suggestionsmodel();
-		$suggestions = $suggestionsmodel->getBookSuggestions( $suggestion_id );
 
-		if ( $format == 'XML' ) {
-
-			$xml = "<results> \n <suggestionsfor>$suggestion_id</suggestionsfor> \n  <books> \n   <suggestions>";
-
-			foreach ( $suggestions as $suggestion ) {
-
-				$xml .= "\n    <isbn";
-				foreach ( $suggestion as $k => $v ) {
-
-					//dont use isbn as the XML node attribute, it's to be used further on in the node value
-					if( $k != 'isbn' ) {
-						$xml .= " $k='$v'";
-					}
-
-				}
-
-				$xml .= ">".$suggestion['isbn']."</isbn>";
-			}
-
-			$xml .= "</suggestions> \n</results>";
-
-			$data[ 'output' ] = $xml;
+		//handle exceptions if there are any
+		try {
+			$suggestions = $suggestionsmodel->getBookSuggestions( $suggestion_id );
+		}
+		catch ( Exception $e ) {
+			$error =  "\n<results>\n  <error id='502' message='" . $e->getMessage() ."' /> \n</results>";
 		}
 		
-		
+		if ( empty( $error ) ) {
+			if ( $format == 'XML' ) {
+
+				$xml = "<results> \n <suggestionsfor>$suggestion_id</suggestionsfor> \n  <books> \n   <suggestions>";
+
+				foreach ( $suggestions as $suggestion ) {
+
+					$xml .= "\n    <isbn";
+					foreach ( $suggestion as $k => $v ) {
+
+						//dont use isbn as the XML node attribute, it's to be used further on in the node value
+						if( $k != 'isbn' ) {
+							$xml .= " $k='$v'";
+						}
+
+					}
+
+					$xml .= ">".$suggestion['isbn']."</isbn>";
+				}
+
+				$xml .= "</suggestions> \n</results>";
+
+				$data[ 'output' ] = $xml;
+			}
+
+
+			else {
+				$JSONarray = array( 'results' => array ( 'suggestionsfor' => $suggestion_id, 'books' => array( 'suggestions' => $suggestions[0] ) ) );
+				$JSONobject = json_encode($JSONarray);
+				$data[ 'output' ] = $JSONobject;
+			}
+		}
+		//if the inputted book id has not matched with the any node in suggestions.xml, return the error
 		else {
-			$JSONarray = array( 'results' => array ( 'suggestionsfor' => $suggestion_id, 'books' => array( 'suggestions' => $suggestions[0] ) ) );
-			$JSONobject = json_encode($JSONarray);
-			$data[ 'output' ] = $JSONobject;
+			$data[ 'output' ] = $error;
 		}
 
 		$this->load->view( 'welcome_message', $data );
