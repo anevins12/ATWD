@@ -69,12 +69,18 @@ class Booksmodel extends CI_Model {
 
 			}
 
+			//Remove the forward slash after each book title, to avoid causing syntax errors in returned XML
+			$title = str_replace( '/' , '' , $book->getElementsByTagName('title')->item(0)->nodeValue );
+
+			//escape syntax-error-causing characters
+			$title = htmlentities( $title, ENT_QUOTES );
+
 			//get out of the course loop and just use flag to identify whether matched course id
 			if ( $flag ) {
 
 				//populate array with node name as key, and node value as value
 				$this->books[] = array( $book->getAttributeNode('id')->nodeName => $book->getAttribute('id'),
-									    $book->getElementsByTagName('title')->item(0)->nodeName => $book->getElementsByTagName('title')->item(0)->nodeValue,
+									    $book->getElementsByTagName('title')->item(0)->nodeName => $title,
 									    $book->getElementsByTagName('isbn')->item(0)->nodeName =>	$book->getElementsByTagName('isbn')->item(0)->nodeValue,
 									    $book->getElementsByTagName('borrowedcount')->item(0)->nodeName => $book->getElementsByTagName('borrowedcount')->item(0)->nodeValue
 									   );

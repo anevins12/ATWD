@@ -50,7 +50,7 @@ class Books extends CI_Controller {
 			//if the selected form format is XML
 			if ( $format == 'XML' ) {
 
-				$xml = "\n<results>\n <course>$course_id</course> \n <books> \n";
+				$xml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>\n<results>\n <course>$course_id</course> \n <books> \n";
 
 				foreach ( $books as $book ) {
 
@@ -70,10 +70,10 @@ class Books extends CI_Controller {
 				}
 
 				$xml .= "\n </books>\n</results>";
-				$data[ 'output' ] = $xml;
+				$data[ 'xml' ] = $xml;
 
 			}
-
+			
 			//if the formatted form option is JSON
 			else {
 				//construct the array that is to be converted to JSON
@@ -86,10 +86,13 @@ class Books extends CI_Controller {
 		}
 		//if the inputted course id has not matched with the XML 'database', return the error message from the exception
 		else {
-			$data[ 'output' ] = $this->checkCourseID();
+			$data[ 'xml' ] = $this->checkCourseID();
 		}
 		
-		$this->load->view( 'welcome_message', $data );
+		$data[ 'requested' ] = 'course';
+
+		$this->format( $data );
+//		$this->load->view( 'welcome_message', $data );
 	}
 
 	public function detail() {
@@ -262,6 +265,55 @@ class Books extends CI_Controller {
 		return $error;
 
 	}
+
+	public function format( $data ) {
+
+		if ( isset( $data[ 'requested' ] ) ){
+			$requested = $data[ 'requested' ];
+		}
+		//exception if $request format is not Course, Detail, Borrow or Suggestion
+
+		$xslt_filename = 'format' . ucfirst( $requested );
+		
+		$xslPath = $this->applicationpath->getApplicationPath() . $this->config->item( 'xsl_path' );
+
+		# FROM: http://php.net/manual/en/book.xsl.php
+		# LOAD XML FILE
+		$xml = new DOMDocument();
+		$xml->load( $data[ 'xml' ] );
+
+
+		//load the XML file into the DOM, loading statically
+
+
+		# START XSLT
+		$xslt = new XSLTProcessor();
+		$xsl = new DOMDocument();
+		$xsl->load( $xslPath . '/' . $xslt_filename . '.xsl' );
+
+
+		//check if file has loaded
+		if ( !$file ) {
+			show_error('There was no XML file loaded');
+			log_message('error', 'No XML file was loaded');
+		}
+
+		//check if directory path exists
+		if ( !is_dir( $xmlPath ) ) {
+			show_error( 'Directory Path to XML file does not exist' );
+			log_message( 'error', 'Directory Path to XML file does not exist' );
+		}
+
+		//check if file has an XML extension
+		if ( !pathinfo( $xmlPath . $this->file, PATHINFO_EXTENSION ) ) {
+			show_error( 'Input file must be an XML file' );
+			log_message( 'error', 'Input file must be an XML file' );
+		}
+
+		$xslt->importStylesheet( $XSL );
+
+	}
+
 	
 }
 /* End of file books.php */
