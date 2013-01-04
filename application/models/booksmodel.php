@@ -73,7 +73,7 @@ class Booksmodel extends CI_Model {
 			$title = str_replace( '/' , '' , $book->getElementsByTagName('title')->item(0)->nodeValue );
 
 			//escape syntax-error-causing characters
-			$title = htmlentities( $title, ENT_QUOTES );
+			$title = htmlentities( $title, ENT_QUOTES, "ISO-8859-5");
 
 			//get out of the course loop and just use flag to identify whether matched course id
 			if ( $flag ) {

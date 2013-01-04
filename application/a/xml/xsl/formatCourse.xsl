@@ -15,13 +15,32 @@
          syntax recommendation http://www.w3.org/TR/xslt 
     -->
     <xsl:template match="/">
-        <html>
-            <head>
-                <title>formatCourse.xsl</title>
-            </head>
-            <body>
-            </body>
-        </html>
+
+		<h2>Results for books with the course ID of <xsl:value-of select="results" /></h2>
+		<div id="results">
+			<ul>
+				<xsl:for-each select="//book">
+					<li>
+						<ul>
+							<li>
+								<!-- create an id attribute with the value of item's id attribute  -->
+								<xsl:attribute name="id">
+									<xsl:value-of select="current()/@id" />
+								</xsl:attribute>
+								<hgroup>
+									<h3><xsl:value-of select="(.)/@title" /></h3>
+									<h4>Isbn: <xsl:value-of select="(.)/@isbn" /></h4>
+									<h5>Borrowed count: <xsl:value-of select="(.)/@borrowedcount" /></h5>
+								</hgroup>
+							</li>
+						</ul>
+					</li>
+				</xsl:for-each>
+			</ul>
+		</div>
+		
     </xsl:template>
+
+
 
 </xsl:stylesheet>

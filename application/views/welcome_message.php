@@ -73,7 +73,7 @@
 		extract( $_POST );
 		
 		if ( isset ( $submit ) ) {
-			var_dump( $output );
+			print( $output );
 		}
 		
 	?>
