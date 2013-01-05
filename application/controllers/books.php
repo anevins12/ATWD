@@ -30,6 +30,7 @@ class Books extends CI_Controller {
 	public function course() {
 		
 		$this->load->model( 'Booksmodel' );
+		$data[ 'error' ] = false;
 		
 		//I know; using the extract twice now, the other time on the view
 		extract( $_GET );
@@ -87,6 +88,7 @@ class Books extends CI_Controller {
 		//if the inputted course id has not matched with the XML 'database', return the error message from the exception
 		else {
 			$data[ 'xml' ] = $this->checkCourseID();
+			$data[ 'error' ] = true;
 		}
 		
 		$data[ 'requested' ] = 'course';
@@ -254,7 +256,7 @@ class Books extends CI_Controller {
 			 $coursesmodel->checkCourseId();
 		}
 		catch ( Exception $e ) {
-			$error =  "\n<results>\n  <error id='501' message='" . $e->getMessage() ."' /> \n</results>";
+			$error =  "<?xml version='1.0' encoding='utf-8'?>\n<results>\n  <error id='501' message='" . $e->getMessage() ."' /> \n</results>";
 		}
 
 		if ( empty( $error ) ) {
@@ -271,9 +273,13 @@ class Books extends CI_Controller {
 		if ( isset( $data[ 'requested' ] ) ){
 			$requested = $data[ 'requested' ];
 		}
-		//exception if $request format is not Course, Detail, Borrow or Suggestion
 
 		$xslt_filename = 'format' . ucfirst( $requested );
+
+		if ( isset( $data[ 'error' ] ) && $data[ 'error' ] ){
+			$xslt_filename = 'formatError';
+		}
+		//exception if $request format is not Course, Detail, Borrow or Suggestion
 		
 		$xslPath = $this->applicationpath->getApplicationPath() . $this->config->item( 'xsl_path' );
 
