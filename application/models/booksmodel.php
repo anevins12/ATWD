@@ -137,12 +137,18 @@ class Booksmodel extends CI_Model {
 		//validate the document
 		$file->validateOnParse = true;
 
+		//Remove the forward slash after each book title, to avoid causing syntax errors in returned XML
+		$title = str_replace( '/' , '' , $book->getElementsByTagName('title')->item(0)->nodeValue );
+
+		//escape syntax-error-causing characters
+		$title = htmlentities( $title, ENT_QUOTES, "ISO-8859-5");
+		
 		//get the book by book id, using the id
 		if ( $book = $file->getElementById( $book_id ) ) {
 
 			//populate array with node name as key, and node value as value
 			$this->books[] = array( $book->getAttributeNode('id')->nodeName => $book->getAttribute('id'),
-									$book->getElementsByTagName('title')->item(0)->nodeName => $book->getElementsByTagName('title')->item(0)->nodeValue,
+									$book->getElementsByTagName('title')->item(0)->nodeName => $title,
 									$book->getElementsByTagName('isbn')->item(0)->nodeName =>	$book->getElementsByTagName('isbn')->item(0)->nodeValue,
 									$book->getElementsByTagName('borrowedcount')->item(0)->nodeName => $book->getElementsByTagName('borrowedcount')->item(0)->nodeValue
 								   );

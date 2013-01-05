@@ -94,31 +94,28 @@ class Books extends CI_Controller {
 		$data[ 'requested' ] = 'course';
 
 		$this->format( $data );
-//		$this->load->view( 'welcome_message', $data );
 	}
 
 	public function detail() {
 		
 		$this->load->model( 'Booksmodel' );
-		$error = "";
-
-		extract( $_GET );
 		$booksmodel = new Booksmodel();
 
+		$error = "";
+		extract( $_GET );
+
 		try {
-			 $booksmodel->getBookDetails( $book_id );
+			 $books = $booksmodel->getBookDetails( $book_id );
 		}
 		catch ( Exception $e ) {
-			$error =  "\n<results>\n  <error id='502' message='" . $e->getMessage() ."' /> \n</results>";
+			$error =  "<?xml version='1.0' encoding='utf-8'?> \n<results>\n  <error id='502' message='" . $e->getMessage() ."' /> \n</results>";
 		}
 
 		if ( empty( $error ) ) {
 
-			$books = $booksmodel->getBookDetails( $book_id );
-			
 			if ( $format == 'XML' ) {
 
-				$xml = "<results> \n <book ";
+				$xml = "<?xml version='1.0' encoding='utf-8'?> \n<results> \n <book ";
 				//should only be one book anyway
 				foreach ( $books as $book ) {
 
@@ -131,7 +128,7 @@ class Books extends CI_Controller {
 				}
 
 				$xml .= " /> \n</results>";
-				$data[ 'output' ] = $xml;
+				$data[ 'xml' ] = $xml;
 
 			}
 
@@ -143,10 +140,12 @@ class Books extends CI_Controller {
 		}
 		//if the inputted book id has not matched with the any node in books.xml, return the error
 		else {
-			$data[ 'output' ] = $error;
+			$data[ 'xml' ] = $error;
+			$data[ 'error' ] = true;
 		}
 
-		$this->load->view( 'welcome_message', $data );
+		$data[ 'requested' ] = 'detail';
+		$this->format( $data );
 	}
 
 	public function borrow() {
@@ -256,7 +255,7 @@ class Books extends CI_Controller {
 			 $coursesmodel->checkCourseId();
 		}
 		catch ( Exception $e ) {
-			$error =  "<?xml version='1.0' encoding='utf-8'?>\n<results>\n  <error id='501' message='" . $e->getMessage() ."' /> \n</results>";
+			$error =  "<?xml version='1.0' encoding='utf-8'?> \n<results>\n  <error id='501' message='" . $e->getMessage() ."' /> \n</results>";
 		}
 
 		if ( empty( $error ) ) {
@@ -269,7 +268,7 @@ class Books extends CI_Controller {
 	}
 
 	public function format( $data ) {
-
+		
 		if ( isset( $data[ 'requested' ] ) ){
 			$requested = $data[ 'requested' ];
 		}
