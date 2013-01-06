@@ -69,9 +69,7 @@ class Booksmodel extends CI_Model {
 
 			}
 
-			//Remove the forward slash after each book title, to avoid causing syntax errors in returned XML
-			$title = str_replace( '/' , '' , $book->getElementsByTagName('title')->item(0)->nodeValue );
-
+			$title = $book->getElementsByTagName('title')->item(0)->nodeValue;
 			//escape syntax-error-causing characters
 			$title = htmlentities( $title, ENT_QUOTES, "ISO-8859-5");
 
@@ -137,9 +135,7 @@ class Booksmodel extends CI_Model {
 		//validate the document
 		$file->validateOnParse = true;
 
-		//Remove the forward slash after each book title, to avoid causing syntax errors in returned XML
-		$title = str_replace( '/' , '' , $book->getElementsByTagName('title')->item(0)->nodeValue );
-
+		$title = $book->getElementsByTagName('title')->item(0)->nodeValue;
 		//escape syntax-error-causing characters
 		$title = htmlentities( $title, ENT_QUOTES, "ISO-8859-5");
 		
@@ -203,6 +199,10 @@ class Booksmodel extends CI_Model {
 
 		//validate the document
 		$file->validateOnParse = true;
+
+		$title = $book->getElementsByTagName('title')->item(0)->nodeValue;
+		//escape syntax-error-causing characters
+		$title = htmlentities( $title, ENT_QUOTES, "ISO-8859-5");
 
 		//get the book by book id, using the id
 		if ( $book = $file->getElementById( $item_id ) ) {

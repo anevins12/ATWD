@@ -161,10 +161,10 @@ class Books extends CI_Controller {
 		}
 		
 		catch ( Exception $e ) {
-			$error = "\n<results>\n  <error id='502' message='" . $e->getMessage() ."' /> \n</results>";
+			$error = "<?xml version='1.0' encoding='utf-8'?>\n<results>\n  <error id='502' message='" . $e->getMessage() ."' /> \n</results>";
 		}
 		
-		$xml = "<results> \n <book ";
+		$xml = "<?xml version='1.0' encoding='utf-8'?><results> \n <book ";
 
 		if ( empty( $error ) ) {
 			foreach ( $books as $book ) {
@@ -178,13 +178,16 @@ class Books extends CI_Controller {
 
 			}
 
-			$data[ 'output' ] = $xml;
+			$data[ 'xml' ] = $xml;
 		}
 		//if the inputted book id has not matched with the any node in books.xml, return the error
 		else {
-			$data[ 'output' ] = $error;
+			$data[ 'xml' ] = $error;
+			$data[ 'error' ] = true;
 		}
-		$this->load->view( 'welcome_message', $data );
+		
+		$data[ 'requested' ] = 'borrow';
+		$this->format( $data );
 
 	}
 
