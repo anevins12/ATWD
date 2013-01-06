@@ -8,17 +8,33 @@ class Suggestionsmodel extends CI_Model {
 
 	function __construct() {
 		parent::__construct();
+		$this->load->library('applicationpath');
 	}
 
 	function getBookSuggestions( $suggestion_id ) {
 
 		$file = new DOMDocument();
-		
-		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
-			$file->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) . $this->file );
+		$xmlPath = $this->applicationpath->getApplicationPath() . $this->config->item( 'xml_path' );
+
+		//check if directory path exists
+		if ( !is_dir( $xmlPath ) ) {
+			show_error( 'Directory Path to XML file does not exist' );
+			log_message( 'error', 'Directory Path to XML file does not exist' );
 		}
-		else {
-			$file->load(  dirname( __FILE__ ) . '/../' . $this->config->item( 'xml_path' ) . $this->file  );
+
+		//check if file has an XML extension
+		if ( !pathinfo( $xmlPath . $this->file, PATHINFO_EXTENSION ) ) {
+			show_error( 'Input file must be an XML file' );
+			log_message( 'error', 'Input file must be an XML file' );
+		}
+
+		//load the XML file into the DOM, loading statically
+		$file->load($xmlPath . $this->file);
+
+		//check if file has loaded
+		if ( !$file ) {
+			show_error('There was no XML file loaded');
+			log_message('error', 'No XML file was loaded');
 		}
 		
 		//get all item nodes

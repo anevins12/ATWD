@@ -203,17 +203,17 @@ class Books extends CI_Controller {
 			$suggestions = $suggestionsmodel->getBookSuggestions( $suggestion_id );
 		}
 		catch ( Exception $e ) {
-			$error =  "\n<results>\n  <error id='502' message='" . $e->getMessage() ."' /> \n</results>";
+			$error =  "<?xml version='1.0' encoding='utf-8'?>\n<results>\n  <error id='502' message='" . $e->getMessage() ."' /> \n</results>";
 		}
 		
 		if ( empty( $error ) ) {
 			if ( $format == 'XML' ) {
 
-				$xml = "<results> \n <suggestionsfor>$suggestion_id</suggestionsfor> \n  <books> \n   <suggestions>";
+				$xml = "<?xml version='1.0' encoding='utf-8'?> \n<results> \n <suggestionsfor>$suggestion_id</suggestionsfor>\n<suggestions>\n";
 
 				foreach ( $suggestions as $suggestion ) {
 
-					$xml .= "\n    <isbn";
+					$xml .= "<isbn";
 					foreach ( $suggestion as $k => $v ) {
 
 						//dont use isbn as the XML node attribute, it's to be used further on in the node value
@@ -223,12 +223,12 @@ class Books extends CI_Controller {
 
 					}
 
-					$xml .= ">".$suggestion['isbn']."</isbn>";
+					$xml .= ">".$suggestion['isbn']."</isbn>\n";
 				}
 
 				$xml .= "</suggestions> \n</results>";
 
-				$data[ 'output' ] = $xml;
+				$data[ 'xml' ] = $xml;
 			}
 
 
@@ -240,10 +240,12 @@ class Books extends CI_Controller {
 		}
 		//if the inputted book id has not matched with the any node in suggestions.xml, return the error
 		else {
-			$data[ 'output' ] = $error;
+			$data[ 'xml' ] = $error;
+			$data[ 'error' ] = true;
 		}
 
-		$this->load->view( 'welcome_message', $data );
+		$data[ 'requested' ] = 'suggestions';
+		$this->format( $data );
 
 	}
 
