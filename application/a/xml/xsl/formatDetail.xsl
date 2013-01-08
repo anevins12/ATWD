@@ -16,7 +16,6 @@
     -->
     <xsl:template match="book">
        
-	    <h2>Results for the book with the ID of <xsl:value-of select="(.)/@id" /></h2>
 		<div id="results">
 			<ul>
 				<xsl:for-each select="//book">

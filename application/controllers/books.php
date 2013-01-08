@@ -6,33 +6,16 @@ class Books extends CI_Controller {
 		parent::__construct();
 	}
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -  
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in 
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
-	public function index(){
-
+	public function index() {
 		$this->load->view('welcome_message');
-		
+		$this->load->library('javascript');
 	}
 
 	public function course() {
 		
 		$this->load->model( 'Booksmodel' );
 		$data[ 'error' ] = false;
-		
-		//I know; using the extract twice now, the other time on the view
+		$data[ 'json' ] = false;
 		extract( $_GET );
 
 		if ( !is_string( $this->checkCourseID() ) ) {
@@ -82,7 +65,7 @@ class Books extends CI_Controller {
 
 				//convert the JSON array to a JSON object
 				$JSONobject = json_encode( $JSONarray );
-				$data[ 'output' ] = $JSONobject;
+				$data[ 'json' ] = $JSONobject;
 			}
 		}
 		//if the inputted course id has not matched with the XML 'database', return the error message from the exception
@@ -135,7 +118,7 @@ class Books extends CI_Controller {
 			else {
 
 				$JSONarray = array( 'results' => array('book' => $books[0] ) );
-				$data[ 'output' ] = $JSONarray;
+				$data[ 'json' ] = json_encode( $JSONarray );
 			}
 		}
 		//if the inputted book id has not matched with the any node in books.xml, return the error
@@ -151,9 +134,7 @@ class Books extends CI_Controller {
 	public function borrow() {
 
 		extract( $_POST );
-		
 		$this->load->model( 'Booksmodel' );
-
 		$booksmodel = new Booksmodel();
 		
 		try {
@@ -235,7 +216,7 @@ class Books extends CI_Controller {
 			else {
 				$JSONarray = array( 'results' => array ( 'suggestionsfor' => $suggestion_id, 'books' => array( 'suggestions' => $suggestions[0] ) ) );
 				$JSONobject = json_encode($JSONarray);
-				$data[ 'output' ] = $JSONobject;
+				$data[ 'json' ] = $JSONobject;
 			}
 		}
 		//if the inputted book id has not matched with the any node in suggestions.xml, return the error
@@ -274,6 +255,10 @@ class Books extends CI_Controller {
 
 	public function format( $data ) {
 		
+		if ( $data[ 'json'] && isset( $data[ 'json' ] ) ) {
+			return $this->load->view( 'welcome_message', $data );
+		}
+		
 		if ( isset( $data[ 'requested' ] ) ){
 			$requested = $data[ 'requested' ];
 		}
@@ -283,6 +268,7 @@ class Books extends CI_Controller {
 		if ( isset( $data[ 'error' ] ) && $data[ 'error' ] ){
 			$xslt_filename = 'formatError';
 		}
+
 		//exception if $request format is not Course, Detail, Borrow or Suggestion
 		
 		$xslPath = $this->applicationpath->getApplicationPath() . $this->config->item( 'xsl_path' );
@@ -298,7 +284,7 @@ class Books extends CI_Controller {
 		$xsl->load( $xslPath . '/' . $xslt_filename . '.xsl' );
 
 		$xslt->importStylesheet( $xsl );
-		$data[ 'output' ] = $xslt->transformToXML( $xml );
+		$data[ 'xml' ] = $xslt->transformToXML( $xml );
 
 		$this->load->view( 'welcome_message', $data );
 	}

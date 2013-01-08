@@ -59,11 +59,12 @@ class Booksmodel extends CI_Model {
 				log_message( 'error', "XML file has no 'course' nodes" );
 			}
 
-			//no need to check whether $courses exists, as if it isn't, the error message will show
+			//no need to check whether $courses exists, as if it isn't, the error message above will show
 			foreach ( $courses as $course ) {
 
 				//check whether the course id of the node matches the course id of user input
 				if ( $course->nodeValue == $course_id ) {
+					//get out of the course loop and just use flag to identify whether matched course id
 					$flag = true;
 				}
 
@@ -73,7 +74,6 @@ class Booksmodel extends CI_Model {
 			//escape syntax-error-causing characters
 			$title = htmlentities( $title, ENT_QUOTES, "ISO-8859-5");
 
-			//get out of the course loop and just use flag to identify whether matched course id
 			if ( $flag ) {
 
 				//populate array with node name as key, and node value as value
