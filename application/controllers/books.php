@@ -188,6 +188,14 @@ class Books extends CI_Controller {
 		}
 		
 		if ( empty( $error ) ) {
+
+			//sort the array by borrowedcount descending
+			//inspired by a comment on http://php.net/manual/en/function.array-multisort.php
+			foreach ( $suggestions as $k => $row ) {
+					$suggestionsSort[ $k ]  = $row[ 'total' ];
+			}
+
+			array_multisort( $suggestionsSort, SORT_DESC, $suggestions );
 			if ( $format == 'XML' ) {
 
 				$xml = "<?xml version='1.0' encoding='utf-8'?> \n<results> \n <suggestionsfor>$suggestion_id</suggestionsfor>\n<suggestions>\n";
@@ -255,7 +263,7 @@ class Books extends CI_Controller {
 
 	public function format( $data ) {
 		
-		if ( $data[ 'json'] && isset( $data[ 'json' ] ) ) {
+		if ( isset( $data[ 'json' ] ) && $data[ 'json'] ) {
 			return $this->load->view( 'welcome_message', $data );
 		}
 		
