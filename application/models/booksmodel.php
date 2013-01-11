@@ -157,6 +157,68 @@ class Booksmodel extends CI_Model {
 
 	}
 
+	function getBookDetailsByISBN ( $isbn ) {
+
+		$file = new DOMDocument();
+		$xmlPath = $this->applicationpath->getApplicationPath() . $this->config->item( 'xml_path' );
+
+		//check if directory path exists
+		if ( !is_dir( $xmlPath ) ) {
+			show_error( 'Directory Path to XML file does not exist' );
+			log_message( 'error', 'Directory Path to XML file does not exist' );
+		}
+
+		//check if file has an XML extension
+		if ( !pathinfo( $xmlPath . $this->file, PATHINFO_EXTENSION ) ) {
+			show_error( 'Input file must be an XML file' );
+			log_message( 'error', 'Input file must be an XML file' );
+		}
+
+		//load the XML file into the DOM, loading statically
+		$file->load($xmlPath . $this->file);
+
+		//check if file has loaded
+		if ( !$file ) {
+			show_error('There was no XML file loaded');
+			log_message('error', 'No XML file was loaded');
+		}
+
+		//if there is a node named 'item'
+		if ( $file->getElementsByTagName( 'item' ) ) {
+			//get all item nodes
+			$books = $file->getElementsByTagName( 'item' );
+		}
+		else {
+			show_error( "The XML file contains no nodes named 'item'" );
+			log_message( 'error', "XML file has no 'item' nodes" );
+		}
+
+		foreach ( $books as $book ) {
+			//$book->setIdAttribute( 'isbn', true);
+			$title = $book->getElementsByTagName('title')->item(0)->nodeValue;
+			//escape syntax-error-causing characters
+			$title = htmlentities( $title, ENT_QUOTES, "ISO-8859-5");
+		}
+var_dump($file->getElementsByTagName('isbn')->item(0)->nodeValue, $isbn);exit;
+		//get the book by book id, using the id
+		if ( $book = $file->getElementsByTagName('isbn')->item(0)->nodeValue == $isbn ) {
+
+			
+			//populate array with node name as key, and node value as value
+			$this->books[] = array( $book->getAttributeNode('id')->nodeName => $book->getAttribute('id'),
+									$book->getElementsByTagName('title')->item(0)->nodeName => $title,
+									$book->getElementsByTagName('isbn')->item(0)->nodeName =>	$book->getElementsByTagName('isbn')->item(0)->nodeValue,
+									$book->getElementsByTagName('borrowedcount')->item(0)->nodeName => $book->getElementsByTagName('borrowedcount')->item(0)->nodeValue
+								   );
+
+		}
+		else {
+			throw new Exception( "Invalid ISBN ID $isbn" );
+		}
+		return $this->books;
+
+	}
+
 	function updateBorrowedData( $item_id, $course_id ) {
 		/* Not sure why I need $course_id */
 

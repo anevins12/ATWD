@@ -79,7 +79,7 @@ class Books extends CI_Controller {
 		$this->format( $data );
 	}
 
-	public function detail() {
+	public function detail( $book_id ) {
 		
 		$this->load->model( 'Booksmodel' );
 		$booksmodel = new Booksmodel();
@@ -176,8 +176,10 @@ class Books extends CI_Controller {
 
 		extract( $_GET );
 		$this->load->model( 'Suggestionsmodel' );
+		$this->load->model( 'Booksmodel' );
 
 		$suggestionsmodel = new Suggestionsmodel();
+		$booksmodel = new Booksmodel();
 
 		//handle exceptions if there are any
 		try {
@@ -210,7 +212,7 @@ class Books extends CI_Controller {
 							$xml .= " $k='$v'";
 						}
 
-					}
+					}					
 
 					$xml .= ">".$suggestion['isbn']."</isbn>\n";
 				}
@@ -232,6 +234,7 @@ class Books extends CI_Controller {
 			$data[ 'xml' ] = $error;
 			$data[ 'error' ] = true;
 		}
+
 
 		$data[ 'requested' ] = 'suggestions';
 		$this->format( $data );
