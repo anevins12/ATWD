@@ -17,22 +17,21 @@
     <xsl:template match="book">
        
 		<div id="results">
+
+			<h2>Book ID <xsl:value-of select="//book/@id" /> details</h2>
+
 			<ul>
 				<xsl:for-each select="//book">
 					<li>
-						<ul>
-							<li>
-								<!-- create an id attribute with the value of item's id attribute  -->
-								<xsl:attribute name="id">
-									<xsl:value-of select="(.)/@id" />
-								</xsl:attribute>
-								<hgroup>
-									<h3><xsl:value-of select="(.)/@title" /></h3>
-									<h4>Isbn: <xsl:value-of select="(.)/@isbn" /></h4>
-									<h5>Borrowed count: <xsl:value-of select="(.)/@borrowedcount" /></h5>
-								</hgroup>
-							</li>
-						</ul>
+						<!-- create an id attribute with the value of item's id attribute  -->
+						<xsl:attribute name="id">
+							<xsl:value-of select="(.)/@id" />
+						</xsl:attribute>
+						<hgroup>
+							<h3><xsl:value-of select="(.)/@title" /></h3>
+							<h4>Isbn: <xsl:value-of select="(.)/@isbn" /></h4>
+							<h5>Borrowed count: <xsl:value-of select="(.)/@borrowedcount" /></h5>
+						</hgroup>
 					</li>
 				</xsl:for-each>
 			</ul>

@@ -15,13 +15,25 @@
          syntax recommendation http://www.w3.org/TR/xslt 
     -->
     <xsl:template match="/">
-        <html>
-            <head>
-                <title>formatSuggestions.xsl</title>
-            </head>
-            <body>
-            </body>
-        </html>
+		
+		<div id="results">
+
+		<h2>Suggested Books for Book ID <xsl:value-of select="//suggestionsfor" /></h2>
+			<ul>
+				<xsl:for-each select="//isbn">
+					<li>
+						<!-- create an id attribute with the value of item's id attribute  -->
+						<xsl:attribute name="id">
+							<xsl:value-of select="(.)/@item" />
+						</xsl:attribute>
+						<hgroup>
+							<h3>ISBN: <xsl:value-of select="." /></h3>
+						</hgroup>
+					</li>
+				</xsl:for-each>
+			</ul>
+		</div>
+
     </xsl:template>
 
 </xsl:stylesheet>

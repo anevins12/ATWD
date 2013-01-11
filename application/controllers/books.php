@@ -79,7 +79,7 @@ class Books extends CI_Controller {
 		$this->format( $data );
 	}
 
-	public function detail( $book_id ) {
+	public function detail( $book_id = null ) {
 		
 		$this->load->model( 'Booksmodel' );
 		$booksmodel = new Booksmodel();
