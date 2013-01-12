@@ -224,7 +224,7 @@ class Books extends CI_Controller {
 
 
 			else {
-				$JSONarray = array( 'results' => array ( 'suggestionsfor' => $suggestion_id, 'books' => array( 'suggestions' => $suggestions[0] ) ) );
+				$JSONarray = array( 'results' => array ( 'suggestionsfor' => $suggestion_id, 'books' => array( 'suggestions' => $suggestions ) ) );
 				$JSONobject = json_encode($JSONarray);
 				$data[ 'json' ] = $JSONobject;
 			}

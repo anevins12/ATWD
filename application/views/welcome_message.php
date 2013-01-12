@@ -81,8 +81,8 @@
 						echo 'book';
 						break;
 
-					case 'suggestion':
-						echo 'suggestions';
+					case 'suggestions':
+						echo 'books';
 						break;
 					
 				}	?>
@@ -195,8 +195,19 @@ if ( isset( $json ) && $json ) {
 			jQuery(document).ready(function($){
 
 				$("#results").append("<ul></ul>");
+				
+				//suggestions output
+				if ( results.suggestions ) {
+					$.each(results.suggestions, function(){
 
-				if ( results.length > 1 ) {
+						var isbn = "<h4> Isbn: " + this.isbn + "</h4>";
+						$("#results ul").append("<li>" + isbn + "</li>");
+
+					});
+				}
+
+				//for all other retrieval of information, that can be looped over
+				else if ( results.length > 1 ) {
 					$.each(results, function(){
 
 						var title          = "<h3>" + this.title + "</h3>";
@@ -207,6 +218,8 @@ if ( isset( $json ) && $json ) {
 
 					});
 				}
+
+				//for all other retrieval of informaiton, that can't be looped over'
 				else {
 					var title          = "<h3>" + results.title + "</h3>";
 					var isbn           = "<h4> Isbn: " + results.isbn + "</h4>";
