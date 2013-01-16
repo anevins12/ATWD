@@ -3,6 +3,7 @@
 class Coursesmodel extends CI_Model {
 
 	protected $file = "courses.xml";
+	private $courses = array();
 
 	function __construct() {
 		parent::__construct();		
@@ -54,21 +55,27 @@ class Coursesmodel extends CI_Model {
 
 		$courses = $file->getElementsByTagName('course');
 
-		return $courses;
+		foreach ( $courses as $course ) {
+			$this->courses[] = array( 'name' => $course->nodeValue,
+				                      'id' => $course->getAttribute('id'),
+				                      'school' => $course->getAttribute('school') );
+		}
+
+		return $this->courses;
 
 	}
 
-	public function checkCourseId() {
+	public function checkCourseId( $course_id ) {
 
 		$course = array();
-		extract($_GET);
+		
 		$courses = $this->getAllCourses();
 
 		$xml = "<courses>";
 
 		foreach ( $courses as $course ) {
 
-			$xml .= "\n <course id='" . $course->getAttributeNode('id')->nodeValue . "' />";
+			$xml .= "\n <course id='" . $course['id'] . "' />";
 
 		}
 		

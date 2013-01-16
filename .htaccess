@@ -1,6 +1,16 @@
 <IfModule mod_rewrite.c>
 RewriteEngine on
 
+# check if the actual request if for "this1"
+#RewriteCond %{QUERY_STRING} ^course_id=([^&]+)&format=([^&]+)&submit=([^&]+)$
+# redirect to "this2"
+#RewriteRule ^/?books/course$ /books/course/%1/%2/?%3 [R,L]
+
+# now rewrite "this2" back to "this1"
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule ^([0-9]+)/(.+)/$ /books/course/course_id=$1&format=$2 [L,QSA]
+
 #Source: http://codeigniter.com/user_guide/general/urls.html
 #Removal of index.php
 RewriteCond $1 !^(index\.php|images|robots\.txt)

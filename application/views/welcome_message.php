@@ -105,9 +105,9 @@
 		</div>
 		<div>
 			<h2>Get Books By Course ID</h2>
-			<?php
+			<?php 
 				$this->load->helper('form');
-				echo form_open('books/course', array('method' => 'get'));
+				echo form_open("books/course/$course_id/$format", array('method' => 'get'));
 			?>
 				<label for="course_id">Course ID:</label>
 				<input type="text" name="course_id" id="course_id" value="CC100"/>
@@ -174,6 +174,27 @@
 			?>
 		</div>
 
+		<div>
+			<h2>Browse Courses</h2>
+			<?php
+				$this->load->helper('form');
+				echo form_open("books/course", array('method' => 'get'));
+			?>
+
+				<input type="hidden" name="format" value="XML" />
+
+				<label for="book_id">Courses:</label>
+				<select name="course_id" id="format">
+					<?php  foreach( $courses as $course ) { ?>
+					<option value="<?php echo $course['id'] ?>"><?php echo $course['name'] ?></option>
+					<?php }?>
+				</select>
+				
+				<input type="submit" name="submit" id="submit"/>
+			<?php
+				echo form_close();
+			?>
+		</div>
 		<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds</p>
 
 	</div>
@@ -182,7 +203,6 @@
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <?php
 extract( $_GET );
-extract( $_POST );
 
 if ( isset( $submit ) && isset( $xml ) ) {
 	print( $xml );

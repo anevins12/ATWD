@@ -7,7 +7,9 @@ class Books extends CI_Controller {
 	}
 
 	public function index() {
-		$this->load->view('welcome_message');
+		$courses = $this->courses();
+		$data['courses'] = $courses['courses'];
+		$this->load->view('welcome_message', $data);
 		$this->load->library('javascript');
 	}
 
@@ -16,9 +18,9 @@ class Books extends CI_Controller {
 		$this->load->model( 'Booksmodel' );
 		$data[ 'error' ] = false;
 		$data[ 'json' ] = false;
-		extract( $_GET );
+		extract( $_GET ); 
 
-		if ( !is_string( $this->checkCourseID() ) ) {
+		if ( !is_string( $this->checkCourseID( $course_id ) ) ) {
 			
 			$booksmodel = new Booksmodel();
 			$books = $booksmodel->getBooksByCourseId( $course_id );
@@ -77,6 +79,18 @@ class Books extends CI_Controller {
 		$data[ 'requested' ] = 'course';
 
 		$this->format( $data );
+		
+	}
+
+	public function courses() {
+
+		$this->load->model( 'coursesmodel' );
+		$coursesmodel = new Coursesmodel();
+
+		$data['courses'] = $coursesmodel->getAllCourses();
+
+		return $data;
+		
 	}
 
 	public function detail( $book_id = null ) {
@@ -241,7 +255,7 @@ class Books extends CI_Controller {
 
 	}
 
-	public function checkCourseID() {
+	public function checkCourseID( $course_id ) {
 		$error = "";
 
 		$this->load->model( 'Coursesmodel' );
@@ -249,14 +263,14 @@ class Books extends CI_Controller {
 
 		//handle exceptions if there are any
 		try {
-			 $coursesmodel->checkCourseId();
+			 $coursesmodel->checkCourseId( $course_id );
 		}
 		catch ( Exception $e ) {
 			$error =  "<?xml version='1.0' encoding='utf-8'?> \n<results>\n  <error id='501' message='" . $e->getMessage() ."' /> \n</results>";
 		}
 
 		if ( empty( $error ) ) {
-			$courses = $coursesmodel->checkCourseId();
+			$courses = $coursesmodel->checkCourseId( $course_id );
 			return $courses;
 		}
 
@@ -297,6 +311,8 @@ class Books extends CI_Controller {
 		$xslt->importStylesheet( $xsl );
 		$data[ 'xml' ] = $xslt->transformToXML( $xml );
 
+		$courses = $data[ 'courses' ] = $this->courses();
+		$data['courses'] = $courses['courses'];
 		$this->load->view( 'welcome_message', $data );
 	}
 
