@@ -3,7 +3,6 @@
 <head>
 	<meta charset="utf-8">
 	<title>Welcome to CodeIgniter</title>
-
 	<style type="text/css">
 
 	::selection{ background-color: #E13300; color: white; }
@@ -62,7 +61,21 @@
 		border: 1px solid #D0D0D0;
 		-webkit-box-shadow: 0 0 8px #D0D0D0;
 	}
+
+	div.col1,
+	div.col2{
+		float: left;
+	}
+
+	div.col1 {
+		width: 600px
+	}
+
+	#results {
+		width: 300px;
+	}
 	</style>
+	<link rel="stylesheet" href="<?php echo base_url('application/a/css/style.css');?>" type="text/css" />
 
 	<?php
 	if ( isset( $json ) ) {
@@ -99,15 +112,12 @@
 
 <div id="container">
 
-	<div id="body">
-		<div id="results">
-			
-		</div>
+	<div class="col1">
 		<div>
 			<h2>Get Books By Course ID</h2>
 			<?php 
 				$this->load->helper('form');
-				echo form_open("books/course/$course_id/$format", array('method' => 'get'));
+				echo form_open("books/course", array('method' => 'get'));
 			?>
 				<label for="course_id">Course ID:</label>
 				<input type="text" name="course_id" id="course_id" value="CC100"/>
@@ -140,7 +150,7 @@
 		</div>
 		<div>
 			<h2>Update Borrowing Data</h2>
-			<?php
+			<?php 
 				$this->load->helper('form');
 				echo form_open('books/borrow');
 			?>
@@ -195,6 +205,17 @@
 				echo form_close();
 			?>
 		</div>
+	</div>
+	<div class="col2">
+		<div id="results">
+			<?php
+			extract( $_POST );
+			extract( $_GET );
+			if ( isset( $submit ) && isset( $xml ) ) {
+				print( $xml );
+			}
+			?>
+		</div>
 		<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds</p>
 
 	</div>
@@ -202,11 +223,8 @@
 </div>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <?php
-extract( $_GET );
 
-if ( isset( $submit ) && isset( $xml ) ) {
-	print( $xml );
-}
+
 
 if ( isset( $json ) && $json ) {
 	?>

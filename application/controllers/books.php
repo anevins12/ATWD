@@ -86,9 +86,8 @@ class Books extends CI_Controller {
 
 		$this->load->model( 'coursesmodel' );
 		$coursesmodel = new Coursesmodel();
-
 		$data['courses'] = $coursesmodel->getAllCourses();
-
+		
 		return $data;
 		
 	}
@@ -313,7 +312,15 @@ class Books extends CI_Controller {
 
 		$courses = $data[ 'courses' ] = $this->courses();
 		$data['courses'] = $courses['courses'];
+
 		$this->load->view( 'welcome_message', $data );
+	}
+
+	public function suggestionsByISBN( $isbn ) {
+		$this->load->model( 'booksmodel' );
+
+		$booksmodel = new Booksmodel();
+		$suggestions = $booksmodel->getBookDetailsByISBN( $isbn );
 	}
 
 	

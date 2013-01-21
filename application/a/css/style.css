@@ -1,0 +1,20 @@
+/* 
+    Document   : style.css
+    Created on : 21-Jan-2013, 15:48:35
+    Author     : andrew
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+div {
+	width: 600px;
+}

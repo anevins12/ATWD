@@ -199,7 +199,7 @@ class Booksmodel extends CI_Model {
 			//escape syntax-error-causing characters
 			$title = htmlentities( $title, ENT_QUOTES, "ISO-8859-5");
 		}
-var_dump($file->getElementsByTagName('isbn')->item(0)->nodeValue, $isbn);exit;
+
 		//get the book by book id, using the id
 		if ( $book = $file->getElementsByTagName('isbn')->item(0)->nodeValue == $isbn ) {
 
