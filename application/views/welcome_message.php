@@ -190,12 +190,11 @@
 				$this->load->helper('form');
 				echo form_open("books/course", array('method' => 'get'));
 			?>
-
 				<input type="hidden" name="format" value="XML" />
 
 				<label for="book_id">Courses:</label>
 				<select name="course_id" id="format">
-					<?php  foreach( $courses as $course ) { ?>
+					<?php foreach( $courses as $course ) { ?>
 					<option value="<?php echo $course['id'] ?>"><?php echo $course['name'] ?></option>
 					<?php }?>
 				</select>

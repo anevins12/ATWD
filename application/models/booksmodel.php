@@ -88,6 +88,10 @@ class Booksmodel extends CI_Model {
 			$flag=false;
 		}
 
+		if ( !$this->books ) {
+			throw new Exception( "No books found" );
+		}
+
 		return $this->books;
 
 	}

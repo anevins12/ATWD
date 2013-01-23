@@ -23,55 +23,68 @@ class Books extends CI_Controller {
 		if ( !is_string( $this->checkCourseID( $course_id ) ) ) {
 			
 			$booksmodel = new Booksmodel();
-			$books = $booksmodel->getBooksByCourseId( $course_id );
 
-			//sort the array by borrowedcount descending
-			//inspired by a comment on http://php.net/manual/en/function.array-multisort.php
-			foreach ( $books as $k => $row ) {
-					$borrowedcountSort[ $k ]  = $row[ 'borrowedcount' ];
+			try {
+				$books = $booksmodel->getBooksByCourseId( $course_id );
 			}
-			
-			if ( $books ) {
+			catch ( Exception $e ) {
+				$error =  "<?xml version='1.0' encoding='utf-8'?> \n<results>\n  <error id='504' message='" . $e->getMessage() ."' /> \n</results>";
+				$data[ 'xml' ] = $error;
+				$data[ 'error' ] = true;
+			}
+
+			if ( isset( $books ) ) {
+
+				//sort the array by borrowedcount descending
+				//inspired by a comment on http://php.net/manual/en/function.array-multisort.php
+				foreach ( $books as $k => $row ) {
+						$borrowedcountSort[ $k ]  = $row[ 'borrowedcount' ];
+				}
+
 				array_multisort( $borrowedcountSort, SORT_DESC, $books );
-			}
+				
+			
 
-			//if the selected form format is XML
-			if ( $format == 'XML' ) {
+				//if the selected form format is XML
+				if ( $format == 'XML' ) {
 
-				$xml = "<?xml version='1.0' encoding='utf-8'?>\n<results>\n <course>$course_id</course> \n <books> \n";
+					$xml = "<?xml version='1.0' encoding='utf-8'?>\n<results>\n <course>$course_id</course> \n <books> \n";
 
-				foreach ( $books as $book ) {
+					foreach ( $books as $book ) {
 
-					//construct the XML format for each book
-					$xml .="  <book";
+						//construct the XML format for each book
+						$xml .="  <book";
 
-					//use the array's keys and values
-					foreach ( $book as $k => $v ){
+						//use the array's keys and values
+						foreach ( $book as $k => $v ){
 
-						//as attributes and values
-						$xml .= " $k='$v'";
+							//as attributes and values
+							$xml .= " $k='$v'";
+
+						}
+
+						$xml .="/> \n";
 
 					}
 
-					$xml .="/> \n";
+					$xml .= "\n </books>\n</results>";
+					$data[ 'xml' ] = $xml;
 
 				}
-
-				$xml .= "\n </books>\n</results>";
-				$data[ 'xml' ] = $xml;
-
-			}
 			
-			//if the formatted form option is JSON
-			else {
-				//construct the array that is to be converted to JSON
-				$JSONarray = array( 'results' => array( 'course' => $course_id, 'books' => $books ) );
+				//if the formatted form option is JSON
+				else {
+					//construct the array that is to be converted to JSON
+					$JSONarray = array( 'results' => array( 'course' => $course_id, 'books' => $books ) );
 
-				//convert the JSON array to a JSON object
-				$JSONobject = json_encode( $JSONarray );
-				$data[ 'json' ] = $JSONobject;
+					//convert the JSON array to a JSON object
+					$JSONobject = json_encode( $JSONarray );
+					$data[ 'json' ] = $JSONobject;
+				}
 			}
+
 		}
+
 		//if the inputted course id has not matched with the XML 'database', return the error message from the exception
 		else {
 			$data[ 'xml' ] = $this->checkCourseID( $course_id );
