@@ -72,7 +72,7 @@ class Books extends CI_Controller {
 		}
 		//if the inputted course id has not matched with the XML 'database', return the error message from the exception
 		else {
-			$data[ 'xml' ] = $this->checkCourseID();
+			$data[ 'xml' ] = $this->checkCourseID( $course_id );
 			$data[ 'error' ] = true;
 		}
 		
