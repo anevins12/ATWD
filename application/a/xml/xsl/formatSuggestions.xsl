@@ -26,7 +26,7 @@
 							<xsl:value-of select="(.)/@item" />
 						</xsl:attribute>
 						<hgroup>
-							<h3>ISBN: <xsl:value-of select="." /></h3>
+							<h4>ISBN: <xsl:value-of select="." /></h4>
 						</hgroup>
 					</li>
 				</xsl:for-each>
