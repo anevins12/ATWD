@@ -30,8 +30,10 @@ class Books extends CI_Controller {
 			foreach ( $books as $k => $row ) {
 					$borrowedcountSort[ $k ]  = $row[ 'borrowedcount' ];
 			}
-
-			array_multisort( $borrowedcountSort, SORT_DESC, $books );
+			
+			if ( $books ) {
+				array_multisort( $borrowedcountSort, SORT_DESC, $books );
+			}
 
 			//if the selected form format is XML
 			if ( $format == 'XML' ) {
