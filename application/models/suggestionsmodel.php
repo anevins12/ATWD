@@ -37,8 +37,14 @@ class Suggestionsmodel extends CI_Model {
 			log_message('error', 'No XML file was loaded');
 		}
 		
-		//get all item nodes
-		$suggestions = $file->getElementsByTagName( 'suggestions' );
+		//get all suggestions nodes
+		if ( $file->getElementsByTagName( 'suggestions' ) ) {
+			$suggestions = $file->getElementsByTagName( 'suggestions' );
+		}
+		else {
+			show_error( "The XML file contains no nodes named 'suggestions'" );
+			log_message( 'error', "XML file has no 'suggestions' nodes" );
+		}
 
 		//set the for-id as type id
 		foreach ( $suggestions as $suggestion ) {
@@ -50,25 +56,34 @@ class Suggestionsmodel extends CI_Model {
 		//validate the document
 		$file->validateOnParse = true;
 
-		//now get the suggestion by its id value
+		//now get the suggestion by its suggestion_id value
 		$suggestion = $file->getElementById( $suggestion_id );
 
 		if ( !$suggestion ) throw new Exception("Invalid Book ID $suggestion_id");
 
 		//get all of the items within the matched suggestion element
-		$items = $suggestion->getElementsByTagName( 'item' );
+		if ( $suggestion->getElementsByTagName( 'item' ) ) {
+			$items = $suggestion->getElementsByTagName( 'item' );
+		}
+		else {
+			show_error( "The XML file contains no nodes named 'item'" );
+			log_message( 'error', "XML file has no 'item' nodes" );
+		}
 
+		if ( $items ) {
 
-		foreach ( $items as $item ) {
+			foreach ( $items as $item ) {
 
-			$this->suggestions[] = array( $item->nodeName => $item->nodeValue ,
-								  $item->getAttributeNode('common')->nodeName => $this->common = $item->getAttribute('common'),
-								  $item->getAttributeNode('before')->nodeName => $this->common = $item->getAttribute('before'),
-								  $item->getAttributeNode('same')->nodeName => $this->common = $item->getAttribute('same'),
-								  $item->getAttributeNode('after')->nodeName => $this->common = $item->getAttribute('after'),
-								  $item->getAttributeNode('total')->nodeName => $this->common = $item->getAttribute('total'),
-								  $item->getAttributeNode('isbn')->nodeName => $this->common = $item->getAttribute('isbn')
-								);
+				$this->suggestions[] = array( $item->nodeName => $item->nodeValue ,
+									  $item->getAttributeNode('common')->nodeName => $this->common = $item->getAttribute('common'),
+									  $item->getAttributeNode('before')->nodeName => $this->common = $item->getAttribute('before'),
+									  $item->getAttributeNode('same')->nodeName => $this->common = $item->getAttribute('same'),
+									  $item->getAttributeNode('after')->nodeName => $this->common = $item->getAttribute('after'),
+									  $item->getAttributeNode('total')->nodeName => $this->common = $item->getAttribute('total'),
+									  $item->getAttributeNode('isbn')->nodeName => $this->common = $item->getAttribute('isbn')
+									);
+
+			}
 
 		}
 
