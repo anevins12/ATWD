@@ -241,7 +241,7 @@ if ( isset( $json ) && $json ) {
 					if ( results.suggestions.length > 1 ) {
 						$.each(results.suggestions, function(){
 
-							var isbn = "<h4> Isbn: " + this.isbn + "</h4>";
+							var isbn = "<h4> ISBN: " + this.isbn + "</h4>";
 							$("#results ul").append("<li>" + isbn + "</li>");
 
 						});
@@ -260,7 +260,7 @@ if ( isset( $json ) && $json ) {
 					$.each(results, function(){
 
 						var title          = "<h3>" + this.title + "</h3>";
-						var isbn           = "<h4> Isbn: " + this.isbn + "</h4>";
+						var isbn           = "<h4> ISBN: " + this.isbn + "</h4>";
 						var borrowed_count = "<h4> Borrowed count: " + this.borrowedcount + "</h4>";
 
 						$("#results ul").append("<li><hgroup>" + title + "\n" + isbn + "\n" + borrowed_count + "</hgroup></li>");
@@ -272,7 +272,7 @@ if ( isset( $json ) && $json ) {
 				else {
 					
 					var title          = "<h3>" + results.title + "</h3>";
-					var isbn           = "<h4> Isbn: " + results.isbn + "</h4>";
+					var isbn           = "<h4> ISBN: " + results.isbn + "</h4>";
 					var borrowed_count = "<h4> Borrowed count: " + results.borrowedcount + "</h4>";
 
 					$("#results ul").append("<li><hgroup>" + title + "\n" + isbn + "\n" + borrowed_count + "</hgroup></li>");
