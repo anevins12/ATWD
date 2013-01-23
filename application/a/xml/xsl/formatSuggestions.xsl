@@ -18,7 +18,6 @@
 		
 		<div id="results">
 
-		<h2>Suggested Books for Book ID <xsl:value-of select="//suggestionsfor" /></h2>
 			<ul>
 				<xsl:for-each select="//isbn">
 					<li>

@@ -18,8 +18,6 @@
 
 		<div id="results">
 
-			<h2>Borrowed Book ID <xsl:value-of select="//book/@id" /></h2>
-
 			<ul>
 				<xsl:for-each select="//book">				
 					<li>
