@@ -3,6 +3,7 @@
 class Books extends CI_Controller {
 
 	function __constuct() {
+		
 		parent::__construct();
 	}
 
