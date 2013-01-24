@@ -34,8 +34,7 @@
 	}
 
 	?>
-<!--	<script type="text/javascript" src="<?php //echo base_url('js/scripts.js');?>"></script>-->
-	
+
 </head>
 <body>
 
@@ -63,7 +62,6 @@
 		<div>
 			<h2>Get Book Details</h2>
 			<?php
-				$this->load->helper('form');
 				echo form_open('books/detail', array('method' => 'get'));
 			?>
 				<label for="book_id">Book ID:</label>
@@ -80,7 +78,6 @@
 		<div>
 			<h2>Update Borrowing Data</h2>
 			<?php 
-				$this->load->helper('form');
 				echo form_open('books/borrow');
 			?>
 				<label for="book_id">Book ID:</label>
@@ -97,7 +94,6 @@
 		<div>
 			<h2>Book Suggestions</h2>
 			<?php
-				$this->load->helper('form');
 				echo form_open('books/suggestions', array('method' => 'get'));
 			?>
 				<label for="book_id">Book ID:</label>
@@ -116,7 +112,6 @@
 		<div>
 			<h2>Browse Courses</h2>
 			<?php
-				$this->load->helper('form');
 				echo form_open("books/course", array('method' => 'get'));
 			?>
 				<input type="hidden" name="format" value="XML" />
