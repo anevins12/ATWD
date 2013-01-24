@@ -296,7 +296,12 @@ class Books extends CI_Controller {
 	public function format( $data ) {
 		
 		if ( isset( $data[ 'json' ] ) && $data[ 'json'] ) {
+
+			$this->load->model( 'coursesmodel' );
+			$coursesmodel = new Coursesmodel();
+			$data['courses'] = $coursesmodel->getAllCourses();
 			return $this->load->view( 'welcome_message', $data );
+			
 		}
 		
 		if ( isset( $data[ 'requested' ] ) ){
