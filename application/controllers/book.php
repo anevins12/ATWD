@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Books extends CI_Controller {
+class Book extends CI_Controller {
 
 	function __constuct() {
 
@@ -8,14 +8,18 @@ class Books extends CI_Controller {
 	}
 
 	public function index() {
-		$courses = $this->courses();
-		$data['courses'] = $courses['courses'];
-		$this->load->view('welcome_message', $data);
-		$this->load->library('javascript');
+		$this->load->view('book/index.php', $data);
 	}
 
-	public function book( $id ) {
+	public function detail( $id ) {
 
+		$this->load->model( 'Booksmodel' );
+		$booksmodel = new Booksmodel();
+
+		$data = $booksmodel->formatBookDetails();
+		$this->format( $data );
+
+		$this->load->view('book/index', $data);
 		
 	}
 
