@@ -1,11 +1,11 @@
-function printJSON() {
+function printJSON() { 
 	$("#results").append("<ul></ul>");
-
+	
 	//suggestions output
 	if ( results.suggestions ) {
 
 		//that can be looped over
-		if ( results.suggestions.length > 1 ) {
+		if ( results.suggestions.length > 1 ) { 
 			$.each(results.suggestions, function(){
 
 				var isbn = "<h4> ISBN: " + this.isbn + "</h4>";
@@ -23,7 +23,7 @@ function printJSON() {
 	}
 
 	//for all other retrieval of information, that can be looped over
-	else if ( results.length > 1 ) {
+	else if ( results.length > 1 ) { 
 		$.each(results, function(){
 
 			var title          = "<h3>" + this.title + "</h3>";

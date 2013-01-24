@@ -7,10 +7,13 @@
 	<link rel="stylesheet" href="<?php echo css_url('style.css');?>" type="text/css" />
 
 	<?php
-	if ( isset( $json ) ) {
+	extract( $_POST );
+	extract( $_GET );
+	
+	if ( $format == 'JSON' ) { 
 	?>
 		<script type="text/javascript">
-			var results = <?php echo $json ?>;
+			var results = <?php echo $client ?>;
 			var results = results.results.
 			<?php
 				switch ( $requested ) {
@@ -44,6 +47,7 @@
 		<div>
 			<h2>Get Books By Course ID</h2>
 			<?php 
+
 				$this->load->helper('form');
 				echo form_open("books/course", array('method' => 'get'));
 			?>
@@ -126,18 +130,24 @@
 				<input type="submit" name="submit" id="submit"/>
 			<?php
 				echo form_close();
+
 			?>
 		</div>
 	</div>
 	<div class="col2">
 		<div id="results">
-			<?php
-			extract( $_POST );
-			extract( $_GET );
-			if ( isset( $submit ) && isset( $xml ) ) {
-				print( $xml );
-			}
-			?>
+			<form>
+				<h2>Service</h2>
+				<textarea>
+				<?php 
+					print $service;
+				?>
+				</textarea>
+				<h2>Client</h2>
+				<?php 
+					if ( $format != 'JSON' )	print $client['client'];
+				?>
+			</form>
 		</div>
 		<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds</p>
 
@@ -148,16 +158,12 @@
 <script type="text/javascript" src="<?php echo js_url('scripts.js') ?>"></script>
 <?php
 
-
-
-if ( isset( $json ) && $json ) {
+if ( $format == 'JSON' ) { 
 	?>
 		<script type="text/javascript">
 
 			jQuery(document).ready(function($){
-
 				printJSON();
-				
 			});
 			
 		</script>

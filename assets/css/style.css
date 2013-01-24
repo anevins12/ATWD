@@ -68,3 +68,9 @@
 	#results {
 		width: 300px;
 	}
+
+	textarea {
+		width: 400px;
+		height: 500px;
+
+	}

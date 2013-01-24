@@ -349,8 +349,8 @@ class Booksmodel extends CI_Model {
 
 	public function formatXML( $data ) {
 
-		if ( isset( $data[ 'json' ] ) && $data[ 'json'] ) {
-			return $data;
+		if (  $_GET['format']  == 'JSON' ) {
+			return $data = $data[ 'service' ];
 		}
 
 		if ( isset( $data[ 'requested' ] ) ){
@@ -370,7 +370,7 @@ class Booksmodel extends CI_Model {
 		# FROM: http://php.net/manual/en/book.xsl.php
 		# LOAD XML FILE
 		$xml = new DOMDocument();
-		$xml->loadXML( $data[ 'xml' ] );
+		$xml->loadXML( $data[ 'service' ] );
 
 		# START XSLT
 		$xslt = new XSLTProcessor();
@@ -378,7 +378,7 @@ class Booksmodel extends CI_Model {
 		$xsl->load( $xslPath . '/' . $xslt_filename . '.xsl' );
 
 		$xslt->importStylesheet( $xsl );
-		$data[ 'xml' ] = $xslt->transformToXML( $xml );
+		$data[ 'client' ] = $xslt->transformToXML( $xml );
 
 		return $data;
 	

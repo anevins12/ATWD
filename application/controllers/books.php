@@ -29,7 +29,7 @@ class Books extends CI_Controller {
 			}
 			catch ( Exception $e ) {
 				$error =  "<?xml version='1.0' encoding='utf-8'?> \n<results>\n  <error id='504' message='" . $e->getMessage() ."' /> \n</results>";
-				$data[ 'xml' ] = $error;
+				$data[ 'service' ] = $error;
 				$data[ 'error' ] = true;
 			}
 
@@ -68,7 +68,7 @@ class Books extends CI_Controller {
 					}
 
 					$xml .= "\n </books>\n</results>";
-					$data[ 'xml' ] = $xml;
+					$data[ 'service' ] = $xml;
 
 				}
 			
@@ -79,7 +79,7 @@ class Books extends CI_Controller {
 
 					//convert the JSON array to a JSON object
 					$JSONobject = json_encode( $JSONarray );
-					$data[ 'json' ] = $JSONobject;
+					$data[ 'service' ] = $JSONobject;
 				}
 			}
 
@@ -87,16 +87,15 @@ class Books extends CI_Controller {
 
 		//if the inputted course id has not matched with the XML 'database', return the error message from the exception
 		else {
-			$data[ 'xml' ] = $this->checkCourseID( $course_id );
+			$data[ 'service' ] = $this->checkCourseID( $course_id );
 			$data[ 'error' ] = true;
 		}
 		
 		$data[ 'requested' ] = 'course';
-
-		$data = $booksmodel->formatXML($data);
+		$data[ 'client' ] = $booksmodel->formatXML($data);
 
 		$courses =  $this->courses();
-		$data['courses'] = $courses['courses'];
+		$data[ 'courses' ] = $courses['courses'];
 
 		$this->load->view( 'welcome_message', $data );
 		
