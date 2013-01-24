@@ -25,7 +25,7 @@
 					</xsl:attribute>
 					<hgroup>
 						<h3><xsl:value-of select="(.)/@title" /></h3>
-						<h4>Isbn: <xsl:value-of select="(.)/@isbn" /></h4>
+						<h4>ISBN: <xsl:value-of select="(.)/@isbn" /></h4>
 						<h4>Borrowed count: <xsl:value-of select="(.)/@borrowedcount" /></h4>
 					</hgroup>
 				</li>
