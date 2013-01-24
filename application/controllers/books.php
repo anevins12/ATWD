@@ -11,7 +11,6 @@ class Books extends CI_Controller {
 		$courses = $this->courses();
 		$data['courses'] = $courses['courses'];
 		$this->load->view('welcome_message', $data);
-		$this->load->library('javascript');
 	}
 
 	public function course() {
