@@ -347,6 +347,43 @@ class Booksmodel extends CI_Model {
 		
 	}
 
+	public function formatXML( $data ) {
+
+		if ( isset( $data[ 'json' ] ) && $data[ 'json'] ) {
+			return $data;
+		}
+
+		if ( isset( $data[ 'requested' ] ) ){
+			$requested = $data[ 'requested' ];
+		}
+
+		$xslt_filename = 'format' . ucfirst( $requested );
+
+		if ( isset( $data[ 'error' ] ) && $data[ 'error' ] ){
+			$xslt_filename = 'formatError';
+		}
+
+		//exception if $request format is not Course, Detail, Borrow or Suggestion
+		$this->load->library( 'applicationPath' );
+		$xslPath = $this->applicationpath->getApplicationPath() . $this->config->item( 'xsl_path' );
+
+		# FROM: http://php.net/manual/en/book.xsl.php
+		# LOAD XML FILE
+		$xml = new DOMDocument();
+		$xml->loadXML( $data[ 'xml' ] );
+
+		# START XSLT
+		$xslt = new XSLTProcessor();
+		$xsl = new DOMDocument();
+		$xsl->load( $xslPath . '/' . $xslt_filename . '.xsl' );
+
+		$xslt->importStylesheet( $xsl );
+		$data[ 'xml' ] = $xslt->transformToXML( $xml );
+
+		return $data;
+	
+	}
+
 }
 
 ?>

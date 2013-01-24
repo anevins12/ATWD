@@ -93,7 +93,12 @@ class Books extends CI_Controller {
 		
 		$data[ 'requested' ] = 'course';
 
-		$this->format( $data );
+		$data = $booksmodel->formatXML($data);
+
+		$courses =  $this->courses();
+		$data['courses'] = $courses['courses'];
+
+		$this->load->view( 'welcome_message', $data );
 		
 	}
 
@@ -111,9 +116,14 @@ class Books extends CI_Controller {
 		
 		$this->load->model( 'Booksmodel' );
 		$booksmodel = new Booksmodel();
-
+		$courses = $this->courses();
+		
 		$data = $booksmodel->formatBookDetails();
-		$this->format( $data );
+		$data = $booksmodel->formatXML($data);
+		$data['courses'] = $courses['courses'];
+		
+		$this->load->view( 'welcome_message', $data );
+		
 	}
 
 	public function borrow() {
@@ -153,7 +163,12 @@ class Books extends CI_Controller {
 		}
 		
 		$data[ 'requested' ] = 'borrow';
-		$this->format( $data );
+		$data = $booksmodel->formatXML($data);
+		
+		$courses = $this->courses();
+		$data['courses'] = $courses['courses'];
+
+		$this->load->view( 'welcome_message', $data );
 
 	}
 
@@ -220,9 +235,14 @@ class Books extends CI_Controller {
 			$data[ 'error' ] = true;
 		}
 
-
 		$data[ 'requested' ] = 'suggestions';
-		$this->format( $data );
+
+		$data = $booksmodel->formatXML($data);
+
+		$courses = $this->courses();
+		$data['courses'] = $courses['courses'];
+
+		$this->load->view( 'welcome_message', $data );
 
 	}
 
@@ -247,50 +267,6 @@ class Books extends CI_Controller {
 
 		return $error;
 
-	}
-
-	public function format( $data ) {
-		
-		if ( isset( $data[ 'json' ] ) && $data[ 'json'] ) {
-
-			$this->load->model( 'coursesmodel' );
-			$coursesmodel = new Coursesmodel();
-			$data['courses'] = $coursesmodel->getAllCourses();
-			return $this->load->view( 'welcome_message', $data );
-			
-		}
-		
-		if ( isset( $data[ 'requested' ] ) ){
-			$requested = $data[ 'requested' ];
-		}
-
-		$xslt_filename = 'format' . ucfirst( $requested );
-
-		if ( isset( $data[ 'error' ] ) && $data[ 'error' ] ){
-			$xslt_filename = 'formatError';
-		}
-
-		//exception if $request format is not Course, Detail, Borrow or Suggestion
-		
-		$xslPath = $this->applicationpath->getApplicationPath() . $this->config->item( 'xsl_path' );
-
-		# FROM: http://php.net/manual/en/book.xsl.php
-		# LOAD XML FILE
-		$xml = new DOMDocument();
-		$xml->loadXML( $data[ 'xml' ] );
-		
-		# START XSLT
-		$xslt = new XSLTProcessor();
-		$xsl = new DOMDocument();
-		$xsl->load( $xslPath . '/' . $xslt_filename . '.xsl' );
-
-		$xslt->importStylesheet( $xsl );
-		$data[ 'xml' ] = $xslt->transformToXML( $xml );
-
-		$courses = $data[ 'courses' ] = $this->courses();
-		$data['courses'] = $courses['courses'];
-
-		$this->load->view( 'welcome_message', $data );
 	}
 
 	public function suggestionsByISBN( $isbn ) {
