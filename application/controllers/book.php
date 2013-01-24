@@ -14,6 +14,11 @@ class Books extends CI_Controller {
 		$this->load->library('javascript');
 	}
 
+	public function book( $id ) {
+
+		
+	}
+
 }
 
 

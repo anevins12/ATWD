@@ -112,50 +112,7 @@ class Books extends CI_Controller {
 		$this->load->model( 'Booksmodel' );
 		$booksmodel = new Booksmodel();
 
-		$error = "";
-		extract( $_GET );
-
-		try {
-			 $books = $booksmodel->getBookDetails( $book_id );
-		}
-		catch ( Exception $e ) {
-			$error =  "<?xml version='1.0' encoding='utf-8'?> \n<results>\n  <error id='502' message='" . $e->getMessage() ."' /> \n</results>";
-		}
-
-		if ( empty( $error ) ) {
-
-			if ( $format == 'XML' ) {
-
-				$xml = "<?xml version='1.0' encoding='utf-8'?> \n<results> \n <book ";
-				//should only be one book anyway
-				foreach ( $books as $book ) {
-
-					foreach ( $book as $k => $v ) {
-
-						$xml .= " $k='$v'";
-
-					}
-
-				}
-
-				$xml .= " /> \n</results>";
-				$data[ 'xml' ] = $xml;
-
-			}
-
-			else {
-
-				$JSONarray = array( 'results' => array('book' => $books[0] ) );
-				$data[ 'json' ] = json_encode( $JSONarray );
-			}
-		}
-		//if the inputted book id has not matched with the any node in books.xml, return the error
-		else {
-			$data[ 'xml' ] = $error;
-			$data[ 'error' ] = true;
-		}
-
-		$data[ 'requested' ] = 'detail';
+		$data = $booksmodel->formatBookDetails();
 		$this->format( $data );
 	}
 
