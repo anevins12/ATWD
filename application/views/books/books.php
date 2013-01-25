@@ -138,7 +138,7 @@
 		<div id="results">
 			<form>
 				<h2>Service</h2>
-				<textarea>
+				<textarea readonly="readonly">
 				<?php 
 					print $service;
 				?>
