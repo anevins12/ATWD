@@ -349,7 +349,7 @@ class Booksmodel extends CI_Model {
 
 	public function formatXML( $data ) {
 
-		if (  $_GET['format']  == 'JSON' ) {
+		if (  $data[ 'format' ]  == 'JSON' ) {
 			return $data = $data[ 'service' ];
 		}
 

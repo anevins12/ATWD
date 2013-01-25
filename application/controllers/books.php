@@ -10,21 +10,24 @@ class Books extends CI_Controller {
 	public function index() {
 		$courses = $this->courses();
 		$data['courses'] = $courses['courses'];
-		$this->load->view('welcome_message', $data);
+		$this->load->view( 'books/books', $data);
 	}
 
-	public function course() {
+	public function course() { 
+		$course_id = $GLOBALS[ 'URI' ]->segments[ 3 ];
+		$data[ 'format' ] = $GLOBALS[ 'URI' ]->segments[ 4 ];
 		
 		$this->load->model( 'Booksmodel' );
 		$data[ 'error' ] = false;
 		$data[ 'json' ] = false;
+		$data[ 'requested' ] = 'course';
 		extract( $_GET ); 
 
-		if ( !is_string( $this->checkCourseID( $course_id ) ) ) {
+		if ( !is_string( $this->checkCourseID( $course_id ) ) ) { 
 			
 			$booksmodel = new Booksmodel();
 
-			try {
+			try { 
 				$books = $booksmodel->getBooksByCourseId( $course_id );
 			}
 			catch ( Exception $e ) {
@@ -43,10 +46,8 @@ class Books extends CI_Controller {
 
 				array_multisort( $borrowedcountSort, SORT_DESC, $books );
 				
-			
-
 				//if the selected form format is XML
-				if ( $format == 'XML' ) {
+				if ( $data['format'] == 'XML' ) {
 
 					$xml = "<?xml version='1.0' encoding='utf-8'?>\n<results>\n <course>$course_id</course> \n <books> \n";
 
@@ -90,14 +91,15 @@ class Books extends CI_Controller {
 			$data[ 'service' ] = $this->checkCourseID( $course_id );
 			$data[ 'error' ] = true;
 		}
-		
-		$data[ 'requested' ] = 'course';
-		$data[ 'client' ] = $booksmodel->formatXML($data);
+
+		if ( !$data[ 'error' ] ) {
+			$data[ 'client' ] = $booksmodel->formatXML($data);
+		}
 
 		$courses =  $this->courses();
 		$data[ 'courses' ] = $courses['courses'];
 
-		$this->load->view( 'welcome_message', $data );
+		$this->load->view( 'books/books', $data );
 		
 	}
 
@@ -121,7 +123,7 @@ class Books extends CI_Controller {
 		$data = $booksmodel->formatXML($data);
 		$data['courses'] = $courses['courses'];
 		
-		$this->load->view( 'welcome_message', $data );
+		$this->load->view( 'books/books', $data );
 		
 	}
 
@@ -167,7 +169,7 @@ class Books extends CI_Controller {
 		$courses = $this->courses();
 		$data['courses'] = $courses['courses'];
 
-		$this->load->view( 'welcome_message', $data );
+		$this->load->view( 'books/books', $data );
 
 	}
 
@@ -241,7 +243,7 @@ class Books extends CI_Controller {
 		$courses = $this->courses();
 		$data['courses'] = $courses['courses'];
 
-		$this->load->view( 'welcome_message', $data );
+		$this->load->view( 'books/books', $data );
 
 	}
 

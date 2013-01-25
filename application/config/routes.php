@@ -41,6 +41,8 @@
 $route['default_controller'] = "books";
 $route['404_override'] = '';
 
+$route['books/course/(:any)/(:any)'] = "books/course/$1";
+
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

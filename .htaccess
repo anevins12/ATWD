@@ -4,8 +4,8 @@ RewriteEngine on
 RewriteBase /
 
 # redirect browser to a URI without the query string
-#RewriteCond %{THE_REQUEST} ^(GET|HEAD)\ /books/course/?\?course_id=([^&]+)&format=([^&]+)
-#RewriteRule ^/?books/course$ /books/course/%2/%3? [R,L]
+RewriteCond %{THE_REQUEST} ^(GET|HEAD)\ /books/course/?\?course_id=([^&]+)&format=([^&]+)
+RewriteRule ^/?books/course$ /books/course/%2/%3? [R,L]
 
 # internally rewrite query string-less request back to one with query strings
 #RewriteRule ^/?books/course/([^/]+)/([^/]+)$ /index.php/books/course?course_id=$1&format=$2&submit=Submit [L]
