@@ -74,13 +74,19 @@ class Books extends CI_Controller {
 				}
 			
 				//if the formatted form option is JSON
-				else {
+				else if ( $data[ 'format' ] == 'JSON' ) {
 					//construct the array that is to be converted to JSON
 					$JSONarray = array( 'results' => array( 'course' => $course_id, 'books' => $books ) );
 
 					//convert the JSON array to a JSON object
 					$JSONobject = json_encode( $JSONarray );
 					$data[ 'service' ] = $JSONobject;
+				}
+
+				else {
+					$error =  "<?xml version='1.0' encoding='utf-8'?> \n<results>\n  <error id='500' message='Service Error' /> \n</results>";
+					$data[ 'service' ] = $error;
+					$data[ 'error' ] = true;
 				}
 			}
 
