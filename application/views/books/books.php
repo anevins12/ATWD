@@ -139,7 +139,7 @@
 			<form>
 				<h2>Service</h2>
 				<textarea readonly="readonly">
-				<?php 
+				<?php
 					print $service;
 				?>
 				</textarea>

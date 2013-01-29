@@ -13,15 +13,14 @@ class Books extends CI_Controller {
 		$this->load->view( 'books/books', $data);
 	}
 
-	public function course() { 
-		$course_id = $GLOBALS[ 'URI' ]->segments[ 3 ];
-		$data[ 'format' ] = $GLOBALS[ 'URI' ]->segments[ 4 ];
+	public function course() {
+		extract( $_GET );
 		
 		$this->load->model( 'Booksmodel' );
 		$data[ 'error' ] = false;
 		$data[ 'json' ] = false;
 		$data[ 'requested' ] = 'course';
-		extract( $_GET ); 
+		$data[ 'format' ] = $format;
 
 		if ( !is_string( $this->checkCourseID( $course_id ) ) ) { 
 			
@@ -47,7 +46,7 @@ class Books extends CI_Controller {
 				array_multisort( $borrowedcountSort, SORT_DESC, $books );
 				
 				//if the selected form format is XML
-				if ( $data['format'] == 'XML' ) {
+				if ( $format == 'XML' ) {
 
 					$xml = "<?xml version='1.0' encoding='utf-8'?>\n<results>\n <course>$course_id</course> \n <books> \n";
 
@@ -105,6 +104,9 @@ class Books extends CI_Controller {
 		$courses =  $this->courses();
 		$data[ 'courses' ] = $courses['courses'];
 
+//		if ( empty( $_GET ) ) { var_dump($_GET);exit;
+//			return $data[ 'service' ];
+//		}
 		$this->load->view( 'books/books', $data );
 		
 	}
@@ -120,14 +122,21 @@ class Books extends CI_Controller {
 	}
 
 	public function detail( $book_id = null ) {
+
+		extract( $_GET );
 		
 		$this->load->model( 'Booksmodel' );
 		$booksmodel = new Booksmodel();
 		$courses = $this->courses();
 		
 		$data = $booksmodel->formatBookDetails();
-		$data = $booksmodel->formatXML($data);
-		$data['courses'] = $courses['courses'];
+		
+		if ( $format == 'JSON' ) {
+			$data[ 'service' ] = $booksmodel->formatXML($data);
+		}
+		else {
+			$data = $booksmodel->formatXML($data);
+		}
 		
 		$this->load->view( 'books/books', $data );
 		

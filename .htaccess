@@ -4,11 +4,18 @@ RewriteEngine on
 RewriteBase /
 
 # redirect browser to a URI without the query string
-RewriteCond %{THE_REQUEST} ^(GET|HEAD)\ /books/course/?\?course_id=([^&]+)&format=([^&]+)
-RewriteRule ^/?books/course$ /books/course/%2/%3? [R,L]
+#RewriteCond %{THE_REQUEST} ^(GET|HEAD)\ /books/course/?\?course_id=([^&]+)&format=([^&]+)
+#RewriteRule ^/?books/course$ /books/course/%2/%3? [R,L]
 
-# internally rewrite query string-less request back to one with query strings
-#RewriteRule ^/?books/course/([^/]+)/([^/]+)$ /index.php/books/course?course_id=$1&format=$2&submit=Submit [L]
+# Rewrite segment URI request into HTTP GET query strings
+# for the following functions:
+# A. Books by course
+RewriteRule ^books/course/(.*)/(.*)$ /books/course?course_id=$1&format=$2 [R,L]
+# B. Book details
+RewriteRule ^books/detail/(.*)/(.*)$ /books/detail?book_id=$1&format=$2 [R,L]
+# C. Book suggestions
+RewriteRule ^books/suggestions/(.*)/(.*)$ /books/suggestions?book_id=$1&format=$2 [R,L]
+
 
 #Source: http://codeigniter.com/user_guide/general/urls.html
 #Removal of index.php

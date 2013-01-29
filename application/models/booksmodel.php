@@ -301,6 +301,7 @@ class Booksmodel extends CI_Model {
 
 		$error = "";
 		extract( $_GET );
+		$data[ 'format' ] = $format;
 
 		try {
 			 $books = $this->getBookDetails( $book_id );
@@ -326,19 +327,20 @@ class Booksmodel extends CI_Model {
 				}
 
 				$xml .= " /> \n</results>";
-				$data[ 'xml' ] = $xml;
+				$data[ 'service' ] = $xml;
 
 			}
 
 			else {
 
 				$JSONarray = array( 'results' => array('book' => $books[0] ) );
-				$data[ 'json' ] = json_encode( $JSONarray );
+				$data[ 'service' ] = json_encode( $JSONarray );
+
 			}
 		}
 		//if the inputted book id has not matched with the any node in books.xml, return the error
 		else {
-			$data[ 'xml' ] = $error;
+			$data[ 'service' ] = $error;
 			$data[ 'error' ] = true;
 		}
 
