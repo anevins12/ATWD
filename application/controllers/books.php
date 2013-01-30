@@ -144,9 +144,12 @@ class Books extends CI_Controller {
 
 	public function borrow() {
 
-		extract( $_POST );
 		$this->load->model( 'Booksmodel' );
 		$booksmodel = new Booksmodel();
+		
+		extract( $_POST );
+		$data[ 'format' ] = $format;
+		
 		
 		try {
 			$books = $booksmodel->updateBorrowedData( $book_id, $course_id );
@@ -170,19 +173,24 @@ class Books extends CI_Controller {
 
 			}
 
-			$data[ 'xml' ] = $xml;
+			$data[ 'service' ] = $xml;
 		}
 		//if the inputted book id has not matched with the any node in books.xml, return the error
 		else {
-			$data[ 'xml' ] = $error;
+			$data[ 'service' ] = $error;
 			$data[ 'error' ] = true;
 		}
-		
-		$data[ 'requested' ] = 'borrow';
-		$data = $booksmodel->formatXML($data);
-		
+
 		$courses = $this->courses();
-		$data['courses'] = $courses['courses'];
+		$data[ 'requested' ] = 'borrow';
+		$data[ 'courses' ] = $courses[ 'courses' ];
+
+		if ( $format == 'JSON' ) {
+			$data[ 'service' ] = $booksmodel->formatXML( $data );
+		}
+		else {
+			$data = $booksmodel->formatXML($data);
+		}
 
 		$this->load->view( 'books/books', $data );
 
@@ -257,7 +265,6 @@ class Books extends CI_Controller {
 		$courses = $this->courses();
 		$data['courses'] = $courses['courses'];
 
-		
 		if ( $format == 'JSON' ) {
 			$data[ 'service' ] = $booksmodel->formatXML( $data );
 		}
