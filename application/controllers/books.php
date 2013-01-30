@@ -104,9 +104,6 @@ class Books extends CI_Controller {
 		$courses =  $this->courses();
 		$data[ 'courses' ] = $courses['courses'];
 
-//		if ( empty( $_GET ) ) { var_dump($_GET);exit;
-//			return $data[ 'service' ];
-//		}
 		$this->load->view( 'books/books', $data );
 		
 	}
