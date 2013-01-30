@@ -333,7 +333,7 @@ class Booksmodel extends CI_Model {
 
 			else {
 
-				$JSONarray = array( 'results' => array('book' => $books[0] ) );
+				$JSONarray = array( 'results' => array('book' => $books[ 0 ] ) );
 				$data[ 'service' ] = json_encode( $JSONarray );
 
 			}

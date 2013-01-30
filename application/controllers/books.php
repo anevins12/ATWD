@@ -9,8 +9,8 @@ class Books extends CI_Controller {
 
 	public function index() {
 		$courses = $this->courses();
-		$data['courses'] = $courses['courses'];
-		$this->load->view( 'books/books', $data);
+		$data[ 'courses' ] = $courses[ 'courses' ];
+		$this->load->view( 'books/books', $data );
 	}
 
 	public function course() {
@@ -98,11 +98,11 @@ class Books extends CI_Controller {
 		}
 
 		if ( !$data[ 'error' ] ) {
-			$data[ 'client' ] = $booksmodel->formatXML($data);
+			$data[ 'client' ] = $booksmodel->formatXML( $data );
 		}
 
 		$courses =  $this->courses();
-		$data[ 'courses' ] = $courses['courses'];
+		$data[ 'courses' ] = $courses[ 'courses' ];
 
 		$this->load->view( 'books/books', $data );
 		
@@ -129,10 +129,10 @@ class Books extends CI_Controller {
 		$data = $booksmodel->formatBookDetails();
 		
 		if ( $format == 'JSON' ) {
-			$data[ 'service' ] = $booksmodel->formatXML($data);
+			$data[ 'service' ] = $booksmodel->formatXML( $data );
 		}
 		else {
-			$data = $booksmodel->formatXML($data);
+			$data = $booksmodel->formatXML( $data );
 		}
 		
 		$this->load->view( 'books/books', $data );
@@ -186,7 +186,7 @@ class Books extends CI_Controller {
 			$data[ 'service' ] = $booksmodel->formatXML( $data );
 		}
 		else {
-			$data = $booksmodel->formatXML($data);
+			$data = $booksmodel->formatXML( $data );
 		}
 
 		$this->load->view( 'books/books', $data );
@@ -248,7 +248,7 @@ class Books extends CI_Controller {
 
 			else {
 				$JSONarray = array( 'results' => array ( 'suggestionsfor' => $book_id, 'books' => array( 'suggestions' => $suggestions ) ) );
-				$JSONobject = json_encode($JSONarray);
+				$JSONobject = json_encode( $JSONarray );
 				$data[ 'service' ] = $JSONobject;
 			}
 		}
@@ -260,13 +260,13 @@ class Books extends CI_Controller {
 
 		$data[ 'requested' ] = 'suggestions';
 		$courses = $this->courses();
-		$data['courses'] = $courses['courses'];
+		$data[ 'courses' ] = $courses[ 'courses' ];
 
 		if ( $format == 'JSON' ) {
 			$data[ 'service' ] = $booksmodel->formatXML( $data );
 		}
 		else {
-			$data = $booksmodel->formatXML($data);
+			$data = $booksmodel->formatXML( $data );
 		}
 
 		$this->load->view( 'books/books', $data );
