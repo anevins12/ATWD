@@ -101,7 +101,7 @@
 				echo form_open('books/suggestions', array('method' => 'get'));
 			?>
 				<label for="book_id">Book ID:</label>
-				<input type="text" name="suggestion_id" id="suggestion_id" value="51390"/>
+				<input type="text" name="book_id" id="suggestion_id" value="51390"/>
 				<label for="format">Format: <select name="format" id="format">
 					<option>XML</option>
 					<option>JSON</option>
