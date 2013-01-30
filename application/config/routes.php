@@ -44,6 +44,7 @@ $route['404_override'] = '';
 # redirect inputted URLs to their respective functions
 $route['books/course/(:any)/(:any)'] = "books/course/$1";
 $route['books/detail/(:any)/(:any)'] = "books/detail/$1";
+$route['books/suggestions/(:any)/(:any)'] = "books/suggestions/$1";
 
 
 /* End of file routes.php */

@@ -190,16 +190,18 @@ class Books extends CI_Controller {
 
 	public function suggestions() {
 
-		extract( $_GET );
 		$this->load->model( 'Suggestionsmodel' );
 		$this->load->model( 'Booksmodel' );
+
+		extract( $_GET );
+		$data[ 'format' ] = $format;
 
 		$suggestionsmodel = new Suggestionsmodel();
 		$booksmodel = new Booksmodel();
 
 		//handle exceptions if there are any
 		try {
-			$suggestions = $suggestionsmodel->getBookSuggestions( $suggestion_id );
+			$suggestions = $suggestionsmodel->getBookSuggestions( $book_id );
 		}
 		catch ( Exception $e ) {
 			$error =  "<?xml version='1.0' encoding='utf-8'?>\n<results>\n  <error id='502' message='" . $e->getMessage() ."' /> \n</results>";
@@ -216,7 +218,7 @@ class Books extends CI_Controller {
 			array_multisort( $suggestionsSort, SORT_DESC, $suggestions );
 			if ( $format == 'XML' ) {
 
-				$xml = "<?xml version='1.0' encoding='utf-8'?> \n<results> \n <suggestionsfor>$suggestion_id</suggestionsfor>\n<suggestions>\n";
+				$xml = "<?xml version='1.0' encoding='utf-8'?> \n<results> \n <suggestionsfor>$book_id</suggestionsfor>\n<suggestions>\n";
 
 				foreach ( $suggestions as $suggestion ) {
 
@@ -235,14 +237,14 @@ class Books extends CI_Controller {
 
 				$xml .= "</suggestions> \n</results>";
 
-				$data[ 'xml' ] = $xml;
+				$data[ 'service' ] = $xml;
 			}
 
 
 			else {
-				$JSONarray = array( 'results' => array ( 'suggestionsfor' => $suggestion_id, 'books' => array( 'suggestions' => $suggestions ) ) );
+				$JSONarray = array( 'results' => array ( 'suggestionsfor' => $book_id, 'books' => array( 'suggestions' => $suggestions ) ) );
 				$JSONobject = json_encode($JSONarray);
-				$data[ 'json' ] = $JSONobject;
+				$data[ 'service' ] = $JSONobject;
 			}
 		}
 		//if the inputted book id has not matched with the any node in suggestions.xml, return the error
@@ -252,11 +254,16 @@ class Books extends CI_Controller {
 		}
 
 		$data[ 'requested' ] = 'suggestions';
-
-		$data = $booksmodel->formatXML($data);
-
 		$courses = $this->courses();
 		$data['courses'] = $courses['courses'];
+
+		
+		if ( $format == 'JSON' ) {
+			$data[ 'service' ] = $booksmodel->formatXML( $data );
+		}
+		else {
+			$data = $booksmodel->formatXML($data);
+		}
 
 		$this->load->view( 'books/books', $data );
 
