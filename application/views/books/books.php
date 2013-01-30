@@ -102,7 +102,6 @@
 			?>
 				<label for="book_id">Book ID:</label>
 				<input type="text" name="suggestion_id" id="suggestion_id" value="51390"/>
-				<input type="hidden" name="course_id" id="course_id" value="CC100"/>
 				<label for="format">Format: <select name="format" id="format">
 					<option>XML</option>
 					<option>JSON</option>
