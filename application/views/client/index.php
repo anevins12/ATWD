@@ -9,31 +9,35 @@
 	<?php
 	extract( $_POST );
 	extract( $_GET );
-	
-	if ( $format == 'JSON' ) { 
-	?>
-		<script type="text/javascript">
-			var results = <?php echo $client ?>;
-			var results = results.results.
-			<?php
-				switch ( $requested ) {
 
-					case 'course':
-						echo 'books';
-						break;
+	if ( isset( $format ) ) {
 
-					case 'detail':
-						echo 'book';
-						break;
+		if ( $format == 'JSON' ) {
+		?>
+			<script type="text/javascript">
+				var results = <?php echo $client ?>;
+				var results = results.results.
+				<?php
+					switch ( $requested ) {
 
-					case 'suggestions':
-						echo 'books';
-						break;
-					
-				}	?>
-			; 
-		</script>
-	<?php
+						case 'course':
+							echo 'books';
+							break;
+
+						case 'detail':
+							echo 'book';
+							break;
+
+						case 'suggestions':
+							echo 'books';
+							break;
+
+					}	?>
+				;
+			</script>
+		<?php
+		}
+
 	}
 
 	?>
@@ -46,7 +50,7 @@
 	<div class="col1">
 		<div>
 			<h2>Get Books By Course ID</h2>
-			<?php 
+			<?php
 
 				$this->load->helper('form');
 				echo form_open("books/course", array('method' => 'get'));
@@ -61,7 +65,7 @@
 			<?php
 				echo form_close();
 			?>
-			
+
 		</div>
 		<div>
 			<h2>Get Book Details</h2>
@@ -81,7 +85,7 @@
 		</div>
 		<div>
 			<h2>Update Borrowing Data</h2>
-			<?php 
+			<?php
 				echo form_open('books/borrow');
 			?>
 				<label for="book_id">Book ID:</label>
@@ -125,7 +129,7 @@
 					<option value="<?php echo $course['id'] ?>"><?php echo $course['name'] ?></option>
 					<?php }?>
 				</select>
-				
+
 				<input type="submit" name="submit" id="submit"/>
 			<?php
 				echo form_close();
@@ -143,7 +147,7 @@
 				?>
 				</textarea>
 				<h2>Client</h2>
-				<?php 
+				<?php
 					if ( $format != 'JSON' )	print $client['client'];
 				?>
 			</form>
@@ -157,16 +161,20 @@
 <script type="text/javascript" src="<?php echo js_url('scripts.js') ?>"></script>
 <?php
 
-if ( $format == 'JSON' ) { 
-	?>
-		<script type="text/javascript">
+if ( isset( $format ) ) {
 
-			jQuery(document).ready(function($){
-				printJSON();
-			});
-			
-		</script>
-	<?php
+	if ( $format == 'JSON' ) {
+		?>
+			<script type="text/javascript">
+
+				jQuery(document).ready(function($){
+					printJSON();
+				});
+
+			</script>
+		<?php
+	}
+
 }
 ?>
 </body>

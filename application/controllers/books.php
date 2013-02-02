@@ -10,7 +10,7 @@ class Books extends CI_Controller {
 	public function index() {
 		$courses = $this->courses();
 		$data[ 'courses' ] = $courses[ 'courses' ];
-		$this->load->view( 'books/books', $data );
+		$this->load->view( 'client/index', $data );
 	}
 
 	public function course() {
@@ -105,9 +105,9 @@ class Books extends CI_Controller {
 		$data[ 'courses' ] = $courses[ 'courses' ];
 
 		if ( isset( $submit ) ) {
-			$this->load->view( 'books/books', $data );
+			$this->load->view( 'client/index', $data );
 		}
-		else {
+		else { 
 			return $data[ 'service' ];
 		}
 		
