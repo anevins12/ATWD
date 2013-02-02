@@ -22,7 +22,7 @@ class urls extends CI_Controller {
 	<error id="503" message="URL pattern not recognised" />
 </results>';
 
-		echo $xml;
+		return $xml;
 	}
 
     //put your code here

@@ -41,15 +41,19 @@
 $route['default_controller'] = "books";
 $route['404_override'] = '';
 
-# redirect inputted URLs to their respective functions
+// redirect inputted URLs to their respective functions
+
 # A. Books by course
 $route['books/course/(:any)/(:any)'] = "books/course/$1";
+
 # B. Book details
 $route['books/detail/(:any)/(:any)'] = "books/detail/$1";
+
 # C. Book suggestions
 $route['books/suggestions/(:any)/(:any)'] = "books/suggestions/$1";
+
 # Any URL below atwd/books/* not conforming to the methods above or the documentation path
-#$route['books/(:any)'] = "urls/notFound";
+$route['books/(:any)'] = "urls/notFound";
 
 
 /* End of file routes.php */
