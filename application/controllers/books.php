@@ -104,7 +104,12 @@ class Books extends CI_Controller {
 		$courses =  $this->courses();
 		$data[ 'courses' ] = $courses[ 'courses' ];
 
-		$this->load->view( 'books/books', $data );
+		if ( isset( $submit ) ) {
+			$this->load->view( 'books/books', $data );
+		}
+		else {
+			return $data[ 'service' ];
+		}
 		
 	}
 
@@ -135,7 +140,12 @@ class Books extends CI_Controller {
 			$data = $booksmodel->formatXML( $data );
 		}
 		
-		$this->load->view( 'books/books', $data );
+		if ( isset( $submit ) ) {
+			$this->load->view( 'books/books', $data );
+		}
+		else {
+			return $data[ 'service' ];
+		}
 		
 	}
 
@@ -189,7 +199,12 @@ class Books extends CI_Controller {
 			$data = $booksmodel->formatXML( $data );
 		}
 
-		$this->load->view( 'books/books', $data );
+		if ( isset( $submit ) ) {
+			$this->load->view( 'books/books', $data );
+		}
+		else {
+			return $data[ 'service' ];
+		}
 
 	}
 
@@ -269,7 +284,12 @@ class Books extends CI_Controller {
 			$data = $booksmodel->formatXML( $data );
 		}
 
-		$this->load->view( 'books/books', $data );
+		if ( isset( $submit ) ) {
+			$this->load->view( 'books/books', $data );
+		}
+		else {
+			return $data[ 'service' ];
+		}
 
 	}
 
