@@ -13,7 +13,7 @@ class Applicationpath {
 
 	public function getApplicationPath() { 
 
-		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
+		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) { 
 			return dirname($_SERVER['SCRIPT_FILENAME']).'/application/';
 		}
 		

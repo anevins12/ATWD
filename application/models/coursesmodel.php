@@ -28,7 +28,7 @@ class Coursesmodel extends CI_Model {
 
 		//load the XML file into the DOM, loading statically
 
-		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) {
+		if ( strstr ( $_SERVER['REQUEST_URI'] , '~a2-nevins' ) ) { 
 			$file->load( dirname($_SERVER['SCRIPT_FILENAME']).'/application/' . $this->config->item( 'xml_path' ) .  $this->file );
 		}
 		else {

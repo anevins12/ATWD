@@ -4,7 +4,7 @@
 *
 * @author_name  Andrew Nevins
 * @author_no    09019549 
-* @link         http://isa.cems.uwe.ac.uk/~a2-nevins/atwd/assets/js/scripts.js
+* @link         http://isa.cems.uwe.ac.uk/assets/js/scripts.js
 */
 
 /**
@@ -169,7 +169,7 @@ function getBookDetail() {
 		if ( book.results.book.id !== msg ) {
 
 			//use the function 'detail' API call
-			$.get('/~a2-nevins/atwd/books/detail?book_id=' + msg + '&format=JSON', {name: msg}, function(data) {
+			$.get('/books/detail?book_id=' + msg + '&format=JSON', {name: msg}, function(data) {
 
 			   data = jQuery.parseJSON(data);
 			   
@@ -223,7 +223,7 @@ function getBookDetail() {
 	else { 
 	
 		//use the function 'detail' API call
-		$.get('/~a2-nevins/atwd/books/detail?book_id=' + msg + '&format=JSON', {name: msg}, function(data) {
+		$.get('/books/detail?book_id=' + msg + '&format=JSON', {name: msg}, function(data) {
 			 data = jQuery.parseJSON(data);
 			 formatDetails(data);
 			 
@@ -313,7 +313,7 @@ function getBookSuggestions() {
 	$('#suggestions').append('<h2>Suggestions</h2>').append('<ul></ul>');
 	
 	//use the function 'suggestions' API call
-	$.get('/~a2-nevins/atwd/books/suggestions?book_id=' + msg + '&format=JSON', {name: msg}, function(data) {
+	$.get('/books/suggestions?book_id=' + msg + '&format=JSON', {name: msg}, function(data) {
 		
 		if (isJsonString(data)) {
 			var data = jQuery.parseJSON(data);
@@ -321,7 +321,7 @@ function getBookSuggestions() {
 			
 			$.each(suggestions, function(k,v){
 			
-				$.get('/~a2-nevins/atwd/books/detail?book_id=' + v.item + '&format=JSON', {name: msg}, function(data) {
+				$.get('/books/detail?book_id=' + v.item + '&format=JSON', {name: msg}, function(data) {
 					
 					//check if each item can be found in books.xml
 					if (isJsonString(data)) {
@@ -369,7 +369,7 @@ function borrowBook() {
 		$('#borrow a').click(function() { 
 		
 			//use the function 'books' API call
-			$.post('/~a2-nevins/atwd/books/borrow/', {book_id: msg}, function(xml) {	   
+			$.post('/books/borrow/', {book_id: msg}, function(xml) {	   
 			   
 			   //update the DOM (to see new borrowed count)
 			   $('#detail div').remove();
@@ -398,7 +398,7 @@ function borrowBook() {
 		$('#borrow a').click(function() {
 		
 			//use the function 'books' API call
-			$.post('/~a2-nevins/atwd/books/borrow/', {book_id: msg}, function(xml) {	   
+			$.post('/books/borrow/', {book_id: msg}, function(xml) {	   
 			   
 			   //update the DOM (to see new borrowed count)
 			   $('#detail div').remove();
