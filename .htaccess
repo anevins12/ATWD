@@ -6,16 +6,16 @@ RewriteEngine on
 # Rewrite segment URI request into HTTP GET query strings
 # for the following functions:
 # A. Books by course
-RewriteRule ^books/course/(.*)/(.*)$ /books/course?course_id=$1&format=$2 [R,L]
+RewriteRule ^books/course/(.*)/(.*)$ /atwd/books/course?course_id=$1&format=$2 [R,L]
 # B. Book details
-RewriteRule ^books/detail/(.*)/(.*)$ /books/detail?book_id=$1&format=$2 [R,L]
+RewriteRule ^books/detail/(.*)/(.*)$ /atwd/books/detail?book_id=$1&format=$2 [R,L]
 # C. Book suggestions
-RewriteRule ^books/suggestions/(.*)/(.*)$ /books/suggestions?book_id=$1&format=$2 [R,L]
+RewriteRule ^books/suggestions/(.*)/(.*)$ /atwd/books/suggestions?book_id=$1&format=$2 [R,L]
 
 
 #Source: http://codeigniter.com/user_guide/general/urls.html
 #Removal of index.php
 RewriteCond $1 !^(assets|index\.php|images|robots\.txt)
-RewriteRule ^(.*)$ /index.php/$1 [L]
+RewriteRule ^(.*)$ /atwd/index.php/$1 [L]
 
 </IfModule>

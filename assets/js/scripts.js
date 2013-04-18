@@ -169,7 +169,7 @@ function getBookDetail() {
 		if ( book.results.book.id !== msg ) {
 
 			//use the function 'detail' API call
-			$.get('/books/detail?book_id=' + msg + '&format=JSON', {name: msg}, function(data) {
+			$.get('/atwd/books/detail?book_id=' + msg + '&format=JSON', {name: msg}, function(data) {
 
 			   data = jQuery.parseJSON(data);
 			   
@@ -223,7 +223,7 @@ function getBookDetail() {
 	else { 
 	
 		//use the function 'detail' API call
-		$.get('/books/detail?book_id=' + msg + '&format=JSON', {name: msg}, function(data) {
+		$.get('/atwd/books/detail?book_id=' + msg + '&format=JSON', {name: msg}, function(data) {
 			 data = jQuery.parseJSON(data);
 			 formatDetails(data);
 			 
@@ -313,7 +313,7 @@ function getBookSuggestions() {
 	$('#suggestions').append('<h2>Suggestions</h2>').append('<ul></ul>');
 	
 	//use the function 'suggestions' API call
-	$.get('/books/suggestions?book_id=' + msg + '&format=JSON', {name: msg}, function(data) {
+	$.get('/atwd/books/suggestions?book_id=' + msg + '&format=JSON', {name: msg}, function(data) {
 		
 		if (isJsonString(data)) {
 			var data = jQuery.parseJSON(data);
@@ -321,7 +321,7 @@ function getBookSuggestions() {
 			
 			$.each(suggestions, function(k,v){
 			
-				$.get('/books/detail?book_id=' + v.item + '&format=JSON', {name: msg}, function(data) {
+				$.get('/atwd/books/detail?book_id=' + v.item + '&format=JSON', {name: msg}, function(data) {
 					
 					//check if each item can be found in books.xml
 					if (isJsonString(data)) {
@@ -369,7 +369,7 @@ function borrowBook() {
 		$('#borrow a').click(function() { 
 		
 			//use the function 'books' API call
-			$.post('/books/borrow/', {book_id: msg}, function(xml) {	   
+			$.post('/atwd/books/borrow/', {book_id: msg}, function(xml) {
 			   
 			   //update the DOM (to see new borrowed count)
 			   $('#detail div').remove();
@@ -398,7 +398,7 @@ function borrowBook() {
 		$('#borrow a').click(function() {
 		
 			//use the function 'books' API call
-			$.post('/books/borrow/', {book_id: msg}, function(xml) {	   
+			$.post('/atwd/books/borrow/', {book_id: msg}, function(xml) {
 			   
 			   //update the DOM (to see new borrowed count)
 			   $('#detail div').remove();
