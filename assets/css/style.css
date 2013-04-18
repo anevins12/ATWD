@@ -9,6 +9,10 @@
 		font: 13px/20px normal Helvetica, Arial, sans-serif;
 		color: #4F5155;
 	}
+	
+	h2 {
+		margin-top: 0;
+	}
 
 	a {
 		color: #003399;
@@ -54,6 +58,9 @@
 		margin: 10px;
 		border: 1px solid #D0D0D0;
 		-webkit-box-shadow: 0 0 8px #D0D0D0;
+		float: left;
+		width: 100%;
+		padding: 20px;
 	}
 
 	div.col1,
@@ -72,5 +79,194 @@
 	textarea {
 		width: 400px;
 		height: 500px;
-
+	}
+	
+	#loading {
+		position: absolute;
+		top: 200px;
+		right: 200px;
+	}
+	
+	#borrow a {
+	cursor: pointer;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #ffffff;
+	background: -moz-linear-gradient(
+		top,
+		#a3a3a3 0%,
+		#3b3b3b 50%,
+		#242424 50%,
+		#2e2e2e);
+	background: -webkit-gradient(
+		linear, left top, left bottom, 
+		from(#a3a3a3),
+		color-stop(0.50, #3b3b3b),
+		color-stop(0.50, #242424),
+		to(#2e2e2e));
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	border: 1px solid #000000;
+	-moz-box-shadow:
+		0px 1px 3px rgba(000,000,000,0.5),
+		inset 0px 0px 1px rgba(255,255,255,0.6);
+	-webkit-box-shadow:
+		0px 1px 3px rgba(000,000,000,0.5),
+		inset 0px 0px 1px rgba(255,255,255,0.6);
+	box-shadow:
+		0px 1px 3px rgba(000,000,000,0.5),
+		inset 0px 0px 1px rgba(255,255,255,0.6);
+	text-shadow:
+		0px -1px 0px rgba(000,000,000,1),
+		0px 1px 0px rgba(255,255,255,0.2);
+		
+		display: block;
+		width: 100px;
+		text-align: center;
+		font-size: 16px;
+		padding: 5px 10px;
+	}
+	
+	#detail,
+	nav,
+	h1,
+	h2,
+	h3,
+	.courses #main {
+		float: left;
+		width: 100%;
+	}
+	
+	nav li {
+		float: left;
+	}
+	
+	nav ul {
+		padding: 0;
+		float: left;
+		display: block;
+	}
+	
+	nav li a {
+		font-size: 20px;
+		font-family: georgia;
+		margin: 20px;
+	}
+	
+	nav li:after {
+		content: '>';
+	}
+	
+	nav li:last-child:after {
+		content: '';
+	}
+	
+	/*class is referring to <body>*/
+	.detail #main {
+		margin-bottom: 100px;
+		float: left;
+	}
+	
+	#detail {
+		width: 600px;
+	}
+	
+	#detail h2 {
+		width: 585px;
+	}
+	
+	
+	#detail img {
+		float: left;
+		display: block;
+		margin: 15px 10px 10px 0;
+	}
+	
+	ul {
+		list-style: none;
+	}
+	
+	#borrow {
+		clear: left;
+		margin-top: 20px;
+		float: left;
+		width: 324px;
+	}
+	
+	#borrow a {
+		float: right;
+	}
+	
+	#suggestions {
+		background: #eee;
+		padding: 0 20px 20px;
+	}
+	
+	#suggestions ,
+	.additional,
+	.additional ul {
+		float: left;
+	}
+	
+	#suggestions h2 {
+		margin-top: 20px;
+	}
+	
+	.additional {
+		width: 350px;
+		margin-left: 10px;
+	}
+	
+	.additional ul,
+	#suggestions ul {
+		padding-left: 0;
+	}
+	
+	h1,
+	.additional li,
+	.courses #main li {
+		background: #eee;
+	}
+	
+	.additional li,
+	.courses #main li	{
+		padding: 10px;
+	}
+	
+	.courses .error {
+		color: #000;
+	}
+	
+	.courses #main ul ul {
+		margin-top: 10px;
+	}
+	
+	.additional li:nth-child(2n),
+	.courses #main li:nth-child(2n) {
+		background: #fff;
+	}
+	
+	.additional h3 {
+		margin: 0;
+	}
+	
+	.detail h2, .detail h3 {
+		margin: 5px 10px;
+		font-weight: normal;
+	}
+	
+	.additional h2 {
+		margin-top: 13px;
+	}
+	
+	#suggestions h2 {
+		margin-left: 0;
+	}
+		
+	#complex {
+		font-size: 16px;
+	}
+	
+	.client h2 {
+		margin: 10px 0;
 	}

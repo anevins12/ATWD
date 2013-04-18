@@ -80,10 +80,7 @@ class Books extends CI_Controller {
 		$data = $booksmodel->formatBookDetails();
                 
 		$data[ 'courses' ] = $this->courses();
-           
-		if ( !isset( $format ) ) {	
-			$format = 'xml';
-		}
+                
 		if ( $format == 'JSON' ) {
 			$data[ 'service' ] = $booksmodel->formatXML( $data );
 		}
@@ -151,19 +148,6 @@ class Books extends CI_Controller {
 		}		
 	}
 
-
-/**
- * Loads the documentation view
- *
- * @access	public
- */
- 
-	public function doc() {
-	
-		$this->load->view('doc/index.html');
-	
-	}
-	
 }
 /* End of file books.php */
 /* Location: ./application/controllers/books.php */

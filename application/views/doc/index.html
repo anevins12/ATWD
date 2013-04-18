@@ -1,0 +1,185 @@
+<html>
+<head>
+	<title>Documentation</title>
+	<style>	
+	
+		body {
+			margin: 0;
+			background: #eee;
+		}
+		
+		p, h1, h2, h3, h4, h5, h6, li {
+			color: #111;
+			font-family: georgia;
+		}
+		
+		h6 {
+			font-size: 13px;
+			font-style: italic;
+		}
+		
+		h1 {
+			text-align: center;
+			text-decoration: underline;
+		}
+		
+		#documentation div {
+			background: white;
+			width: 60%;
+			margin: 0px auto;			
+			-webkit-box-shadow: 0px 0px 2px 2px #eee;
+			box-shadow: 0px 0px 10px 1px #ccc;
+			padding: 40px;
+			padding-bottom: 50px;
+			overflow: hidden;
+		}
+		
+		#documentation p {
+			padding: 10px 10px;
+			margin: 0;
+			line-height: 1.5em;
+			background: white;
+		}
+		
+		#documentation #source-code li a {
+			padding: 3px;
+			display: block;
+			background: #fff;
+			color: #8CB000;
+		}
+		
+		#documentation p:hover,
+		#documentation #source-code li a:hover {
+			background: #eee;
+			 -webkit-transition: background 100ms ease-in 100ms; /* property duration timing-function delay */
+			-moz-transition: background 100ms ease-in 100ms;
+			-o-transition: background 100ms ease-in 100ms;
+			transition: background 100ms ease-in 100ms;
+		}
+		
+		#documentation #source-code {
+			margin-top: 50px;
+		}
+		
+		
+		#documentation #source-code ul {
+			list-style: square;
+		}		
+		
+		::selection{ background-color: #8CB000; color: white; }
+		::moz-selection{ background-color: #8CB000; color: white; }
+		::webkit-selection{ background-color: #8CB000; color: white; }
+		
+	</style>
+</head>
+<body id="documentation">
+	<div>
+		<!-- Student no. 09019549 | Problems & Learning Outcomes | 28/02/2013 -->
+		<p>
+			Originally XML parsing implemented PHP DOM. On a local machine, retrieving a book by its ID worked efficiently. On the University machines, this consumed 8 seconds. The issue was narrowed down to the setAttributeId function. getElementById Needs the setAttributeId function. Exploration into how the function operates discovered this function was searching each of the thousands of XML elements and setting their attributes to ID types. As PHP DOM is already slow because it loads the entire XML into memory, the parser was changed to SimpleXML. SimpleXML circumvented the need to use a setAttributeId function and therefore was more efficient.
+		</p>
+		<p>
+			Multiple SimpleXML queries occur on the Book Detail page, including the book’s suggestions. Books suggestions are inefficient. This may be because SimpleXML does not refer back to XML elements; it queries them again. If the project was re-attempted, books.xml elements would be chunked into different files for each book item. Each file would be named as the book ID and loaded based on the requested book ID.
+		</p>
+		<br />
+		<p>
+			Receiving additional information, the WorldCat and OpenLibrary APIs were called in jQuery’s get function. When calling to the APIs, the following error message was logged, “Origin is not allowed by the Access-Control-Allow-Origin”, derived from the Same Origins Policy. To circumvent this, the JSONP method was first implemented by appending DOM script elements and then loading the API through them with the JSONP callback parameter. Difficulty was experienced when requesting the callback function, which led to using another method.
+		</p>
+		<p>
+			This other method used the same get function. It just appended ‘callback=?’ on the URL. The question mark specifies the callback should be requested immediately after the data has been loaded. Returned data is handled within the get function. In future, a more recognised approach would be used instead of this hack. The Access-Controller-Allow-Origin header would be sent on the API call.
+		</p>
+		<br />
+		<p>
+			HTML5 localstorage was used on the book details page. Storing static webpages was easy to implement, however storing dynamic data was more challenging. The book details page contains a borrow button, that, when pressed calls the borrow API. A localstorage item is created when the book first loads (if localstorage is supported), but buttons cannot still don’t operate in localstorage.
+		</p>
+		<p>
+			The localstorage item’s borrowed-count can increment, but transferring the localstorage count to the actual XML is problematic. The borrow API does not suffice if the borrow button is pressed repeatedly, because the API only increments once. In theory the borrow API could be called the amount of times the borrow button has been pressed, but that would misuse the function and be inefficient. A new function would need to be created that takes the difference between local and actual borrowed-counts, then adds it to the XML. This additional PHP work, in combination with the lack of resources for HTML5 development (localstorage disabled in 3Q80), has prevented localstorage from being implemented fully. This would be a step for improvement. Localstorage is still used now, but is a caching facility. It does not facilitate offline interactivity.
+		</p>
+		<!-- Word Count: 500 -->
+	</div>
+	<div id="source-code">
+		<h1>Appendices</h1>
+		<h2>Appendix A</h2>
+		<h3>Framework</h3>
+		<p>The project is implemented in CodeIgniter.</p>
+		<h2>Appendix B</h2>
+		<h3>Client URL</h3>
+		<p>The default controller is 'books', so you can either go to;
+		<p><a href="http://isa.cems.uwe.ac.uk/~a2-nevins/atwd">http://isa.cems.uwe.ac.uk/~a2-nevins/atwd</a>
+		<p>or</p>
+		<p><a href="http://isa.cems.uwe.ac.uk/~a2-nevins/atwd/books">http://isa.cems.uwe.ac.uk/~a2-nevins/atwd/books</a>
+		<h2>Appendix C</h2>
+		<h3>Modified Source code</h2>
+		<p>Source code has been transfered to another directory because files cannot be viewed directly from a URL while in CodeIgniter. </p>
+		
+		<h4>XSLT</h4>
+		<ul>
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/xml/xsl/formatBorrow.xsl">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/xml/xsl/formatBorrow.xsl</a></li>
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/xml/xsl/formatCourse.xsl">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/xml/xsl/formatCourse.xsl</a></li>
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/xml/xsl/formatDetail.xsl">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/xml/xsl/formatDetail.xsl</a></li>			
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/xml/xsl/formatSuggestions.xsl">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/xml/xsl/formatSuggestions.xsl</a></li>			
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/xml/xsl/getBookDetails.xsl">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/xml/xsl/getBookDetails.xsl</a></li>
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/xml/xsl/getBooksByCourseId.xsl">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/xml/xsl/getBooksByCourseId.xsl</a></li>
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/xml/xsl/getBookSuggestions.xsl">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/xml/xsl/getBookSuggestions.xsl</a></li>			
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/xml/xsl/updateBorrowedData.xsl">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/xml/xsl/updateBorrowedData.xsl</a></li>
+		</ul>
+		
+		<h5>CSS</h5>
+		<ul>
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/css/style.css">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/css/style.css</a></li>
+		</ul>
+		
+		<h5>JavaScript</h5>
+		<ul>
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/js/scripts.js">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/assets/js/scripts.js</a></li>
+		</ul>
+		
+		<h5>PHP</h5>
+		<h6>Models</h6>
+		<ul>
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/models/booksmodel.phps">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/models/booksmodel.phps</a></li>
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/models/coursesmodel.phps">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/models/coursesmodel.phps</a></li>
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/models/suggestionsmodel.phps">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/models/suggestionsmodel.phps</a></li>
+		</ul>
+		
+		<h6>Controllers</h6>
+		<ul>
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/controllers/books.phps">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/controllers/books.phps</a></li>
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/controllers/book.phps">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/controllers/book.phps</a></li>	
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/controllers/courses.phps">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/controllers/courses.phps</a></li>	
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/controllers/urls.phps">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/controllers/urls.phps</a></li>	
+		</ul>
+		
+		<h6>Views</h6>
+		<ul>
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/views/book/index.phps">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/views/book/index.phps</a></li>	
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/views/client/index.phps">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/views/client/index.phps</a></li>	
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/views/courses/index.phps">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/views/courses/index.phps</a></li>				
+		</ul>
+		
+		<h6>Libraries</h6>
+		<ul>
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/libraries/applicationpath.phps">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/libraries/applicationpath.phps</a></li>	
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/libraries/cache.phps">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/libraries/cache.phps</a></li>	
+		</ul>
+		
+		<h6>Configurations</h6>
+		<ul>
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/config/config.phps">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/config/config.phps</a></li>	
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/config/routes.phps">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/config/routes.phps</a></li>	
+		</ul>
+		
+		<h6>Helpers</h6>
+		<ul>
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/helpers/assets_helper.phps">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/helpers/assets_helper.phps</a></li>
+		</ul>
+		
+		
+		<h4>HTACCESS</h4>
+		<p>The .htaccess file has been converted to a .txt file for viewing
+		<ul>
+			<li><a href="http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/htaccess.txt">http://www.cems.uwe.ac.uk/~a2-nevins/year_4/atwd/assignment/source-files/htaccess.txt</a></li>	
+		</ul>
+	</div>
+</body>
+</html>

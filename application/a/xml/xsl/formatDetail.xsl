@@ -29,15 +29,6 @@
 							<h3><xsl:value-of select="(.)/@title" /></h3>
 							<h4>ISBN: <xsl:value-of select="(.)/@isbn" /></h4>
 							<h4>Borrowed count: <xsl:value-of select="(.)/@borrowedcount" /></h4>
-							<h5>
-								<a>
-									<xsl:attribute name="href">				
-										/book/detail/<xsl:value-of select="(.)/@id" />
-									</xsl:attribute>
-
-									<xsl:value-of select="(.)/@title" />
-								</a>
-							</h5>
 						</hgroup>
 					</li>
 				</xsl:for-each>

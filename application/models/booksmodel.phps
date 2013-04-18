@@ -212,7 +212,7 @@ class Booksmodel extends CI_Model {
  * @param	string, string
  * @return	array
  */    
-	function updateBorrowedData( $item_id, $course_id, $localstorage = null ) { 
+	function updateBorrowedData( $item_id, $course_id ) { 
 
 		$file = new DOMDocument();
 		$xmlPath = $this->applicationpath->getApplicationPath() . $this->config->item( 'xml_path' );
@@ -272,7 +272,6 @@ class Booksmodel extends CI_Model {
 									
 			$book[ 0 ]->borrowedcount = $book[ 0 ]->borrowedcount + 1;
 			$simplexml->asXml($xmlPath . $this->file);
-			
 		}
 		
 		else {
@@ -334,18 +333,7 @@ class Booksmodel extends CI_Model {
 
 		$error = "";
 		extract( $_GET );
-		
-		if ( !isset( $book_id ) ) {
-			$book_id = '';
-		}
-		
-		if ( isset( $format ) ) {		
-			$data[ 'format' ] = strtolower($format);		
-		} 		
-		else {
-			$format = 'xml';
-			$data[ 'format' ] = $format;
-		}
+		$data[ 'format' ] = strtolower($format);
 
 		try { 
 			$books = $this->getBookDetails( $book_id );

@@ -65,10 +65,6 @@
 				
 				getBookSuggestions();
 				borrowBook();
-				
-				
-				
-		
         });
 
 </script>

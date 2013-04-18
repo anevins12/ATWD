@@ -57,10 +57,6 @@ class Coursesmodel extends CI_Model {
 	public function course() { 
             
 		extract( $_GET );
-		if ( !isset( $course_id ) ) {
-			$course_id = '';
-		}
-		
 		$course_id = mb_strtoupper($course_id);
 		
 		$invalid_course = false;
@@ -69,11 +65,6 @@ class Coursesmodel extends CI_Model {
 		$data[ 'error' ] = false;
 		$data[ 'json' ] = false;
 		$data[ 'requested' ] = 'course';
-		
-		if ( !isset( $format ) ) {
-			$format = 'xml';
-		}
-		
 		$data[ 'format' ] = strtoupper( $format );
 
 		try {
@@ -105,7 +96,7 @@ class Coursesmodel extends CI_Model {
 
 			//sort the array by borrowedcount descending
 			//inspired by a comment on http://php.net/manual/en/function.array-multisort.php
-			foreach ( $books as $k => $row )  {
+			foreach ( $books as $k => $row ) {
 					$borrowedcountSort[ $k ]  = $row[ 'borrowedcount' ];
 			}
 

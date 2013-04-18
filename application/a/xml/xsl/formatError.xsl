@@ -16,7 +16,7 @@
     -->
     <xsl:template match="error">
         <h2><xsl:value-of select="(.)/@message" /></h2>
-		<h3>Error No. <xsl:value-of select="(.)/@id" /></h3>
+        <h3>Error No. <xsl:value-of select="(.)/@id" /></h3>
     </xsl:template>
 
 </xsl:stylesheet>

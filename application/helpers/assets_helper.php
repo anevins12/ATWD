@@ -87,7 +87,7 @@ if ( ! function_exists('img_url'))
  function img_url($uri)
  {
   $CI =& get_instance();
-  return $CI->config->base_url('assets/img/' . $uri);
+  return $CI->config->base_url('assets/i/' . $uri);
  }
 }
 

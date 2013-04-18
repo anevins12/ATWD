@@ -5,7 +5,7 @@
          <title>Management of systems development /</title>
          <isbn>0091653215</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/51390</url>
-         <borrowedcount>144</borrowedcount>
+         <borrowedcount>162</borrowedcount>
          <courses>
             <course>CC140</course>
             <course>CC210</course>
@@ -15,7 +15,7 @@
          <title>Database systems management and design /</title>
          <isbn>0877091153</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/483</url>
-         <borrowedcount>32</borrowedcount>
+         <borrowedcount>40</borrowedcount>
          <courses>
             <course>CC140</course>
          </courses>
@@ -206,7 +206,7 @@
          <title>An introduction to human-computer interaction /</title>
          <isbn>086377122X</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/29747</url>
-         <borrowedcount>63</borrowedcount>
+         <borrowedcount>67</borrowedcount>
          <courses>
             <course>CC100</course>
             <course>CC150</course>
@@ -784,7 +784,7 @@
          <title>Relational database management with Oracle /</title>
          <isbn>020156520X</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/69293</url>
-         <borrowedcount>20</borrowedcount>
+         <borrowedcount>21</borrowedcount>
          <courses>
             <course>CC240</course>
          </courses>
@@ -793,7 +793,7 @@
          <title>Foundation mathematics /</title>
          <isbn>0201624192</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/69343</url>
-         <borrowedcount>90</borrowedcount>
+         <borrowedcount>103</borrowedcount>
          <courses>
             <course>CC100</course>
             <course>CC230</course>
@@ -838,7 +838,7 @@
          <title>Human-computer interaction /</title>
          <isbn>0201627698</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/69362</url>
-         <borrowedcount>174</borrowedcount>
+         <borrowedcount>179</borrowedcount>
          <courses>
             <course>CC100</course>
             <course>CC140</course>
@@ -1068,7 +1068,7 @@
          <title>Human-computer interaction : psychology, task analysis and software engineering /</title>
          <isbn>0077072359</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/86301</url>
-         <borrowedcount>93</borrowedcount>
+         <borrowedcount>100</borrowedcount>
          <courses>
             <course>CC100</course>
             <course>CC140</course>
@@ -1639,7 +1639,7 @@
          <title>Teaching and learning in further and adult education /</title>
          <isbn>0748701451</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/132981</url>
-         <borrowedcount>391</borrowedcount>
+         <borrowedcount>400</borrowedcount>
          <courses>
             <course>CC140</course>
             <course>D157</course>
@@ -1894,7 +1894,7 @@
          <title>Study skills /</title>
          <isbn>0333486943</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/200824</url>
-         <borrowedcount>69</borrowedcount>
+         <borrowedcount>72</borrowedcount>
          <courses>
             <course>CC100</course>
             <course>CC123</course>
@@ -2474,7 +2474,7 @@
          <title>Maths made easy.</title>
          <isbn>0412718707</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/214841</url>
-         <borrowedcount>63</borrowedcount>
+         <borrowedcount>70</borrowedcount>
          <courses>
             <course>CC157</course>
             <course>HP100</course>
@@ -2985,7 +2985,7 @@
          <title>Computer networks /</title>
          <isbn>0133942481</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/228015</url>
-         <borrowedcount>197</borrowedcount>
+         <borrowedcount>199</borrowedcount>
          <courses>
             <course>CC100</course>
             <course>CC120</course>
@@ -3016,7 +3016,7 @@
          <title>Further engineering mathematics : programmes and problems /</title>
          <isbn>0333657411</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/230164</url>
-         <borrowedcount>90</borrowedcount>
+         <borrowedcount>96</borrowedcount>
          <courses>
             <course>CX390</course>
             <course>NE100</course>
@@ -4551,7 +4551,7 @@
          <title>JavaScript for dummies /</title>
          <isbn>0764502239</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/274429</url>
-         <borrowedcount>175</borrowedcount>
+         <borrowedcount>179</borrowedcount>
          <courses>
             <course>CC100</course>
             <course>CC120</course>
@@ -5393,7 +5393,7 @@
          <title>The essence of human-computer interaction /</title>
          <isbn>0137519753</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/298346</url>
-         <borrowedcount>113</borrowedcount>
+         <borrowedcount>138</borrowedcount>
          <courses>
             <course>CC100</course>
             <course>CC123</course>
@@ -5473,7 +5473,7 @@
          <title>Foundation mathematics /</title>
          <isbn>0201342944</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/423924</url>
-         <borrowedcount>270</borrowedcount>
+         <borrowedcount>337</borrowedcount>
          <courses>
             <course>CC100</course>
             <course>CC120</course>
@@ -7129,7 +7129,7 @@
          <title>C++ programming with CORBA /</title>
          <isbn>0471283061</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/320280</url>
-         <borrowedcount>98</borrowedcount>
+         <borrowedcount>104</borrowedcount>
          <courses>
             <course>CC100</course>
             <course>CC130</course>
@@ -9393,7 +9393,7 @@
          <title>Data structures and algorithms in Java /</title>
          <isbn>0471383678</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/359699</url>
-         <borrowedcount>124</borrowedcount>
+         <borrowedcount>126</borrowedcount>
          <courses>
             <course>CC100</course>
             <course>CC130</course>
@@ -9736,7 +9736,7 @@
          <title>Schaum's outline of UML /</title>
          <isbn>0077096738</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/370955</url>
-         <borrowedcount>212</borrowedcount>
+         <borrowedcount>301</borrowedcount>
          <courses>
             <course>CC100</course>
             <course>CC120</course>
@@ -9845,7 +9845,7 @@
          <title>Adobe Illustrator 9.0. classroom in a book.</title>
          <isbn>0201710153</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/361958</url>
-         <borrowedcount>27</borrowedcount>
+         <borrowedcount>30</borrowedcount>
          <courses>
             <course>CC125</course>
             <course>CC152</course>
@@ -11477,7 +11477,7 @@
          <title>Java : how to program /</title>
          <isbn>0130341517</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/381682</url>
-         <borrowedcount>122</borrowedcount>
+         <borrowedcount>139</borrowedcount>
          <courses>
             <course>CC100</course>
             <course>CC120</course>
@@ -14007,7 +14007,7 @@
          <title>Human-computer interaction /</title>
          <isbn>0130461091</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/422148</url>
-         <borrowedcount>210</borrowedcount>
+         <borrowedcount>223</borrowedcount>
          <courses>
             <course>CC100</course>
             <course>CC140</course>
@@ -14173,7 +14173,7 @@
          <title>Success in your project : a guide to student system development projects /</title>
          <isbn>0273678094</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/425225</url>
-         <borrowedcount>141</borrowedcount>
+         <borrowedcount>143</borrowedcount>
          <courses>
             <course>CC145</course>
             <course>CC150</course>
@@ -15293,7 +15293,7 @@
          <title>3ds max 7 bible /</title>
          <isbn>0764579711</isbn>
          <url>http://library.hud.ac.uk/catlink/bib/454692</url>
-         <borrowedcount>69</borrowedcount>
+         <borrowedcount>71</borrowedcount>
          <courses>
             <course>CC152</course>
             <course>CC172</course>

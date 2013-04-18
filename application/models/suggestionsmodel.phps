@@ -119,16 +119,6 @@ class Suggestionsmodel extends CI_Model {
         public function suggestions() {
 		
             extract( $_GET );
-			
-			if ( !isset($format) ) {
-				$format = 'xml';
-			}
-			
-			if ( !isset( $book_id ) ) {
-				$book_id = '';
-			}
-		
-			
 			$format = strtoupper($format);
 			
             $this->load->model( 'Booksmodel' );

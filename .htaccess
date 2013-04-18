@@ -1,25 +1,21 @@
 <IfModule mod_rewrite.c>
 RewriteEngine on
 
-RewriteBase /
-
-# redirect browser to a URI without the query string
-#RewriteCond %{THE_REQUEST} ^(GET|HEAD)\ /books/course/?\?course_id=([^&]+)&format=([^&]+)
-#RewriteRule ^/?books/course$ /books/course/%2/%3? [R,L]
+#RewriteBase /
 
 # Rewrite segment URI request into HTTP GET query strings
 # for the following functions:
 # A. Books by course
-RewriteRule ^books/course/(.*)/(.*)$ /books/course?course_id=$1&format=$2 [R,L]
+RewriteRule ^books/course/(.*)/(.*)$ /~a2-nevins/atwd/books/course?course_id=$1&format=$2 [R,L]
 # B. Book details
-RewriteRule ^books/detail/(.*)/(.*)$ /books/detail?book_id=$1&format=$2 [R,L]
+RewriteRule ^books/detail/(.*)/(.*)$ /~a2-nevins/atwd/books/detail?book_id=$1&format=$2 [R,L]
 # C. Book suggestions
-RewriteRule ^books/suggestions/(.*)/(.*)$ /books/suggestions?book_id=$1&format=$2 [R,L]
+RewriteRule ^books/suggestions/(.*)/(.*)$ /~a2-nevins/atwd/books/suggestions?book_id=$1&format=$2 [R,L]
 
 
 #Source: http://codeigniter.com/user_guide/general/urls.html
 #Removal of index.php
 RewriteCond $1 !^(assets|index\.php|images|robots\.txt)
-RewriteRule ^(.*)$ /index.php?route/$1 [L]
+RewriteRule ^(.*)$ /index.php/$1 [L]
 
 </IfModule>
